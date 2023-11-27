@@ -10,10 +10,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MindBodyScreen() {
+export default function PepTalkScreen() {
   return (
     <View style={styles.container}>
-      <Text>Mind and Body Screen</Text>
+      <Text>Pep Talk Screen</Text>
     </View>
   );
 }

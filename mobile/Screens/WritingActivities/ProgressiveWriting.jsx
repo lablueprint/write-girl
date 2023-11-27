@@ -10,10 +10,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MindBodyScreen() {
+export default function ProgressiveWritingScreen() {
   return (
     <View style={styles.container}>
-      <Text>Mind and Body Screen</Text>
+      <Text>Progressive Writing Screen</Text>
     </View>
   );
 }
