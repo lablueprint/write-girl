@@ -1,6 +1,6 @@
 # Write Girl
 
-This is the Github repository for the web app created for [Write Girl](https://www.writegirl.org) by [LA Blueprint](https://lablueprint.org/).
+This is the Github repository for the mobile app created for [Write Girl](https://www.writegirl.org) by [LA Blueprint](https://lablueprint.org/).
 
 ## Installation
 Run the following commands in terminal in the directory you wish to clone this repository:
