@@ -10,6 +10,8 @@ const port = process.env.PORT;
 
 // Route Imports
 const testRouter = require('./routes/testRoute');
+const progressiveWritingModel = require('./models/progressiveWritingModel');
+const activityRouter = require('./routes/progressiveWritingRoutes');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -30,6 +32,7 @@ app.use(express.json());
 
 // API Routes
 app.use('/test', testRouter);
+app.use('/activity', activityRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
