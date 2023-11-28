@@ -5,6 +5,7 @@ import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen'
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
 import MindBodyScreen from '../Screens/MindBodyScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
+import SignUpScreen from '../Screens/SignUpScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,6 +13,7 @@ export default function AppNavigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
+        <Tab.Screen name="SignUp" component={SignUpScreen} />
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Activities" component={ActivityHomeScreen} />
         <Tab.Screen name="Story Starters" component={StoryStarterScreen} />
