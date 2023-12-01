@@ -2,9 +2,10 @@ const Activity = require('../models/progressiveWritingModel');
 
 // Example of creating a document in the database
 const createActivity = async (req, res) => {
-  const activity = new Activity(req.body);
+  const data = await Activity.findOne({ genre: req.body.genre });
   try {
-    const data = await activity.save(activity);
+    data.activity.push(req.body.activity);
+    data.save();
     res.send(data);
   } catch (err) {
     console.error(err);
@@ -21,7 +22,20 @@ const getAllActivities = async (req, res) => {
   }
 };
 
+const getActivityGenre = async (req, res) => {
+  console.log(req.params);
+  try {
+    const data = await Activity.findOne({ genre: req.genre });
+    console.log(data);
+    res.send(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+};
+
 module.exports = {
   createActivity,
   getAllActivities,
+  getActivityGenre,
 };

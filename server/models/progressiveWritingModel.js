@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const progressiveWriting = new mongoose.Schema({
   activity: {
     required: true,
-    type: String,
+    type: [String],
   },
   genre: {
     required: true,

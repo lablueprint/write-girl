@@ -10,7 +10,6 @@ const port = process.env.PORT;
 
 // Route Imports
 const testRouter = require('./routes/testRoute');
-const progressiveWritingModel = require('./models/progressiveWritingModel');
 const activityRouter = require('./routes/progressiveWritingRoutes');
 
 // Connect to the MongoDB database

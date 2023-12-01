@@ -7,4 +7,6 @@ progressiveWritingRouter.post('/createActivity', progressiveWritingController.cr
 
 progressiveWritingRouter.get('/getAllActivities', progressiveWritingController.getAllActivities);
 
+progressiveWritingRouter.get('/getActivityGenre', progressiveWritingController.getActivityGenre);
+
 module.exports = progressiveWritingRouter;
