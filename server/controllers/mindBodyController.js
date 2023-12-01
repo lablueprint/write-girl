@@ -23,11 +23,9 @@ const getRandomMoment = async (req, res) => {
     const randomMindBodyDuration = randomMindBody.length > 0 ? randomMindBody[0].duration : null;
     if (randomMindBodyActivity === null || randomMindBodyActivity === undefined) {
       console.log('No valid Mind and Body Moment  found');
-      return 'No Mind and Body Moment here!';
     }
     if (randomMindBodyDuration === null || randomMindBodyDuration === undefined) {
       console.log('No valid Mind and Body Moment Duration found');
-      return 'No Mind and Body Moment Duration here!';
     }
     res.send(randomMindBody[0]);
   } catch (err) {
