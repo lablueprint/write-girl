@@ -1,5 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  StyleSheet, Text, View, Button,
+} from 'react-native';
+import axios from 'axios';
 
 const styles = StyleSheet.create({
   container: {
@@ -11,9 +14,27 @@ const styles = StyleSheet.create({
 });
 
 export default function PepTalkScreen() {
+  const [pepTalk, setPepTalk] = useState('');
+  const handleGetPepTalk = async () => {
+    try {
+      const randomPepTalk = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/pepTalk/get`, { timeout: 20000 });
+      setPepTalk(randomPepTalk.data);
+      return randomPepTalk.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  useEffect(() => {
+    handleGetPepTalk();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text>Pep Talk Screen</Text>
+      <Button onPress={handleGetPepTalk} title="Get random pep talk" />
+      <Text>{pepTalk}</Text>
     </View>
   );
 }
