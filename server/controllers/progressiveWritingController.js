@@ -1,6 +1,10 @@
 const Activity = require('../models/progressiveWritingModel');
 
-// Example of creating a document in the database
+/*
+  createActivity
+    Finds the exact genre in the database with the appropriate genre label and
+    pushes the new activity's information into the activity array.
+*/
 const createActivity = async (req, res) => {
   const data = await Activity.findOne({ genre: req.body.genre });
   try {
@@ -12,6 +16,10 @@ const createActivity = async (req, res) => {
   }
 };
 
+/*
+  getAllActivities
+    Queries the MongoDB for all of the activities regardless of label.
+*/
 const getAllActivities = async (req, res) => {
   try {
     const data = await Activity.find({});
@@ -22,11 +30,13 @@ const getAllActivities = async (req, res) => {
   }
 };
 
+/*
+  getActivityGenre
+    Queries and filters specifically for the objects with related genre title.
+*/
 const getActivityGenre = async (req, res) => {
-  console.log(req.params);
   try {
     const data = await Activity.findOne({ genre: req.genre });
-    console.log(data);
     res.send(data);
   } catch (err) {
     console.error(err);
