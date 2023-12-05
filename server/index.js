@@ -10,7 +10,7 @@ const port = process.env.PORT;
 
 // Route Imports
 const testRouter = require('./routes/testRoute');
-const pepTalkRouter = require('./routes/progressiveWritingRoutes');
+const pepTalkRouter = require('./routes/pepTalkRoutes');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {

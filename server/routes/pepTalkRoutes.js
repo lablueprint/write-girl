@@ -1,13 +1,13 @@
 const express = require('express');
 
 const pepTalkRouter = express.Router();
-const progressiveWritingController = require('../controllers/progressiveWritingController');
+const pepTalkController = require('../controllers/pepTalkController');
 
-pepTalkRouter.post('/post', progressiveWritingController.createPepTalk);
+pepTalkRouter.post('/post', pepTalkController.createPepTalk);
 
 pepTalkRouter.get('/get', async (req, res) => {
   try {
-    const randomTalk = await progressiveWritingController.getRandomPepTalk();
+    const randomTalk = await pepTalkController.getRandomPepTalk();
     res.send(randomTalk);
   } catch (err) {
     console.error(err);
