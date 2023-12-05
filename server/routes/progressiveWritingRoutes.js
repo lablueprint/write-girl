@@ -9,6 +9,8 @@ pepTalkRouter.get('/get', async (req, res) => {
   try {
     // res.send('hi');
     const randomTalk = await progressiveWritingController.getRandomPepTalk();
+    console.log('Response sent:', new Date());
+    console.log(randomTalk);
     res.send(randomTalk);
   } catch (err) {
     console.error(err);
