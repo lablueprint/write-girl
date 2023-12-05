@@ -22,7 +22,7 @@ const genreMap = {
   'Writing Experiments': 0, Journalism: 1, Songwriting: 2, Poetry: 3, Screenwriting: 4, Comedy: 5, Fiction: 6, Memoir: 7, 'Sci-Fi': 8, 'Free Genre': 9,
 };
 
-const genres = [
+const genreLabels = [
   'Writing Experiments', 'Journalism', 'Songwriting', 'Poetry', 'Screenwriting', 'Comedy', 'Fiction', 'Memoir', 'Sci-Fi', 'Free Genre',
 ];
 
@@ -32,7 +32,6 @@ export default function ProgressiveWritingScreen() {
 
   const getAllActivities = async () => {
     const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/getAllActivities`);
-    console.log(res.data);
     setActivities(res.data);
   };
 
@@ -47,19 +46,15 @@ export default function ProgressiveWritingScreen() {
   const selectActivityGenre = async (name) => {
     const idx = genreMap[name];
     const activity = activities[idx];
-    setGenre(name);
+    setGenre(activity);
   };
-
-  const obj = activities[genreMap[genre]];
-  console.log('object here', obj);
-  const genreArr = obj ? obj.activities : null;
 
   return (
     <View style={styles.container}>
       <Text>Progressive Writing Screen</Text>
       {
         genre.length === 0
-          ? genres.map((label) => (
+          ? genreLabels.map((label) => (
             <TouchableOpacity
               style={{
                 flex: 1,
@@ -68,28 +63,35 @@ export default function ProgressiveWritingScreen() {
                 borderWidth: '4px',
                 borderColor: 'black',
               }}
-              onPress={() => { setGenre(label); }}
+              onPress={() => { selectActivityGenre(label); }}
             >
               <Text>
                 {label}
               </Text>
             </TouchableOpacity>
           ))
-          : genreArr.map(({ activity }) => (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          : (
+            <View>
               <Text>
-                Activity:
-                {' '}
-                {activity}
-                Genre:
-                {' '}
-                {genre}
+                {genre.genre}
               </Text>
+              <View>
+                {
+                  genre.activity.map((prompt) => (
+                    <View>
+                      <Text>
+                        {prompt}
+                      </Text>
+                    </View>
+                  ))
+                }
+              </View>
+              <Button title="Back" onPress={() => { setGenre([]); }} />
             </View>
-          ))
+          )
       }
-      <Button title="send data" onPress={() => { addNewActivity(givenActivities); }} />
-      <Button title="get all data" onPress={() => { getAllActivities(); }} />
+      {/* <Button title="send data" onPress={() => { addNewActivity(givenActivities); }} />
+      <Button title="get all data" onPress={() => { getAllActivities(); }} /> */}
     </View>
   );
 }
