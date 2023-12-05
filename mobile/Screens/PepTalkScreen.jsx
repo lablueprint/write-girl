@@ -14,32 +14,11 @@ const styles = StyleSheet.create({
 });
 
 export default function PepTalkScreen() {
-  const [pepTalk, setPepTalk] = useState('hi');
+  const [pepTalk, setPepTalk] = useState('');
   const handleGetPepTalk = async () => {
-    console.log('entered');
     try {
-      console.log('hihi');
-      const randomPepTalk = await axios.get('https://catfact.ninja/fact', { timeout: 5000 }).catch((error) => {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
-      console.log(randomPepTalk.data.fact);
-      console.log('hi');
-      setPepTalk(randomPepTalk.data.fact);
+      const randomPepTalk = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/pepTalk/get`, { timeout: 20000 });
+      setPepTalk(randomPepTalk.data);
       return randomPepTalk.data;
     } catch (err) {
       console.log(err);
