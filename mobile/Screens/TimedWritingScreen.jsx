@@ -6,11 +6,29 @@ import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 export default function TimedWritingScreen() {
   const [showPicker, setShowPicker] = useState(false);
   const [alarmString, setAlarmString] = useState(null);
-  // const [alarmString, setAlarmString] = useState<string | null>(null);
+  const [totalTime, setTotalTime] = useState(0);
+  const [timerKey, setTimerKey] = useState(0);
 
-  const formatTime = ({ time }) => {
-    // const { hoursNum, minutesNum, secondsNum, } = time;
+  const formatTime = (pickedDuration) => {
+    const { hours, minutes, seconds } = pickedDuration;
+    setTotalTime(seconds);
+    // return seconds;
   };
+
+  const restartTimer = () => {
+    if (totalTime !== 0) {
+      setTimerKey((prevKey) => prevKey + 1);
+    }
+  };
+
+  // const children = ({ remainingTime }) => {
+  //   console.log('hi');
+  //   const hours = Math.floor(remainingTime / 3600);
+  //   const minutes = Math.floor((remainingTime % 3600) / 60);
+  //   const seconds = remainingTime % 60;
+
+  //   return `${hours}:${minutes}:${seconds}`;
+  // }
 
   return (
     <View style={{ backgroundColor: '#514242', alignItems: 'center', justifyContent: 'center' }}>
@@ -70,33 +88,21 @@ export default function TimedWritingScreen() {
           overlayOpacity: 0.2,
         }}
       />
+      <CountdownCircleTimer
+        key={timerKey}
+        isPlaying
+        duration={totalTime}
+        colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+        colorsTime={[7, 5, 2, 0]}
+        onComplete={() => {
+          setTotalTime(0);
+          restartTimer();
+        }}
+      >
+        {console.log('totalTime: ', totalTime)}
+        {console.log('key: ', timerKey)}
+        {({ remainingTime }) => <Text>{remainingTime}</Text>}
+      </CountdownCircleTimer>
     </View>
   );
-
-  // return (
-  //   <View>
-  //     <Text>Timed Writing Screen</Text>
-  //     <TimerPicker
-  //       padWithNItems={2}
-  //       hourLabel=":"
-  //       minuteLabel=":"
-  //       secondLabel=""
-  //       // LinearGradient={LinearGradient}
-  //       styles={{
-  //         theme: 'dark',
-  //         backgroundColor: '#202020',
-  //         pickerItem: {
-  //           fontSize: 34,
-  //         },
-  //         pickerLabel: {
-  //           fontSize: 32,
-  //           marginTop: 0,
-  //         },
-  //         pickerContainer: {
-  //           marginRight: 6,
-  //         },
-  //       }}
-  //     />
-  //   </View>
-  // );
 }
