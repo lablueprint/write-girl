@@ -1,6 +1,6 @@
 const MindBody = require('../models/mindBodyModel');
 
-// Example of creating a document in the database
+// Creating a mindBody document in the database
 const createMoment = async (req, res) => {
   const test = new MindBody(req.body);
   try {
@@ -11,6 +11,7 @@ const createMoment = async (req, res) => {
   }
 };
 
+// Retrieve a random mindBody document from the collection
 const getRandomMoment = async (req, res) => {
   try {
     // Generate a random index based on the count
