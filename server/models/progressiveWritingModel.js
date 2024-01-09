@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Example of a model schema to validate and structure documents
+// Model schema for progressive writing activities to validate and structure documents
 const progressiveWriting = new mongoose.Schema({
   activity: {
     required: true,
@@ -11,7 +11,5 @@ const progressiveWriting = new mongoose.Schema({
     type: String,
   },
 });
-
-
 
 module.exports = mongoose.model('Activity', progressiveWriting);
