@@ -44,9 +44,8 @@ export default function ProgressiveWritingScreen() {
   };
 
   const selectActivityGenre = async (name) => {
-    const idx = genreMap[name];
-    const activity = activities[idx];
-    setGenre(activity);
+    const filteredList = activities.filter((activity) => activity === name);
+    setGenre(filteredList);
   };
 
   return (
@@ -73,20 +72,22 @@ export default function ProgressiveWritingScreen() {
           : (
             <View>
               <Text>
-                {genre.genre}
+                {genre[0].genre}
               </Text>
               <View>
                 {
-                  genre.activity.map((prompt) => (
+                  genre.map((activity) => (
                     <View>
                       <Text>
-                        {prompt}
+                        {activity.activity[0]}
                       </Text>
                     </View>
                   ))
                 }
               </View>
               <Button title="Back" onPress={() => { setGenre([]); }} />
+              {/* <Button title="Create Activity" onPress={() =>
+                addNewActivity({ genre: 'Poetry', activity: ['a', 'b', 'c'] })} /> */}
             </View>
           )
       }
