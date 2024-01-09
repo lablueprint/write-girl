@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
@@ -9,10 +9,17 @@ export default function TimedWritingScreen() {
   const [totalTime, setTotalTime] = useState(0);
   const [timerKey, setTimerKey] = useState(0);
 
+  const calculateTotalSeconds = (pickedDuration) => {
+    const { hours, minutes, seconds } = pickedDuration;
+    const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+    setTotalTime(totalSeconds);
+    // return seconds;
+  };
+
   const formatTime = (pickedDuration) => {
     const { hours, minutes, seconds } = pickedDuration;
-    setTotalTime(seconds);
-    // return seconds;
+    console.log('formatted time: ', `${hours}:${minutes}:${seconds}`);
+    return `${hours}:${minutes}:${seconds}`;
   };
 
   const restartTimer = () => {
@@ -21,21 +28,17 @@ export default function TimedWritingScreen() {
     }
   };
 
-  // const children = ({ remainingTime }) => {
-  //   console.log('hi');
-  //   const hours = Math.floor(remainingTime / 3600);
-  //   const minutes = Math.floor((remainingTime % 3600) / 60);
-  //   const seconds = remainingTime % 60;
-
-  //   return `${hours}:${minutes}:${seconds}`;
-  // }
+  useEffect(() => {
+    restartTimer();
+    console.log('alarmString: ', alarmString);
+  }, [alarmString]);
 
   return (
     <View style={{ backgroundColor: '#514242', alignItems: 'center', justifyContent: 'center' }}>
       <Text style={{ fontSize: 18, color: '#F1F1F1' }}>
         {alarmString !== null
-          ? 'Alarm set for'
-          : 'No alarm set'}
+          ? 'Timer set for'
+          : 'No timer set'}
       </Text>
       <TouchableOpacity
         activeOpacity={0.7}
@@ -64,7 +67,7 @@ export default function TimedWritingScreen() {
                   color: '#C2C2C2',
                 }}
               >
-                Set Alarm 🔔
+                Set Timer 🔔
               </Text>
             </View>
           </TouchableOpacity>
@@ -76,6 +79,7 @@ export default function TimedWritingScreen() {
         onConfirm={(pickedDuration) => {
           console.log('pickedDuration: ', pickedDuration);
           setAlarmString(formatTime(pickedDuration));
+          calculateTotalSeconds(pickedDuration);
           setShowPicker(false);
         }}
         modalTitle="Set Alarm"
@@ -97,11 +101,18 @@ export default function TimedWritingScreen() {
         onComplete={() => {
           setTotalTime(0);
           restartTimer();
+          setAlarmString(null);
         }}
+        // eslint-disable-next-line react/no-children-prop
       >
-        {console.log('totalTime: ', totalTime)}
-        {console.log('key: ', timerKey)}
-        {({ remainingTime }) => <Text>{remainingTime}</Text>}
+        {/* {console.log('totalTime: ', totalTime)}
+        {console.log('key: ', timerKey)} */}
+        {({ remainingTime }) => (
+          <Text style={{ color: 'white', fontSize: 20 }}>
+            {/* {children(remainingTime)} */}
+            {`${Math.floor(remainingTime / 3600)}:${Math.floor((remainingTime % 3600) / 60)}:${remainingTime % 60}`}
+          </Text>
+        )}
       </CountdownCircleTimer>
     </View>
   );
