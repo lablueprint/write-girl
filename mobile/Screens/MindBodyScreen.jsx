@@ -22,7 +22,6 @@ export default function MindBodyScreen({ setTimer }) {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/mindBody/getRandom`);
       setMindBody(res.data);
-      setTimer(res.data.duration);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -43,7 +42,7 @@ export default function MindBodyScreen({ setTimer }) {
       <Text>Duration: </Text>
       <Text>{mindBody.duration}</Text>
       <Button onPress={() => { getRandomMindBody(); }} title="Get New Mind and Body" />
-      {/* <Button title="Popup" onPress={} /> */}
+      <Button title="Start Activity" onPress={() => setTimer(mindBody.duration)} />
     </View>
   );
 }
