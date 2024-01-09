@@ -30,17 +30,35 @@ const screenStyles = StyleSheet.create({
 });
 
 export default function App() {
-  const [notification, setNotification] = useState(null);
+  const [notification, setNotification] = useState(false);
   // Setup the notfications in top-level.
+  const setTimer = (duration) => {
+    setTimeout(() => {
+      setNotification(true);
+      setTimeout(() => {
+        setNotification(false);
+        console.log('gone');
+      }, 5000);
+    }, duration * 1000);
+  };
   return (
     <View style={styles.main}>
-      <View style={styles.container}>
-        <Text>
-          Hello
-        </Text>
-      </View>
+      {notification
+        ? (
+          <View style={styles.container}>
+            <Text>
+              Hello
+            </Text>
+          </View>
+        )
+        : (
+          <View>
+            <Text>failed</Text>
+          </View>
+        )}
+
       <View style={screenStyles.container}>
-        <AppNavigation />
+        <AppNavigation setTimer={setTimer} />
       </View>
     </View>
   );
