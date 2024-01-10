@@ -63,8 +63,11 @@ export default function ProgressiveWritingScreen() {
       Note: `name` must be a valid name within the activity genre (i.e Poetry, Sci-Fi, etc)
   */
   const selectActivityGenre = async (name) => {
-    const filteredList = activities.filter((activity) => activity === name);
-    setGenre(filteredList);
+    const filteredList = activities.filter(
+      (activity) => { console.log(activity.genre === name); return activity.genre === name; },
+    );
+    // console.log(filteredList);
+    setGenreFilter(filteredList);
   };
 
   useEffect(() => {
@@ -94,20 +97,21 @@ export default function ProgressiveWritingScreen() {
           : (
             <View>
               <Text>
-                {genre[0].genre}
+                {genreFilter[0].genre}
               </Text>
               <View>
                 {
-                  genre.map((activity) => (
+                  genreFilter.map((activity) => (
                     <View>
                       <Text>
                         {activity.activity[0]}
+                        test
                       </Text>
                     </View>
                   ))
                 }
               </View>
-              <Button title="Back" onPress={() => { setGenre([]); }} />
+              <Button title="Back" onPress={() => { setGenreFilter(null); }} />
               {/* <Button title="Create Activity" onPress={() =>
                 addNewActivity({ genre: 'Poetry', activity: ['a', 'b', 'c'] })} /> */}
             </View>

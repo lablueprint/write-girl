@@ -35,12 +35,8 @@ const getAllActivities = async (req, res) => {
 */
 const getActivityGenre = async (req, res) => {
   try {
-<<<<<<< HEAD
     const data = await Activity.find({ genre: req.genre });
     console.log(data);
-=======
-    const data = await Activity.findOne({ genre: req.genre });
->>>>>>> 34f47169daed12abcfea794d28087fb63b1ae844
     res.send(data);
   } catch (err) {
     console.error(err);
