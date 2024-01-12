@@ -1,22 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, TouchableOpacity,
+  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView,
 } from 'react-native';
 import axios from 'axios';
 
+const activityDim = Dimensions.get('window').width * 0.45;
+const bannerDim = Dimensions.get('window').width * 0.9;
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+    justifyContent: 'center',
+    gap: 10,
+  },
+
+  activity: {
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#EBEBEB',
+    width: activityDim,
+    height: activityDim,
+  },
+
+  banner: {
+    width: bannerDim,
+    height: activityDim,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#EBEBEB',
+    padding: 10,
   },
 });
-
-// Genre-map is a constant mapping between name and index into queried data retrieved from database.
-const genreMap = {
-  'Writing Experiments': 0, Journalism: 1, Songwriting: 2, Poetry: 3, Screenwriting: 4, Comedy: 5, Fiction: 6, Memoir: 7, 'Sci-Fi': 8, 'Free Genre': 9,
-};
 
 // List of genre mappings in order
 const genreLabels = [
@@ -45,7 +63,7 @@ export default function ProgressiveWritingScreen() {
     newActivity : Object{genre: genreName, activity: activityName}
   */
   const addNewActivity = async (newActivity) => {
-    const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/createActivity`, newActivity);
+    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/createActivity`, newActivity);
 
     /*
       Add additional logic to update the current list of activities for the given genre without
@@ -64,7 +82,7 @@ export default function ProgressiveWritingScreen() {
   */
   const selectActivityGenre = async (name) => {
     const filteredList = activities.filter(
-      (activity) => { console.log(activity.genre === name); return activity.genre === name; },
+      (activity) => activity.genre === name,
     );
     // console.log(filteredList);
     setGenreFilter(filteredList);
@@ -75,39 +93,51 @@ export default function ProgressiveWritingScreen() {
   }, [activities]);
 
   return (
-    <View style={styles.container}>
+    <View>
       {
         genreFilter === null
-          ? genreLabels.map((label) => (
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: '4px',
-                borderColor: 'black',
-              }}
-              onPress={() => { selectActivityGenre(label); }}
-            >
-              <Text>
-                {label}
-              </Text>
-            </TouchableOpacity>
-          ))
+          ? (
+            <ScrollView contentContainerStyle={styles.container}>
+              {
+              genreLabels.map((label) => (
+                // 10 Doors Screen
+                <TouchableOpacity
+                  style={styles.activity}
+                  onPress={() => { selectActivityGenre(label); }}
+                >
+                  <Text>
+                    {label}
+                  </Text>
+                </TouchableOpacity>
+              ))
+            }
+            </ScrollView>
+          )
           : (
-            <View>
-              <Text>
+            <View style={{
+              backgroundColor: '#fff',
+              width: '100%',
+              height: '100%',
+            }}
+            >
+              {/* Filtered Activity Screen */}
+              {/* <Text>
                 {genreFilter[0].genre}
-              </Text>
-              <View>
+              </Text> */}
+              <View style={{
+                alignItems: 'center',
+                flex: 1,
+                flexDirection: 'column',
+                gap: 10,
+              }}
+              >
                 {
                   genreFilter.map((activity) => (
-                    <View>
+                    <TouchableOpacity style={styles.banner}>
                       <Text>
                         {activity.activity[0]}
-                        test
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   ))
                 }
               </View>
