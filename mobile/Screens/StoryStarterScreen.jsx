@@ -14,14 +14,14 @@ const styles = StyleSheet.create({
 });
 
 export default function StoryStarterScreen() {
-  const [trait, setTrait] = useState('a');
-  const [plotPoint, setPlotPoint] = useState('aa');
+  const [trait, setTrait] = useState('');
+  const [plotPoint, setPlotPoint] = useState('');
   const [setting, setSetting] = useState('');
   const [item, setItem] = useState('');
 
   const getTrait = async () => {
     try {
-      const randomTrait = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/trait/get`, { timeout: 20000 });
+      const randomTrait = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/characterTrait/get`, { timeout: 20000 });
       setTrait(randomTrait.data);
     } catch (err) {
       console.log(err);
