@@ -16,17 +16,14 @@ export default function TimedWritingScreen() {
     const { hours, minutes, seconds } = pickedDuration;
     const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
     setTotalTime(totalSeconds);
-    // return seconds;
   };
 
   const formatTime = (pickedDuration) => {
     const { hours, minutes, seconds } = pickedDuration;
-    console.log('formatted time: ', `${hours}:${minutes}:${seconds}`);
     return `${hours}:${minutes}:${seconds}`;
   };
 
   const updateKey = () => {
-    console.log('totalTime: ', totalTime);
     if (totalTime !== 0) {
       setTimerKey((prevKey) => prevKey + 1);
     }
@@ -40,7 +37,6 @@ export default function TimedWritingScreen() {
 
   useEffect(() => {
     updateKey();
-    console.log('alarmString: ', alarmString);
   }, [alarmString]);
 
   return (
@@ -87,7 +83,6 @@ export default function TimedWritingScreen() {
         visible={showPicker}
         setIsVisible={setShowPicker}
         onConfirm={(pickedDuration) => {
-          console.log('pickedDuration: ', pickedDuration);
           setAlarmString(formatTime(pickedDuration));
           calculateTotalSeconds(pickedDuration);
           setShowPicker(false);
@@ -108,18 +103,9 @@ export default function TimedWritingScreen() {
         duration={totalTime}
         colors={['#004777', '#F7B801', '#A30000', '#A30000']}
         colorsTime={[7, 5, 2, 0]}
-        // onComplete={() => {
-        //   if (totalTime === 0) {
-        //     setTotalTime(0);
-        //     restartTimer();
-        //     setAlarmString(null);
-        //   }
-        //   console.log('completed!');
-        // }}
       >
         {({ remainingTime }) => (
           <Text style={{ color: 'white', fontSize: 20 }}>
-            {/* {children(remainingTime)} */}
             {`${Math.floor(remainingTime / 3600)}:${Math.floor((remainingTime % 3600) / 60)}:${remainingTime % 60}`}
             {remainingTime === 0 && (
             <>
