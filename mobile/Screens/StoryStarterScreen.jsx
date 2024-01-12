@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
 });
 
 export default function StoryStarterScreen() {
-  const [trait, setTrait] = useState('');
-  const [plotPoint, setPlotPoint] = useState('');
+  const [trait, setTrait] = useState('a');
+  const [plotPoint, setPlotPoint] = useState('aa');
   const [setting, setSetting] = useState('');
   const [item, setItem] = useState('');
 
@@ -23,7 +23,6 @@ export default function StoryStarterScreen() {
     try {
       const randomTrait = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/trait/get`, { timeout: 20000 });
       setTrait(randomTrait.data);
-      return randomTrait.data;
     } catch (err) {
       console.log(err);
     }
@@ -31,9 +30,9 @@ export default function StoryStarterScreen() {
   };
   const getPlotPoint = async () => {
     try {
+      console.log('clicked button');
       const randomPlotPoint = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/plotPoint/get`, { timeout: 20000 });
       setPlotPoint(randomPlotPoint.data);
-      return randomPlotPoint.data;
     } catch (err) {
       console.log(err);
     }
@@ -43,7 +42,6 @@ export default function StoryStarterScreen() {
     try {
       const randomSetting = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/setting/get`, { timeout: 20000 });
       setSetting(randomSetting.data);
-      return randomSetting.data;
     } catch (err) {
       console.log(err);
     }
@@ -59,6 +57,10 @@ export default function StoryStarterScreen() {
     }
     return true;
   };
+
+  useEffect(() => {
+    getTrait();
+  }, []);
   return (
     <View style={styles.container}>
       <Text>Story Starter Screen</Text>
