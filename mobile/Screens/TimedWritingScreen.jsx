@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import {
+  Text, View, TouchableOpacity, Button,
+} from 'react-native';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
@@ -8,6 +10,7 @@ export default function TimedWritingScreen() {
   const [alarmString, setAlarmString] = useState(null);
   const [totalTime, setTotalTime] = useState(0);
   const [timerKey, setTimerKey] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   const calculateTotalSeconds = (pickedDuration) => {
     const { hours, minutes, seconds } = pickedDuration;
@@ -22,15 +25,21 @@ export default function TimedWritingScreen() {
     return `${hours}:${minutes}:${seconds}`;
   };
 
-  const restartTimer = () => {
+  const updateKey = () => {
     console.log('totalTime: ', totalTime);
     if (totalTime !== 0) {
       setTimerKey((prevKey) => prevKey + 1);
     }
   };
 
+  const restartTimer = () => {
+    setTotalTime(0);
+    updateKey();
+    setAlarmString(null);
+  };
+
   useEffect(() => {
-    restartTimer();
+    updateKey();
     console.log('alarmString: ', alarmString);
   }, [alarmString]);
 
@@ -95,7 +104,7 @@ export default function TimedWritingScreen() {
       />
       <CountdownCircleTimer
         key={timerKey}
-        isPlaying
+        isPlaying={isPlaying}
         duration={totalTime}
         colors={['#004777', '#F7B801', '#A30000', '#A30000']}
         colorsTime={[7, 5, 2, 0]}
@@ -114,14 +123,22 @@ export default function TimedWritingScreen() {
             {`${Math.floor(remainingTime / 3600)}:${Math.floor((remainingTime % 3600) / 60)}:${remainingTime % 60}`}
             {remainingTime === 0 && (
             <>
-              {setTotalTime(0)}
               {restartTimer()}
-              {setAlarmString(null)}
             </>
             )}
           </Text>
         )}
       </CountdownCircleTimer>
+      <Button
+        title={isPlaying ? 'Pause timer' : 'Resume timer'}
+        disabled={totalTime === 0}
+        onPress={() => setIsPlaying(!isPlaying)}
+      />
+      <Button
+        title="Clear timer"
+        disabled={totalTime === 0}
+        onPress={() => restartTimer()}
+      />
     </View>
   );
 }
