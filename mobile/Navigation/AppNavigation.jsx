@@ -5,6 +5,7 @@ import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen'
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
 import MindBodyScreen from '../Screens/MindBodyScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
+import TimedWritingScreen from '../Screens/TimedWritingScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +18,7 @@ export default function AppNavigation() {
         <Tab.Screen name="Story Starters" component={StoryStarterScreen} />
         <Tab.Screen name="Mind & Body" component={MindBodyScreen} />
         <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
+        <Tab.Screen name="Timed Writing" component={TimedWritingScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
