@@ -23,6 +23,7 @@ export default function TimedWritingScreen() {
   };
 
   const restartTimer = () => {
+    console.log('totalTime: ', totalTime);
     if (totalTime !== 0) {
       setTimerKey((prevKey) => prevKey + 1);
     }
@@ -98,19 +99,26 @@ export default function TimedWritingScreen() {
         duration={totalTime}
         colors={['#004777', '#F7B801', '#A30000', '#A30000']}
         colorsTime={[7, 5, 2, 0]}
-        onComplete={() => {
-          setTotalTime(0);
-          restartTimer();
-          setAlarmString(null);
-        }}
-        // eslint-disable-next-line react/no-children-prop
+        // onComplete={() => {
+        //   if (totalTime === 0) {
+        //     setTotalTime(0);
+        //     restartTimer();
+        //     setAlarmString(null);
+        //   }
+        //   console.log('completed!');
+        // }}
       >
-        {/* {console.log('totalTime: ', totalTime)}
-        {console.log('key: ', timerKey)} */}
         {({ remainingTime }) => (
           <Text style={{ color: 'white', fontSize: 20 }}>
             {/* {children(remainingTime)} */}
             {`${Math.floor(remainingTime / 3600)}:${Math.floor((remainingTime % 3600) / 60)}:${remainingTime % 60}`}
+            {remainingTime === 0 && (
+            <>
+              {setTotalTime(0)}
+              {restartTimer()}
+              {setAlarmString(null)}
+            </>
+            )}
           </Text>
         )}
       </CountdownCircleTimer>
