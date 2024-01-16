@@ -34,6 +34,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#EBEBEB',
     padding: 10,
   },
+
+  unchecked: {
+    borderRadius: 50,
+    borderWidth: 4,
+    borderColor: 'black',
+    width: 75,
+    height: 75,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  checked: {
+    borderRadius: 50,
+    borderWidth: 4,
+    borderColor: 'black',
+    width: 75,
+    height: 75,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+  },
 });
 
 // List of genre mappings in order
@@ -44,6 +65,8 @@ const genreLabels = [
 export default function ProgressiveWritingScreen() {
   const [activities, setActivities] = useState([]);
   const [genreFilter, setGenreFilter] = useState(null);
+  const [selectedActivity, setSelectedActivity] = useState(null);
+  const [step, setStep] = useState(0);
 
   /*
     getAllActivities
@@ -92,6 +115,52 @@ export default function ProgressiveWritingScreen() {
     getAllActivities();
   }, [activities]);
 
+  const displayPage = () => {
+    const content = (
+      <View style={styles.banner}>
+        <Text>
+          {genreFilter[selectedActivity].activity[step]}
+        </Text>
+      </View>
+    );
+    switch (step) {
+      case 1:
+        return (
+          <View>
+            <View style={styles.banner}>
+              <Text>Graphic holder</Text>
+            </View>
+            {content}
+            <Button title="Start" onPress={() => { setStep(step + 1); }} />
+          </View>
+        );
+      case genreFilter[selectedActivity].activity.length - 1:
+        return (
+          <View>
+            <View style={styles.banner}>
+              <Text>Complete!</Text>
+            </View>
+            <View style={styles.banner}>
+              <Text>Graphic holder</Text>
+            </View>
+            {content}
+            <Button title="Back to activity list" onPress={() => { setStep(0); }} />
+            <Button title="Save" onPress={() => { console.log('save placeholder'); }} />
+          </View>
+        );
+      default:
+        return (
+          <View>
+            <View style={styles.banner}>
+              <Text>Graphic holder</Text>
+            </View>
+            {content}
+            <Button title="Next" onPress={() => { setStep(step + 1); }} />
+          </View>
+        );
+    }
+  };
+
   return (
     <View>
       {
@@ -121,9 +190,6 @@ export default function ProgressiveWritingScreen() {
             }}
             >
               {/* Filtered Activity Screen */}
-              {/* <Text>
-                {genreFilter[0].genre}
-              </Text> */}
               <View style={{
                 alignItems: 'center',
                 flex: 1,
@@ -132,16 +198,67 @@ export default function ProgressiveWritingScreen() {
               }}
               >
                 {
-                  genreFilter.map((activity) => (
-                    <TouchableOpacity style={styles.banner}>
-                      <Text>
-                        {activity.activity[0]}
-                      </Text>
-                    </TouchableOpacity>
-                  ))
+                  step === 0
+                    ? genreFilter.map((activity, idx) => {
+                      if (activity.activity.length > 0) {
+                        return (
+                          <TouchableOpacity
+                            style={styles.banner}
+                            onPress={() => [setSelectedActivity(idx), setStep(1)]}
+                          >
+                            <Text>
+                              {activity.activity[0]}
+                            </Text>
+                          </TouchableOpacity>
+                        );
+                      }
+                      return (<View />);
+                    })
+                    : (
+                      <View style={{
+                        alignItems: 'center',
+                        flex: 1,
+                        flexDirection: 'column',
+                        gap: 10,
+                      }}
+                      >
+                        {displayPage()}
+                        {
+                          step >= 2
+                            ? (
+                              <View style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                gap: 10,
+                              }}
+                              >
+                                {
+                              Array.from(
+                                { length: genreFilter[selectedActivity].activity.length - 2 },
+                                (_, i) => {
+                                  let style = styles.unchecked;
+                                  if (i < step - 2) {
+                                    style = styles.checked;
+                                  }
+                                  return (
+                                    <View style={style}>
+                                      <Text>{i}</Text>
+                                    </View>
+                                  );
+                                },
+                              )
+                            }
+                              </View>
+                            ) : <View />
+                        }
+                      </View>
+                    )
                 }
+                {
+              }
               </View>
-              <Button title="Back" onPress={() => { setGenreFilter(null); }} />
+
+              <Button title="Back" onPress={() => { setGenreFilter(null); setStep(0); }} />
               {/* <Button title="Create Activity" onPress={() =>
                 addNewActivity({ genre: 'Poetry', activity: ['a', 'b', 'c'] })} /> */}
             </View>
