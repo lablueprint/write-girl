@@ -3,7 +3,17 @@ import {
   View, TextInput, Button, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { StyleSheet, Text } from 'react-native';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  signButton: {
+    color: '#000000',
+  },
+});
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -44,7 +54,13 @@ export default function SignUp({ navigation }) {
   };
 
   return (
-    <View className="signUp">
+    <View className="signUp" style={styles.container}>
+      <Text>
+        Register
+      </Text>
+      <Text>
+        Please Register to login.
+      </Text>
       <TextInput
         onChangeText={setEmail}
         value={email}
@@ -61,7 +77,7 @@ export default function SignUp({ navigation }) {
         placeholder="Please confirm your password"
       />
 
-      <Button title="Sign Up!" onPress={handleSignUp} />
+      <Button title="Sign Up!" onPress={handleSignUp} buttonStyle={styles.signButton} color="#000000" />
     </View>
   );
 }
