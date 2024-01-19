@@ -13,6 +13,11 @@ import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import WritingTipScreen from '../Screens/WritingTipScreen';
 import LogInScreen from '../Screens/LogInScreen';
+import PepTalkScreen from '../Screens/PepTalkScreen';
+import WritingTipScreen from '../Screens/WritingTipScreen';
+import HomeNavigation from './HomeNavigation';
+import FreeWriteScreen from '../Screens/FreeWriteScreen';
+import book from '../assets/book.png';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -48,14 +53,41 @@ function HomeStackScreen() {
   );
 }
 
+// const bookIcon = () => (
+//   <Image
+// // style={{ width: size, height: size }}
+//     source={{
+//       uri: 'mobile/assets/book.png',
+//     }}
+//   />
+// );
+
+const tabOptions = {
+  tabBarIcon: () => (
+    <Image
+  // style={{ width: size, height: size }}
+      // source={{
+      //   uri: 'mobile/assets/book.png',
+      // }}
+      source={book}
+    />
+  ),
+};
+
 export default function AppNavigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
-      </Stack.Navigator>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Writing Activities"
+          component={ActivityHomeScreen}
+          options={tabOptions}
+        />
+        <Tab.Screen name="Story Starters" component={StoryStarterScreen} options={tabOptions} />
+        <Tab.Screen name="Home" component={HomeNavigation} options={{ headerShown: false }} />
+        <Tab.Screen name="Free Write" component={FreeWriteScreen} options={tabOptions} />
+        <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={tabOptions} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
