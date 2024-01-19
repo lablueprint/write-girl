@@ -12,6 +12,7 @@ const port = process.env.PORT;
 const testRouter = require('./routes/testRoute');
 const pepTalkRouter = require('./routes/pepTalkRoutes');
 const mindBodyRouter = require('./routes/mindBodyRoute');
+const userRouter = require('./routes/userRoutes');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -34,6 +35,7 @@ app.use(express.json());
 app.use('/test', testRouter);
 app.use('/pepTalk', pepTalkRouter);
 app.use('/mindBody', mindBodyRouter);
+app.use('/user', userRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

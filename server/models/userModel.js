@@ -18,23 +18,27 @@ const userSchema = new mongoose.Schema({
     required: true,
     type: Array,
   },
-  savedTripleFlip: {
+  savedWritingTips: {
     required: true,
     type: Array,
   },
-  savedTrait: {
+  savedTripleFlips: {
     required: true,
     type: Array,
   },
-  savedPlot: {
+  savedTraits: {
     required: true,
     type: Array,
   },
-  savedSetting: {
+  savedPlots: {
     required: true,
     type: Array,
   },
-  savedItem: {
+  savedSettings: {
+    required: true,
+    type: Array,
+  },
+  savedItems: {
     required: true,
     type: Array,
   },
