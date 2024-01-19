@@ -26,8 +26,6 @@ const getRandomPepTalk = async () => {
     return randomPepTalkName;
   } catch (err) {
     console.error(err);
-    // Handle the error appropriately
-    throw err;
   }
 };
 module.exports = {
