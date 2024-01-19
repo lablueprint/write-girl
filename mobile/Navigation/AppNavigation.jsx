@@ -7,6 +7,7 @@ import StoryStarterScreen from '../Screens/StoryStarterScreen';
 import MindBodyScreen from '../Screens/MindBodyScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
+import LogInScreen from '../Screens/LogInScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ export default function AppNavigation() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Sign Up" component={SignUpScreen} />
+        <Stack.Screen name="Log In" component={LogInScreen} />
         <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </NavigationContainer>
