@@ -1,95 +1,78 @@
-import {
-  TouchableOpacity, Text, View, Dimensions, StyleSheet,
-} from 'react-native';
-import React from 'react';
+import { TouchableOpacity, Text, View } from 'react-native';
+import React, { useState } from 'react';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 import { PropTypes } from 'prop-types';
 
-const window = Dimensions.get('window');
-const contentWidth = window.width * 0.9;
-const buttonHeight = window.height * 0.05;
+/**
+ * An animated tab bar of buttons - when user selects a button, tab slides and style changes
+ */
+export default function TabBar({ buttons, selectedTab, setSelectedTab,}) {
+  const [dimensions, setDimensions] = useState({height: 20, width: 100});
+  const buttonWidth = dimensions.width / buttons.length;
+  const padding = 10;
+  const tabPositionX = useSharedValue(0);
 
-const styles = StyleSheet.create({
-  tabBarContainer: {
-    margin: 'auto',
-    backgroundColor: '#B4B4B4',
-    width: '92.5%',
-    borderRadius: 20,
-  },
-  tabBar: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 20,
-    justifyContent: 'space-between',
-    width: contentWidth,
-    height: buttonHeight,
-  },
-
-  animatedFocus: {
-    marginTop: 5,
-    marginLeft: contentWidth * 0.025,
-    height: buttonHeight - 10,
-    width: contentWidth / 3 - 25,
-    backgroundColor: 'white',
-    zIndex: 0,
-    borderRadius: 20,
-    position: 'absolute',
-  },
-
-  tabs: {
-    width: (contentWidth * 0.925) / 3,
-    height: buttonHeight,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
-export default function TabBar({
-  setPage, getText,
-}) {
-  const offset = useSharedValue(0);
-  const tabIndexMap = {
-    0: 'pep_talk',
-    1: 'writing_tip',
-    2: 'saved',
+  const onTabbarLayout = (e) => {
+    setDimensions({
+      width: e.nativeEvent.layout.width,
+      height: e.nativeEvent.layout.height,
+    });
   };
 
+  // We can set a callback for any functionality that should fire once the animation is finished
+  const handlePressCb = (index) => {
+    setSelectedTab(index);
+  };
+
+  const onTabPress = (index) => {
+    // animate the tab and fire callback
+    tabPositionX.value = withTiming(buttonWidth * index, {}, () => {
+      handlePressCb(index);
+    });
+  };
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: tabPositionX.value }],
+  }));
+
   return (
-    <View style={[styles.tabBar, styles.tabBarContainer]}>
+    <View accessibilityRole="tabbar">
       <Animated.View
         style={[
-          useAnimatedStyle(() => ({
-            transform: [{ translateX: offset.value * (contentWidth / 3) + offset.value * 10 }],
-          })), styles.animatedFocus,
+          animatedStyle,
+          {
+            height: dimensions.height - padding,
+            width: buttonWidth - padding,
+          },
         ]}
       />
-      {['Pep Talk', 'Writing Tip', 'Saved'].map((button, index) => {
-        const route = ['/pepTalk/get', '/writingTip/get', 'none'];
-        return (
-          <TouchableOpacity
-            onPress={() => {
-              offset.value = withSpring(index);
-              getText(route[index]);
-              setPage(tabIndexMap[index]);
-            }}
-            style={styles.tabs}
-            key={button}
-          >
-            <Text>
-              {button}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
+      <View onLayout={onTabbarLayout}>
+        {buttons.map((button, index) => {
+          const color = selectedTab === index ? 'green-600' : 'gray-600';
+
+          return (
+            <TouchableOpacity
+              accessibilityRole="tab"
+              accessibilityLabel={button.accessibilityLabel}
+              onPress={() => onTabPress(index)}
+            >
+              <Text>
+                {button.title}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </View>
   );
 }
 
 TabBar.propTypes = {
-  setPage: PropTypes.func.isRequired,
-  getText: PropTypes.func.isRequired,
+  buttons: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedTab: PropTypes.number.isRequired,
+  setSelectedTab: PropTypes.number.isRequired,
 };
