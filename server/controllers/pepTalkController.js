@@ -27,7 +27,7 @@ const getRandomPepTalk = async () => {
   } catch (err) {
     console.error(err);
     // Handle the error appropriately
-    throw err;
+    // throw err;
   }
 };
 module.exports = {
