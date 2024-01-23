@@ -13,25 +13,25 @@ const createWritingTip = async (req, res) => {
 
 // Get writing tip
 const getRandomWritingTip = async () => {
-    // Generate a random index based on the count
-    // Use aggregation to get a random document
-    try {
-      const randomWritingTip = await WritingTip.aggregate([
-        { $sample: { size: 1 } }, // $sample stage to get a random document
-      ]);
+  // Generate a random index based on the count
+  // Use aggregation to get a random document
+  try {
+    const randomWritingTip = await WritingTip.aggregate([
+      { $sample: { size: 1 } }, // $sample stage to get a random document
+    ]);
       // Extract the talk string from the random document
-      const randomWritingTipMsg = randomWritingTip.length > 0 ? randomWritingTip[0].writingTip : null;
-      if (randomWritingTipMsg === null) {
-        console.log('No valid writing tip found');
-        return 'No writing tips here!';
-      }
-      return randomWritingTipMsg;
-    } catch (err) {
-      console.error(err);
+    const randomWritingTipMsg = randomWritingTip.length > 0 ? randomWritingTip[0].writingTip : null;
+    if (randomWritingTipMsg === null) {
+      console.log('No valid writing tip found');
+      return 'No writing tips here!';
     }
-}
+    return randomWritingTipMsg;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 module.exports = {
-    createWritingTip,
-    getRandomWritingTip,
+  createWritingTip,
+  getRandomWritingTip,
 };
