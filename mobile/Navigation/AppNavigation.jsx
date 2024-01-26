@@ -17,7 +17,12 @@ import PepTalkScreen from '../Screens/PepTalkScreen';
 import WritingTipScreen from '../Screens/WritingTipScreen';
 import HomeNavigation from './HomeNavigation';
 import FreeWriteScreen from '../Screens/FreeWriteScreen';
-import book from '../assets/book.png';
+import homeIcon from '../assets/home-icon.png';
+import writingActivitiesIcon from '../assets/writing-activities-icon.png';
+import storyStarterIcon from '../assets/story-starters-icon.png';
+import mindBodyIcon from '../assets/mind-body-icon.png';
+import howToIcon from '../assets/how-to-icon.png';
+import whiteCircle from '../assets/white-circle.png';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -53,40 +58,66 @@ function HomeStackScreen() {
   );
 }
 
-// const bookIcon = () => (
-//   <Image
-// // style={{ width: size, height: size }}
-//     source={{
-//       uri: 'mobile/assets/book.png',
-//     }}
-//   />
-// );
-
-const tabOptions = {
+const createtabOptions = (icon) => ({
   tabBarIcon: () => (
     <Image
-  // style={{ width: size, height: size }}
-      // source={{
-      //   uri: 'mobile/assets/book.png',
-      // }}
-      source={book}
+      source={icon}
     />
   ),
+});
+
+const middleTabOptions = {
+  tabBarLabel: '',
+  headerShown: false,
+  tabBarIcon: () => (
+    <View
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <ImageBackground source={whiteCircle}>
+        <View style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        >
+          <Image
+            source={homeIcon}
+          />
+        </View>
+      </ImageBackground>
+    </View>
+  ),
+
 };
 
 export default function AppNavigation() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarStyle: {
+            backgroundColor: 'black', // color you want to change
+          },
+        }}
+      >
         <Tab.Screen
           name="Writing Activities"
           component={ActivityHomeScreen}
-          options={tabOptions}
+          options={createtabOptions(writingActivitiesIcon)}
         />
-        <Tab.Screen name="Story Starters" component={StoryStarterScreen} options={tabOptions} />
-        <Tab.Screen name="Home" component={HomeNavigation} options={{ headerShown: false }} />
-        <Tab.Screen name="Free Write" component={FreeWriteScreen} options={tabOptions} />
-        <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={tabOptions} />
+        <Tab.Screen name="Story Starters" component={StoryStarterScreen} options={createtabOptions(storyStarterIcon)} />
+        <Tab.Screen
+          name="Center"
+          component={HomeNavigation}
+          options={middleTabOptions}
+        />
+        <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
+        <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
       </Tab.Navigator>
     </NavigationContainer>
   );
