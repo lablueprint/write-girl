@@ -2,47 +2,56 @@ import React from 'react';
 import {
   StyleSheet, Text, View, Pressable, ImageBackground,
 } from 'react-native';
+import PropTypes from 'prop-types';
 // import axios from 'axios';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
   },
-  imageContainer: {
-    position: 'absolute', // Use absolute positioning
-    top: 50, // Adjust top position as needed
-    left: 50, // Adjust left position as needed
+  settingsContainer: {
+    position: 'absolute',
+    flex: 1,
+    top: 0,
+    left: 0,
+  },
+  plotPointsContainer: {
+    position: 'absolute',
+    flex: 1,
+    top: 0,
+    right: 0,
+  },
+  characterTraitsContainer: {
+    position: 'absolute',
+    flex: 1,
+    bottom: 0,
+    left: 0,
+  },
+  objectsContainer: {
+    position: 'absolute',
+    flex: 1,
+    bottom: 0,
+    right: 0,
+  },
+  image: {
   },
   imageText: {
-    marginTop: 5, // Adjust spacing between image and text
-    textAlign: 'center',
-    color: '#FFF',
-    // fontFamily: 'Inter',
-    fontSize: 1.25,
-    fontWeight: 700,
-  },
-  heading: {
-    color: '#fff',
-    fontSize: 24,
+    color: 'white',
+    fontSize: 20, // Adjust as needed
     fontWeight: 'bold',
-    margin: 16,
+    textAlign: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
   },
-  body: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  traitsButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 50,
-    elevation: 3,
-    backgroundColor: 'black',
-    margin: 16,
+  button: {
+    height: 200,
+    // width: 'auto',
+    resizeMode: 'contain',
+    flex: 1,
+    aspectRatio: 0.9,
   },
 });
 
@@ -51,88 +60,56 @@ const objectsImage = require('../assets/story-starter-icons/objects.png');
 const plotPointsImage = require('../assets/story-starter-icons/plot-points.png');
 const settingsImage = require('../assets/story-starter-icons/settings.png');
 
-export default function StoryStarterScreen() {
+export default function StoryStarterScreen({ navigation, key }) {
   // const [trait, setTrait] = useState('');
   // const [plotPoint, setPlotPoint] = useState('');
   // const [setting, setSetting] = useState('');
   // const [object, setObject] = useState('');
-
-  const navigateToScreen = ({ screenName }) => {
-    console.log(screenName);
-    // navigation.navigate(screenName, {});
+  const navigateToSettingsScreen = () => {
+    navigation.navigate('Settings', {});
   };
 
-  // const getTrait = async () => {
-  //   try {
-  //     const randomTrait = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/characterTrait/get`, { timeout: 20000 });
-  //     setTrait(randomTrait.data);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //   return true;
-  // };
-  // const getPlotPoint = async () => {
-  //   try {
-  //     console.log('clicked button');
-  //     const randomPlotPoint = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/plotPoint/get`, { timeout: 20000 });
-  //     setPlotPoint(randomPlotPoint.data);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //   return true;
-  // };
-  // const getSetting = async () => {
-  //   try {
-  //     const randomSetting = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/setting/get`, { timeout: 20000 });
-  //     setSetting(randomSetting.data);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //   return true;
-  // };
-  // const getObject = async () => {
-  //   try {
-  //     const randomItem = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/item/get`, { timeout: 20000 });
-  //     setObject(randomItem.data);
-  //     return randomItem.data;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //   return true;
-  // };
+  const navigateToObjectsScreen = () => {
+    navigation.navigate('Objects', {});
+  };
 
-  // useEffect(() => {
-  //   getTrait();
-  // }, []);
+  const navigateToTraitsScreen = () => {
+    navigation.navigate('Character Traits', {});
+  };
+
+  const navigateToPlotPointsScreen = () => {
+    navigation.navigate('Plot Points', {});
+  };
 
   return (
-    <View style={styles.container}>
-      <Text>Story Starter Screen</Text>
-      <View style={styles.imageContainer}>
-        <Pressable onPress={navigateToScreen('TraitScreen')} title="Get random character trait">
-          <ImageBackground source={traitsImage}>
-            <Text style={styles.imageText}>Character Traits</Text>
-          </ImageBackground>
-        </Pressable>
-      </View>
-      {/* <View style={styles.imageContainer}>
-        <Pressable onPress={navigateToScreen('PlotPointScreen')} title="Get random plot point">
-          <Image source={plotPointsImage} />
-          <Text style={styles.imageText}>Plot Points</Text>
-        </Pressable>
-      </View>
-      <View style={styles.imageContainer}>
-        <Pressable onPress={navigateToScreen('SettingScreen')} title="Get random setting">
-          <Image source={settingsImage} />
+    <View style={styles.container} key={key}>
+      <Pressable onPress={navigateToSettingsScreen} title="Get random setting" style={styles.settingsContainer}>
+        <ImageBackground source={settingsImage} style={styles.button} imageStyle={styles.image}>
           <Text style={styles.imageText}>Settings</Text>
-        </Pressable>
-      </View>
-      <View style={styles.imageContainer}>
-        <Pressable onPress={navigateToScreen('ObjectScreen')} title="Get random object">
-          <Image source={objectsImage} />
+        </ImageBackground>
+      </Pressable>
+      <Pressable onPress={navigateToTraitsScreen} title="Get random character trait" style={styles.characterTraitsContainer}>
+        <ImageBackground source={traitsImage} style={styles.button} imageStyle={styles.image}>
+          <Text style={styles.imageText}>Character Traits</Text>
+        </ImageBackground>
+      </Pressable>
+      <Pressable onPress={navigateToPlotPointsScreen} title="Get random plot point" style={styles.plotPointsContainer}>
+        <ImageBackground source={plotPointsImage} style={styles.button} imageStyle={styles.image}>
           <Text style={styles.imageText}>Plot Points</Text>
-        </Pressable>
-      </View> */}
+        </ImageBackground>
+      </Pressable>
+      <Pressable onPress={navigateToObjectsScreen} title="Get random object" style={styles.objectsContainer}>
+        <ImageBackground source={objectsImage} style={styles.button} imageStyle={styles.image}>
+          <Text style={styles.imageText}>Objects</Text>
+        </ImageBackground>
+      </Pressable>
     </View>
   );
 }
+
+StoryStarterScreen.propTypes = {
+  key: PropTypes.number.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

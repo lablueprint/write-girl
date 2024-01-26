@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#43456f',
+    backgroundColor: '#1e916e',
     alignItems: 'center',
   },
   heading: {
@@ -45,18 +45,18 @@ const styles = StyleSheet.create({
 });
 // const route = useRoute();
 
-export default function ObjectsScreen({ key }) {
+export default function PlotPointsScreen({ key }) {
   return (
     <View style={styles.container} key={key}>
-      <Text style={styles.heading}>Objects</Text>
+      <Text style={styles.heading}>Plot Points</Text>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
         />
       </View>
-      <Text style={styles.heading}>Object!</Text>
+      <Text style={styles.heading}>Plot point!</Text>
       <Text style={styles.body}>
-        Get a random object for your story
+        Get a random plot point for your story
       </Text>
       <Pressable style={styles.randomButton}>
         <Text style={styles.body}>Randomize</Text>
@@ -65,6 +65,6 @@ export default function ObjectsScreen({ key }) {
   );
 }
 
-ObjectsScreen.propTypes = {
+PlotPointsScreen.propTypes = {
   key: PropTypes.number.isRequired,
 };
