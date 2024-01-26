@@ -11,36 +11,36 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   savedActivities: {
-    required: true,
-    type: Array,
+    required: false,
+    type: [String],
   },
   savedPepTalks: {
-    required: true,
-    type: Array,
+    required: false,
+    type: [String],
   },
   savedWritingTips: {
-    required: true,
-    type: Array,
+    required: false,
+    type: [String],
   },
   savedTripleFlips: {
-    required: true,
-    type: Array,
+    required: false,
+    type: [Object],
   },
   savedTraits: {
-    required: true,
-    type: Array,
+    required: false,
+    type: [String],
   },
   savedPlots: {
-    required: true,
-    type: Array,
+    required: false,
+    type: [String],
   },
   savedSettings: {
-    required: true,
-    type: Array,
+    required: false,
+    type: [String],
   },
   savedItems: {
-    required: true,
-    type: Array,
+    required: false,
+    type: [String],
   },
 });
 

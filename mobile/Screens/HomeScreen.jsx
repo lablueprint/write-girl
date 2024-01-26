@@ -1,5 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet, Text, View, Button,
+} from 'react-native';
+import axios from 'axios';
 
 const styles = StyleSheet.create({
   container: {
@@ -11,9 +14,161 @@ const styles = StyleSheet.create({
 });
 
 export default function HomeScreen() {
+  const [allSaved, setAllSaved] = useState('');
+  const [activities, setActivities] = useState('');
+  const [storyStarters, setStoryStarters] = useState('');
+  const [pepTalks, setPepTalks] = useState('');
+  const [writingTips, setWritingTips] = useState('');
+  const [tripleFlips, setTripleFlips] = useState('');
+
+  const getAllSaved = async () => {
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getAllSaved/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      console.log('saved: ', saved.data);
+      setAllSaved(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getActivities = async () => {
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getActivities/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      setActivities(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getStoryStarters = async () => {
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      setStoryStarters(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getPepTalks = async () => {
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getPepTalks/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      setPepTalks(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getWritingTips = async () => {
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getWritingTips/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      setWritingTips(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getTripleFlips = async () => {
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlips/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      setTripleFlips(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
+      <Button onPress={getAllSaved} title="Get all saved" />
+      {Object.keys(allSaved).map((key) => (
+        <View key={key}>
+          {allSaved[key] && allSaved[key].length > 0 && (
+            <Text key={key}>
+              {key}
+              :
+              {' '}
+              {JSON.stringify(allSaved[key])}
+            </Text>
+          )}
+        </View>
+      ))}
+      <Button onPress={getActivities} title="Writing Activities" />
+      {Object.keys(activities).map((key) => (
+        <View key={key}>
+          {activities[key] && activities[key].length > 0 && (
+            <Text key={key}>
+              {key}
+              :
+              {' '}
+              {JSON.stringify(activities[key])}
+            </Text>
+          )}
+        </View>
+      ))}
+      <Button onPress={getStoryStarters} title="Story Starters" />
+      {Object.keys(storyStarters).map((key) => (
+        <View key={key}>
+          {storyStarters[key] && storyStarters[key].length > 0 && (
+            <Text key={key}>
+              {key}
+              :
+              {' '}
+              {JSON.stringify(storyStarters[key])}
+            </Text>
+          )}
+        </View>
+      ))}
+      <Button onPress={getPepTalks} title="Pep Talks" />
+      {Object.keys(pepTalks).map((key) => (
+        <View key={key}>
+          {pepTalks[key] && pepTalks[key].length > 0 && (
+            <Text key={key}>
+              {key}
+              :
+              {' '}
+              {JSON.stringify(pepTalks[key])}
+            </Text>
+          )}
+        </View>
+      ))}
+      <Button onPress={getWritingTips} title="Writing Tips" />
+      {Object.keys(writingTips).map((key) => (
+        <View key={key}>
+          {writingTips[key] && writingTips[key].length > 0 && (
+            <Text key={key}>
+              {key}
+              :
+              {' '}
+              {JSON.stringify(writingTips[key])}
+            </Text>
+          )}
+        </View>
+      ))}
+      <Button onPress={getTripleFlips} title="Triple Flips" />
+      {Object.keys(tripleFlips).map((key) => (
+        <View key={key}>
+          {tripleFlips[key] && tripleFlips[key].length > 0 && (
+            <Text key={key}>
+              {key}
+              :
+              {' '}
+              {JSON.stringify(tripleFlips[key])}
+            </Text>
+          )}
+        </View>
+      ))}
     </View>
   );
 }
