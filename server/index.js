@@ -11,6 +11,7 @@ const port = process.env.PORT;
 // Route Imports
 const testRouter = require('./routes/testRoute');
 const pepTalkRouter = require('./routes/pepTalkRoutes');
+const writingTipRouter = require('./routes/writingTipRoutes');
 const mindBodyRouter = require('./routes/mindBodyRoute');
 
 // Connect to the MongoDB database
@@ -33,6 +34,7 @@ app.use(express.json());
 // API Routes
 app.use('/test', testRouter);
 app.use('/pepTalk', pepTalkRouter);
+app.use('/writingTip', writingTipRouter);
 app.use('/mindBody', mindBodyRouter);
 
 app.get('/', (req, res) => {

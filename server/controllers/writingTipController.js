@@ -28,6 +28,7 @@ const getRandomWritingTip = async () => {
     return randomWritingTipMsg;
   } catch (err) {
     console.error(err);
+    throw err;
   }
 };
 
