@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    paddingTop: 100,
     padding: 40,
   },
   centered: {
@@ -54,6 +55,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 15,
   },
+  logInRedirect: {
+    fontWeight: 'bold',
+  },
 });
 export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState('');
@@ -96,7 +100,7 @@ export default function SignUp({ navigation }) {
     navigation.navigate('Home');
   };
 
-  const handleLogIn = () => {
+  const redirectLogIn = () => {
     navigation.navigate('Log In');
   };
 
@@ -154,8 +158,8 @@ export default function SignUp({ navigation }) {
       </View>
       <Text style={styles.logInText}>
         Already have an account?
-        <Pressable onPress={handleLogIn}>
-          <Text style={styles.logInText}> Log In</Text>
+        <Pressable onPress={redirectLogIn}>
+          <Text style={styles.logInRedirect}> Log In</Text>
         </Pressable>
       </Text>
     </View>

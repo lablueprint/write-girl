@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    paddingTop: 100,
     padding: 40,
   },
   centered: {
@@ -25,8 +26,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 40,
   },
+  subTitle: {
+    marginTop: 5,
+    marginBottom: 20,
+  },
   smallSubtitle: {
     marginTop: 10,
+    marginBottom: 50,
     fontSize: 10,
   },
   textfields: {
@@ -50,9 +56,12 @@ const styles = StyleSheet.create({
     height: 254,
     backgroundColor: '#DCDCDC',
   },
-  logInText: {
+  signUpText: {
     textAlign: 'center',
     fontSize: 15,
+  },
+  signUpRedirect: {
+    fontWeight: 'bold',
   },
 });
 export default function LogIn({ navigation }) {
@@ -82,7 +91,7 @@ export default function LogIn({ navigation }) {
     return false;
   };
 
-  const handleSignUp = () => {
+  const handleLogIn = () => {
     if (!checkInputs()) {
       return;
     }
@@ -91,23 +100,20 @@ export default function LogIn({ navigation }) {
     navigation.navigate('Home');
   };
 
-  const handleLogIn = () => {
-    navigation.navigate('Log In');
+  const redirectSignUp = () => {
+    navigation.navigate('Sign Up');
   };
 
   return (
-    <View className="signUp" style={styles.container}>
+    <View className="logIn" style={styles.container}>
       <View style={styles.centered}>
         <View style={styles.image} />
       </View>
       <Text style={styles.heading}>
         Login
       </Text>
-      <Text>
+      <Text style={styles.subTitle}>
         Please Sign in to continue.
-      </Text>
-      <Text style={styles.smallSubtitle}>
-        So we can call you by your name!
       </Text>
       <View style={styles.inputContainer}>
         <Image source={welcomeIcon} style={styles.icon} />
@@ -135,12 +141,12 @@ export default function LogIn({ navigation }) {
       </Text>
 
       <View style={styles.signButton}>
-        <Button title="Sign Up" onPress={handleSignUp} color="#000000" />
+        <Button title="Sign In" onPress={handleLogIn} color="#000000" />
       </View>
-      <Text style={styles.logInText}>
-        Already have an account?
-        <Pressable onPress={handleLogIn}>
-          <Text style={styles.logInText}> Log In</Text>
+      <Text style={styles.signUpText}>
+        Don't have an account?
+        <Pressable onPress={redirectSignUp}>
+          <Text style={styles.signUpRedirect}> Sign Up</Text>
         </Pressable>
       </Text>
     </View>
