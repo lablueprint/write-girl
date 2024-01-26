@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
 });
 
 export default function HomeScreenCard({ text }) {
+  console.log('HomeScreen card got', text);
   return (
     <View
       style={styles.card}

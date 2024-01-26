@@ -41,7 +41,7 @@ export default function HomeScreen() {
   const getCardText = async ({ route }) => {
     try {
       console.log('requesting axios');
-      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}${route}`);
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/pepTalk/get`);
       console.log('retrieved data');
       setCardData(res.data);
       console.log(res.data);
@@ -69,7 +69,7 @@ export default function HomeScreen() {
     }
     return (
       <View>
-        <HomeScreenCard text={cardData.talk} />
+        <HomeScreenCard text={cardData} />
       </View>
     );
   }
