@@ -1,21 +1,26 @@
 import axios from 'axios';
+import { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import { Image } from 'expo-image';
 
-const React = require('react');
-const { useState, useEffect } = require('react');
 const {
-  View, Text, Button, Image,
+  View, Text, Button,
 } = require('react-native');
-const ImagePicker = require('react-native-image-picker');
 
-function ImageUploadComponent() {
-  const [selectedImages, setSelectedImages] = useState([]);
+export default function ImageUploadComponent() {
+  const [selectedImages, setSelectedImages] = useState(null);
 
-  const pickImages = () => {
-    ImagePicker.showImagePicker({ maxFiles: 3 }, (response) => {
-      if (!response.didCancel && !response.error) {
-        setSelectedImages(response.assets);
-      }
+  const pickImageAsync = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
     });
+
+    if (!result.canceled) {
+      setSelectedImages(result.assets[0].uri);
+    } else {
+      alert('You did not select any image.');
+    }
   };
 
   const uploadImages = async () => {
@@ -46,10 +51,11 @@ function ImageUploadComponent() {
   return (
     <View>
       <Text>Image Upload Component</Text>
-      <Button title="Pick Images" onPress={pickImages} />
+      <Button title="Pick Images" onPress={pickImageAsync} />
       <Button title="Upload Images" onPress={uploadImages} />
+      <View>
+        <Image source={{ uri: selectedImages }} style={{ width: 200, height: 200 }} />
+      </View>
     </View>
   );
 }
-
-module.exports = ImageUploadComponent;

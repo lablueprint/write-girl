@@ -39,6 +39,7 @@ const s3 = new AWS.S3();
 const uploadTripleFlip = async (req, res) => {
   try {
     const imagePaths = [];
+    /* eslint-disable global-require */
 
     // Upload each image to S3
     await Promise.all(req.files.map(async (file) => {
@@ -58,9 +59,9 @@ const uploadTripleFlip = async (req, res) => {
     await newTripleFlip.save();
 
     // Delete local image files after upload
-    for (const file of req.files) {
+    req.files.forEach((file) => {
       require('fs').unlinkSync(file.path);
-    }
+    }); 
 
     res.status(200).json({ success: true });
   } catch (error) {
