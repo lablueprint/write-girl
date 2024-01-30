@@ -10,6 +10,7 @@ const port = process.env.PORT;
 
 // Route Imports
 const testRouter = require('./routes/testRoute');
+const activityRouter = require('./routes/progressiveWritingRoutes');
 const pepTalkRouter = require('./routes/pepTalkRoutes');
 const mindBodyRouter = require('./routes/mindBodyRoute');
 
@@ -32,6 +33,7 @@ app.use(express.json());
 
 // API Routes
 app.use('/test', testRouter);
+app.use('/activity', activityRouter);
 app.use('/pepTalk', pepTalkRouter);
 app.use('/mindBody', mindBodyRouter);
 
