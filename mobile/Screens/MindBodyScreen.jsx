@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View, Animated, FlatList,
+  View, Animated, FlatList, StyleSheet,
 } from 'react-native';
 import axios from 'axios';
 import MindBodyCard from '../Components/MindBodyCard';
 
+const styles = StyleSheet.create({
+  flatList: {
+    backgroundColor: '#c4d735',
+  },
+  flatListContainer: {
+    paddingVertical: 16,
+  },
+});
+
 function Card() {
   const [scrollViewWidth, setScrollViewWidth] = React.useState(0);
-  const [scrollViewHeight, setScrollViewHeight] = React.useState(0);
   const boxWidth = scrollViewWidth * 0.8;
-  // const boxHeight = scrollViewHeight * 0.5;
   const boxDistance = scrollViewWidth - boxWidth;
   const halfBoxDistance = boxDistance / 2;
   const pan = React.useRef(new Animated.ValueXY()).current;
-  const [data, setData] = useState([
+  const [mindBodyDeck, setMindBodyDeck] = useState([
     {
       activity: 'activity1',
       duration: 1,
@@ -38,7 +45,7 @@ function Card() {
   const getRandomMindBody = async () => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/mindBody/getFiveRandom`);
-      setData(res.data);
+      setMindBodyDeck(res.data);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -77,9 +84,9 @@ function Card() {
     <View>
       <FlatList
         horizontal
-        data={data}
-        style={{ backgroundColor: '#c4d735', height: { scrollViewHeight } }}
-        contentContainerStyle={{ paddingVertical: 16 }}
+        data={mindBodyDeck}
+        style={styles.flatList}
+        contentContainerStyle={styles.flatListContainer}
         contentInsetAdjustmentBehavior="never"
         snapToAlignment="center"
         decelerationRate="fast"
@@ -95,7 +102,6 @@ function Card() {
         contentOffset={{ x: halfBoxDistance * -1, y: 0 }}
         onLayout={(e) => {
           setScrollViewWidth(e.nativeEvent.layout.width);
-          setScrollViewHeight(e.nativeEvent.layout.height);
         }}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: pan.x } } }],

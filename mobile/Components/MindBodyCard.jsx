@@ -1,19 +1,23 @@
 import React from 'react';
 import {
-  View, Text,
+  View, Text, Dimensions, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-export default function MindBodyCard({ activity, duration, boxWidth }) {
+const styles = StyleSheet.create({
+  card: {
+    height: '100%',
+    width: Dimensions.get('window').width * 0.8,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    padding: 20,
+  },
+});
+
+export default function MindBodyCard({ activity, duration }) {
   return (
     <View
-      style={{
-        height: '100%',
-        width: boxWidth,
-        borderRadius: 24,
-        backgroundColor: 'rgba(255, 255, 255, 1)',
-        padding: 20,
-      }}
+      style={styles.card}
     >
       <Text>
         {'Activity: '}
@@ -30,5 +34,4 @@ export default function MindBodyCard({ activity, duration, boxWidth }) {
 MindBodyCard.propTypes = {
   activity: PropTypes.string.isRequired,
   duration: PropTypes.number.isRequired,
-  boxWidth: PropTypes.number.isRequired,
 };
