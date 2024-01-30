@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   card: {
     height: '80%',
     width: screenWidth * 0.9,
-    backgroundColor: '#fff',
+    backgroundColor: '#E8E8E8',
     borderRadius: 20,
     borderWidth: 0,
     padding: 16,
@@ -22,15 +22,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 14,
-    color: '#888',
-  },
 });
 
 export default function HomeScreenCard({ text }) {
@@ -39,9 +30,7 @@ export default function HomeScreenCard({ text }) {
     <View
       style={styles.card}
     >
-      <Text>
-        <TypeWriter typing={1}>{text}</TypeWriter>
-      </Text>
+      <TypeWriter typing={1} minDelay={10} maxDelay={60}>{text}</TypeWriter>
     </View>
   );
 }

@@ -12,14 +12,20 @@ const buttonHeight = window.height * 0.05;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     display: 'space-between',
+    justifyContent: 'center',
   },
 
   headerBanner: {
     backgroundColor: '#DCDCDC',
     justifyContent: 'center',
+    align: 'center',
     height: window.height * 0.20,
+    paddingTop: 30,   // Padding for the top
+    paddingBottom: 10, // Padding for the bottom
+    paddingLeft: 15,  // Padding for the left (if needed)
+    paddingRight: 15, // Padding for the right (if needed)
   },
 
   tabBar: {
@@ -31,6 +37,22 @@ const styles = StyleSheet.create({
     width: contentWidth,
     height: buttonHeight,
   },
+
+  cardContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+
+  description: {
+    fontSize: 14,
+  },
 });
 
 export default function HomeScreen() {
@@ -38,10 +60,10 @@ export default function HomeScreen() {
   const [cardData, setCardData] = React.useState('default_text');
 
   // Retrieves and sets cardText to a PepTalk json object from database
-  const getCardText = async ({ route }) => {
+  const getCardText = async (route) => {
     try {
-      console.log('requesting axios');
-      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/pepTalk/get`);
+      console.log('requesting axios data');
+      const res = await axios.get(process.env.EXPO_PUBLIC_SERVER_URL + route);
       console.log('retrieved data');
       setCardData(res.data);
       console.log(res.data);
@@ -75,11 +97,12 @@ export default function HomeScreen() {
   }
   const welcomeBanner = (
     <View style={styles.headerBanner}>
-      <Text>
-        Hi, John Doe
+      <Text style={styles.title}>
+        Hi Edwardo & Cwu,
       </Text>
-      <Text>
-        the toolkit is where you can find writing help and your saved items!
+      <Text style={styles.description}>
+        the toolkit is where you can find writing
+        help and your saved items!
       </Text>
     </View>
   );
@@ -89,11 +112,12 @@ export default function HomeScreen() {
       {
         welcomeBanner
       }
-      <TabBar styles={styles.tabBar} selectedTab={page} setPage={setPage} getText={() => { getCardText('/pepTalk/get'); }} />
-      {
-        cardData && displayPage()
-      }
-      <Text>Home Screen</Text>
+      <TabBar styles={styles.tabBar} selectedTab={page} setPage={setPage} getText={() => { setCardData(''); getCardText('/pepTalk/get'); }} />
+      <View style={styles.cardContainer}>
+        {
+          displayPage()
+        }
+      </View>
     </View>
   );
 }

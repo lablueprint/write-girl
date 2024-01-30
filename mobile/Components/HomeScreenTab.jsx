@@ -44,39 +44,44 @@ export default function TabBar({
   // }));
   // tabIndexMap[selectedTab]
   return (
-    <View accessibilityRole="tabbar">
+    <View style={[styles,
+      {
+        margin: 'auto', backgroundColor: '#B4B4B4', width: '100%', borderRadius: 20,
+      },
+    ]}
+    >
       <Animated.View
         style={[
           useAnimatedStyle(() => ({
             transform: [{ translateX: offset.value * (styles.width / 3) + offset.value * 10 }],
           })),
           {
-            height: styles.height,
-            width: styles.width / 3,
-            backgroundColor: 'blue',
+            marginTop: 5,
+            height: styles.height - 10,
+            width: styles.width / 3 - 25,
+            backgroundColor: 'white',
             zIndex: 0,
+            borderRadius: 20,
+            position: 'absolute',
           },
         ]}
       />
-
-      <View style={[styles, { margin: 'auto', position: 'absolute', zIndex: 1 }]}>
-        {[0, 1, 2].map((button, index) => (
-          <TouchableOpacity
-            onPress={() => {
-              offset.value = withSpring(index);
-              getText();
-              setPage(tabIndexMap[index]);
-            }}
-            style={{
-              width: styles.width / 3, height: styles.height, justifyContent: 'center', alignItems: 'center',
-            }}
-          >
-            <Text>
-              {button}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      {[0, 1, 2].map((button, index) => (
+        <TouchableOpacity
+          onPress={() => {
+            offset.value = withSpring(index);
+            getText();
+            setPage(tabIndexMap[index]);
+          }}
+          style={{
+            width: styles.width / 3, height: styles.height, justifyContent: 'center', alignItems: 'center',
+          }}
+        >
+          <Text>
+            {button}
+          </Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 }
