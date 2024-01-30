@@ -190,15 +190,19 @@ export default function ProgressiveWritingScreen() {
     } if (step === 1) {
       const content = [];
       content.push(
-        <View style={[styles.banner, { height: window.height * 0.25, borderRadius: 10 }]}>
+        <View key="graphic" style={[styles.banner, { height: window.height * 0.25, borderRadius: 10 }]}>
           <Text>Graphic holder</Text>
         </View>,
-        <View style={[styles.banner, { height: window.height * 0.35 }]}>
+        <View key="activity" style={[styles.banner, { height: window.height * 0.35 }]}>
           <Text>
             {genreFilter[selectedActivity].activity[step]}
           </Text>
         </View>,
-        <TouchableOpacity style={styles.buttonBanner} onPress={() => { setStep(step + 1); }}>
+        <TouchableOpacity
+          key="button"
+          style={styles.buttonBanner}
+          onPress={() => { setStep(step + 1); }}
+        >
           <Text>
             Start
           </Text>
@@ -210,13 +214,13 @@ export default function ProgressiveWritingScreen() {
     } if (step === genreFilter[selectedActivity].activity.length) {
       const content = [];
       content.push(
-        <View style={[styles.banner, { height: window.height * 0.2, borderRadius: 10 }]}>
+        <View key="message" style={[styles.banner, { height: window.height * 0.2, borderRadius: 10 }]}>
           <Text>Complete!</Text>
         </View>,
-        <View style={[styles.banner, { height: window.height * 0.3 }]}>
+        <View key="graphic" style={[styles.banner, { height: window.height * 0.3 }]}>
           <Text>Graphic holder</Text>
         </View>,
-        <View style={styles.finishActivityInteractives}>
+        <View key="exit" style={styles.finishActivityInteractives}>
           <TouchableOpacity title="Save" onPress={() => { console.log('save placeholder'); }} style={[styles.buttonBanner, { width: bannerDim * 0.25 }]}>
             <Text>
               Save
@@ -237,15 +241,15 @@ export default function ProgressiveWritingScreen() {
 
     const content = [];
     content.push(
-      <View style={[styles.banner, { height: window.height * 0.2 }]}>
+      <View key="graphic" style={[styles.banner, { height: window.height * 0.2 }]}>
         <Text>Graphic holder</Text>
       </View>,
-      <View style={[styles.banner, { height: window.height * 0.3 }]}>
+      <View key="instructions" style={[styles.banner, { height: window.height * 0.3 }]}>
         <Text>
           {genreFilter[selectedActivity].activity[step]}
         </Text>
       </View>,
-      <TouchableOpacity title="Next" onPress={() => { setStep(step + 1); }} style={styles.buttonBanner}>
+      <TouchableOpacity key="next" title="Next" onPress={() => { setStep(step + 1); }} style={styles.buttonBanner}>
         <Text>
           Next
         </Text>
@@ -307,7 +311,7 @@ export default function ProgressiveWritingScreen() {
                           )
                         }
                       </View>
-                    ) : <View key={step} />
+                    ) : <View key={-1} />
                 }
               </View>
 
