@@ -62,8 +62,10 @@ const styles = StyleSheet.create({
 export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  /* const [confirmedPassword, setConfirmedPassword] = useState(''); */
+  const [password, onChangePassword] = useState('');
+
+  const [hiddenPassword, onChangeHiddenPassword] = useState('');
+  const [bool, setBool] = useState(false);
 
   const validateEmail = (text) => {
     const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
@@ -71,6 +73,27 @@ export default function SignUp({ navigation }) {
       return false;
     }
     return true;
+  };
+
+  const handleChangePassword = (newText) => {
+    const lastLetter = newText.slice(-1);
+    if (newText.length > password.length) {
+      onChangePassword(password + lastLetter);
+    } else if (newText.length < password.length) {
+      onChangePassword(password.slice(0, newText.length));
+    } else if (newText === '') {
+      onChangePassword('');
+      setBool(false);
+    }
+    let newTextWithDots = '';
+    newText.split('').forEach((char, index, array) => {
+      if (index === array.length - 1) {
+        newTextWithDots += char;
+      } else {
+        newTextWithDots += '•';
+      }
+    });
+    onChangeHiddenPassword(newTextWithDots);
   };
 
   const checkInputs = () => {
@@ -82,9 +105,7 @@ export default function SignUp({ navigation }) {
       Alert.alert('Please enter a password to proceed');
     } else if (password.length < 6) {
       Alert.alert('Password must be longer than five');
-    } /* else if (password !== confirmedPassword) {
-      Alert.alert('Password confirmation does not match password');
-    } */ else {
+    } else {
       return true;
     }
     return false;
@@ -96,7 +117,7 @@ export default function SignUp({ navigation }) {
     }
     setFirstName('');
     setEmail('');
-    setPassword('');
+    onChangePassword('');
     navigation.navigate('Home');
   };
 
@@ -142,8 +163,9 @@ export default function SignUp({ navigation }) {
         <Image source={welcomeIcon} style={styles.icon} />
         <TextInput
           style={styles.textfields}
-          onChangeText={setPassword}
-          value={password}
+          secureTextEntry={bool}
+          onChangeText={handleChangePassword}
+          value={hiddenPassword}
           placeholder="Password"
           placeholderTextColor="#000000"
         />

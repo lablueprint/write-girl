@@ -35,6 +35,10 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     fontSize: 10,
   },
+  resetButton: {
+    fontSize: 10,
+    textDecorationLine: 'underline',
+  },
   textfields: {
     fontSize: 16,
   },
@@ -66,37 +70,35 @@ const styles = StyleSheet.create({
 });
 export default function LogIn({ navigation }) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, onChangePassword] = useState('');
 
-  const validateEmail = (text) => {
-    const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
-    if (reg.test(text) === false) {
-      return false;
-    }
-    return true;
-  };
+  const [hiddenPassword, onChangeHiddenPassword] = useState('');
+  const [bool, setBool] = useState(false);
 
-  const checkInputs = () => {
-    if (email === '') {
-      Alert.alert('Please enter an email to proceed');
-    } else if (!validateEmail(email)) {
-      Alert.alert('Please enter a valid email to proceed');
-    } else if (password === '') {
-      Alert.alert('Please enter a password to proceed');
-    } else if (password.length < 6) {
-      Alert.alert('Password must be longer than five');
-    } else {
-      return true;
+  const handleChangePassword = (newText) => {
+    const lastLetter = newText.slice(-1);
+    if (newText.length > password.length) {
+      onChangePassword(password + lastLetter);
+    } else if (newText.length < password.length) {
+      onChangePassword(password.slice(0, newText.length));
+    } else if (newText === '') {
+      onChangePassword('');
+      setBool(false);
     }
-    return false;
+    let newTextWithDots = '';
+    newText.split('').forEach((char, index, array) => {
+      if (index === array.length - 1) {
+        newTextWithDots += char;
+      } else {
+        newTextWithDots += '•';
+      }
+    });
+    onChangeHiddenPassword(newTextWithDots);
   };
 
   const handleLogIn = () => {
-    if (!checkInputs()) {
-      return;
-    }
     setEmail('');
-    setPassword('');
+    onChangePassword('');
     navigation.navigate('Home');
   };
 
@@ -129,15 +131,19 @@ export default function LogIn({ navigation }) {
         <Image source={welcomeIcon} style={styles.icon} />
         <TextInput
           style={styles.textfields}
-          onChangeText={setPassword}
-          value={password}
+          secureTextEntry={bool}
+          onChangeText={handleChangePassword}
+          value={hiddenPassword}
           placeholder="Password"
           placeholderTextColor="#000000"
         />
       </View>
-
+      
       <Text style={styles.smallSubtitle}>
-        Forgot your passwords? Reset Here.
+        Forgot your passwords?
+        <Pressable>
+          <Text style={styles.resetButton}> Reset Here.</Text>
+        </Pressable>
       </Text>
 
       <View style={styles.signButton}>
