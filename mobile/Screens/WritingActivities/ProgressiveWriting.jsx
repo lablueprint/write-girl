@@ -8,7 +8,6 @@ const window = Dimensions.get('window');
 const activityDim = window.width * 0.45;
 const bannerDim = window.width * 0.9;
 const buttonDim = window.height * 0.05;
-const instrDim = window.height * 0.45;
 
 const styles = StyleSheet.create({
   container: {
@@ -72,6 +71,41 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     height: 20000,
   },
+
+  finishActivityInteractives: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    width: 'auto',
+  },
+
+  bg: {
+    backgroundColor: '#fff',
+    width: '100%',
+    height: '100%',
+  },
+
+  backButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 10,
+  },
+
+  activityDisplay: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'column',
+    gap: 20,
+    padding: 10,
+  },
+
+  progressBar: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    gap: 20,
+  },
 });
 
 // List of genre mappings in order
@@ -124,7 +158,6 @@ export default function ProgressiveWritingScreen() {
     const filteredList = activities.filter(
       (activity) => activity.genre === name,
     );
-    // console.log(filteredList);
     setGenreFilter(filteredList);
   };
 
@@ -133,6 +166,7 @@ export default function ProgressiveWritingScreen() {
   }, [activities]);
 
   // Note: there are ridiculous issues when returning a styled element (i.e. styling disappears :( )
+  // Solution: Add adjacent components into a vector and finally map them to the output.
   const displayPage = () => {
     if (step === 0) {
       return (
@@ -140,6 +174,7 @@ export default function ProgressiveWritingScreen() {
           if (activity.activity.length > 0) {
             return (
               <TouchableOpacity
+                key={activity.activity[0]}
                 style={[styles.banner, { borderRadius: 10 }]}
                 onPress={() => [setSelectedActivity(idx), setStep(1)]}
               >
@@ -181,13 +216,7 @@ export default function ProgressiveWritingScreen() {
         <View style={[styles.banner, { height: window.height * 0.3 }]}>
           <Text>Graphic holder</Text>
         </View>,
-        <View style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 10,
-          width: 'auto',
-        }}
-        >
+        <View style={styles.finishActivityInteractives}>
           <TouchableOpacity title="Save" onPress={() => { console.log('save placeholder'); }} style={[styles.buttonBanner, { width: bannerDim * 0.25 }]}>
             <Text>
               Save
@@ -237,6 +266,7 @@ export default function ProgressiveWritingScreen() {
               genreLabels.map((label) => (
                 // 10 Doors Screen
                 <TouchableOpacity
+                  key={label}
                   style={styles.activity}
                   onPress={() => { selectActivityGenre(label); }}
                 >
@@ -249,38 +279,17 @@ export default function ProgressiveWritingScreen() {
             </ScrollView>
           )
           : (
-            <View style={{
-              backgroundColor: '#fff',
-              width: '100%',
-              height: '100%',
-            }}
-            >
-              <View style={{
-                flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingLeft: 10,
-              }}
-              >
+            <View style={styles.bg}>
+              <View style={styles.backButton}>
                 <Button title="< back" onPress={() => { if (step === 0) { setGenreFilter(null); } else { setStep(0); } }} />
               </View>
               {/* Filtered Activity Screen */}
-              <View style={{
-                alignItems: 'center',
-                flex: 1,
-                flexDirection: 'column',
-                gap: 20,
-                padding: 10,
-              }}
-              >
+              <View style={styles.activityDisplay}>
                 {displayPage()}
                 {
                   step >= 2
                     ? (
-                      <View style={{
-                        display: 'flex',
-                        flex: 1,
-                        flexDirection: 'row',
-                        gap: 20,
-                      }}
-                      >
+                      <View style={styles.progressBar}>
                         {
                           Array.from(
                             { length: genreFilter[selectedActivity].activity.length - 2 },
@@ -290,7 +299,7 @@ export default function ProgressiveWritingScreen() {
                                 style = styles.checked;
                               }
                               return (
-                                <View style={style}>
+                                <View key={i} style={style}>
                                   <Text>{i}</Text>
                                 </View>
                               );
@@ -298,18 +307,14 @@ export default function ProgressiveWritingScreen() {
                           )
                         }
                       </View>
-                    ) : <View />
+                    ) : <View key={step} />
                 }
               </View>
 
               <TouchableOpacity title="Back" onPress={() => { setGenreFilter(null); setStep(0); }} />
-              {/* <Button title="Create Activity" onPress={() =>
-                addNewActivity({ genre: 'Poetry', activity: ['a', 'b', 'c'] })} /> */}
             </View>
           )
       }
-      {/* <Button title="send data" onPress={() => { addNewActivity(givenActivities); }} />
-      <Button title="get all data" onPress={() => { getAllActivities(); }} /> */}
     </View>
   );
 }
