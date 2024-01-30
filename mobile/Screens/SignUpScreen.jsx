@@ -69,10 +69,7 @@ export default function SignUp({ navigation }) {
 
   const validateEmail = (text) => {
     const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
-    if (reg.test(text) === false) {
-      return false;
-    }
-    return true;
+    return (reg.test(text));
   };
 
   const handleChangePassword = (newText) => {

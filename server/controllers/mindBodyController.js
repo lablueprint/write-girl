@@ -36,7 +36,41 @@ const getRandomMoment = async (req, res) => {
   }
 };
 
+// Retrieve 5 random mindBody documents from the collection
+const getFiveRandomMoments = async (req, res) => {
+  try {
+    // Use aggregation to get 5 random documents from the collection
+    const randomMindBodies = await MindBody.aggregate([
+      // Change the number below to change number of cards generated
+      { $sample: { size: 5 } }, // $sample stage to get 5 random documents
+    ]);
+
+    // Extract the moment string from each random document
+    const randomMoments = randomMindBodies.map((mindBody) => ({
+      activity: mindBody.activity || null,
+      duration: mindBody.duration || null,
+    }));
+
+    // Check for valid moments
+    randomMoments.forEach((randomMoment, index) => {
+      if (randomMoment.activity === null || randomMoment.activity === undefined) {
+        console.log(`No valid Mind and Body Moment found at index ${index}`);
+      }
+      if (randomMoment.duration === null || randomMoment.duration === undefined) {
+        console.log(`No valid Mind and Body Moment Duration found at index ${index}`);
+      }
+    });
+
+    res.send(randomMoments);
+  } catch (err) {
+    console.error(err);
+    // Handle the error appropriately
+    throw err;
+  }
+};
+
 module.exports = {
   createMoment,
   getRandomMoment,
+  getFiveRandomMoments,
 };
