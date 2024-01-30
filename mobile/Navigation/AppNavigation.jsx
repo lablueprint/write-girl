@@ -7,6 +7,7 @@ import StoryStarterScreen from '../Screens/StoryStarterScreen';
 import MindBodyScreen from '../Screens/MindBodyScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
+import WritingTipScreen from '../Screens/WritingTipScreen';
 import LogInScreen from '../Screens/LogInScreen';
 
 const Tab = createBottomTabNavigator();
@@ -20,6 +21,7 @@ function HomeStackScreen() {
       <Tab.Screen name="Story Starters" component={StoryStarterScreen} />
       <Tab.Screen name="Mind & Body" component={MindBodyScreen} />
       <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
+      <Tab.Screen name="Writing Tips" component={WritingTipScreen} />
     </Tab.Navigator>
   );
 }
@@ -28,8 +30,8 @@ export default function AppNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }}/>
-        <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }}/>
+        <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </NavigationContainer>
