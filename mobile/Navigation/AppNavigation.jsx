@@ -7,6 +7,7 @@ import StoryStarterScreen from '../Screens/StoryStarterScreen';
 import MindBodyScreen from '../Screens/MindBodyScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
+import WritingTipScreen from '../Screens/WritingTipScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,7 @@ function HomeStackScreen() {
       <Tab.Screen name="Story Starters" component={StoryStarterScreen} />
       <Tab.Screen name="Mind & Body" component={MindBodyScreen} />
       <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
+      <Tab.Screen name="Writing Tips" component={WritingTipScreen} />
     </Tab.Navigator>
   );
 }
