@@ -26,9 +26,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 40,
   },
+  subTitle: {
+    marginTop: 5,
+    marginBottom: 20,
+  },
   smallSubtitle: {
     marginTop: 10,
+    marginBottom: 50,
     fontSize: 10,
+  },
+  resetButton: {
+    fontSize: 10,
+    textDecorationLine: 'underline',
   },
   textfields: {
     fontSize: 16,
@@ -51,26 +60,20 @@ const styles = StyleSheet.create({
     height: 254,
     backgroundColor: '#DCDCDC',
   },
-  logInText: {
+  signUpText: {
     textAlign: 'center',
     fontSize: 15,
   },
-  logInRedirect: {
+  signUpRedirect: {
     fontWeight: 'bold',
   },
 });
-export default function SignUp({ navigation }) {
-  const [firstName, setFirstName] = useState('');
+export default function LogIn({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, onChangePassword] = useState('');
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
-
-  const validateEmail = (text) => {
-    const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
-    return (reg.test(text));
-  };
 
   const handleChangePassword = (newText) => {
     const lastLetter = newText.slice(-1);
@@ -93,59 +96,27 @@ export default function SignUp({ navigation }) {
     onChangeHiddenPassword(newTextWithDots);
   };
 
-  const checkInputs = () => {
-    if (email === '') {
-      Alert.alert('Please enter an email to proceed');
-    } else if (!validateEmail(email)) {
-      Alert.alert('Please enter a valid email to proceed');
-    } else if (password === '') {
-      Alert.alert('Please enter a password to proceed');
-    } else if (password.length < 6) {
-      Alert.alert('Password must be longer than five');
-    } else {
-      return true;
-    }
-    return false;
-  };
-
-  const handleSignUp = () => {
-    if (!checkInputs()) {
-      return;
-    }
-    setFirstName('');
+  const handleLogIn = () => {
     setEmail('');
     onChangePassword('');
     navigation.navigate('Home');
   };
 
-  const redirectLogIn = () => {
-    navigation.navigate('Log In');
+  const redirectSignUp = () => {
+    navigation.navigate('Sign Up');
   };
 
   return (
-    <View className="signUp" style={styles.container}>
+    <View className="logIn" style={styles.container}>
       <View style={styles.centered}>
         <View style={styles.image} />
       </View>
       <Text style={styles.heading}>
-        Register
+        Login
       </Text>
-      <Text>
-        Please Register to login.
+      <Text style={styles.subTitle}>
+        Please Sign in to continue.
       </Text>
-      <Text style={styles.smallSubtitle}>
-        So we can call you by your name!
-      </Text>
-      <View style={styles.inputContainer}>
-        <Image source={welcomeIcon} style={styles.icon} />
-        <TextInput
-          style={styles.textfields}
-          onChangeText={setFirstName}
-          value={firstName}
-          placeholder="First Name"
-          placeholderTextColor="#000000"
-        />
-      </View>
       <View style={styles.inputContainer}>
         <Image source={welcomeIcon} style={styles.icon} />
         <TextInput
@@ -167,25 +138,28 @@ export default function SignUp({ navigation }) {
           placeholderTextColor="#000000"
         />
       </View>
-
+      
       <Text style={styles.smallSubtitle}>
-        We'd love to know where you're from!
+        Forgot your passwords?
+        <Pressable>
+          <Text style={styles.resetButton}> Reset Here.</Text>
+        </Pressable>
       </Text>
 
       <View style={styles.signButton}>
-        <Button title="Sign Up" onPress={handleSignUp} color="#000000" />
+        <Button title="Sign In" onPress={handleLogIn} color="#000000" />
       </View>
-      <Text style={styles.logInText}>
-        Already have an account?
-        <Pressable onPress={redirectLogIn}>
-          <Text style={styles.logInRedirect}> Log In</Text>
+      <Text style={styles.signUpText}>
+        Don't have an account?
+        <Pressable onPress={redirectSignUp}>
+          <Text style={styles.signUpRedirect}> Sign Up</Text>
         </Pressable>
       </Text>
     </View>
   );
 }
 
-SignUp.propTypes = {
+LogIn.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
