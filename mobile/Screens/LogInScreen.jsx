@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 import {
-  View, TextInput, Button, Alert, StyleSheet, Text, Pressable, Image,
+  View, TextInput, Button, StyleSheet, Text, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import welcomeIcon from '../assets/welcomeIcon.png';
