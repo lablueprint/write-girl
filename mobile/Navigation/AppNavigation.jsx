@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import AsyncStorage from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -31,22 +30,23 @@ function HomeStackScreen() {
 export default function AppNavigation() {
   const [isAppFirstLaunched, setIsAppFirstLaunched] = useState(null);
 
-  useEffect(async () => {
-    const appData = await AsyncStorage.getItem('isAppFirstLaunched');
-    if (appData == null) {
-      setIsAppFirstLaunched(true);
-      AsyncStorage.setItem('isAppFirstLaunched', 'false');
-    } else {
-      setIsAppFirstLaunched(false);
+  useEffect(() => {
+    async function fetchData() {
+      const appData = await AsyncStorage.getItem('isAppFirstLaunched');
+      if (appData == null) {
+        setIsAppFirstLaunched(true);
+        AsyncStorage.setItem('isAppFirstLaunched', 'false');
+      } else {
+        setIsAppFirstLaunched(false);
+      }
     }
-
-    // AsyncStorage.removeItem('isAppFirstLaunched');
+    fetchData();
   }, []);
 
   return (
     isAppFirstLaunched != null && (
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           {isAppFirstLaunched && (
             <Stack.Screen
               name="Onboarding"
