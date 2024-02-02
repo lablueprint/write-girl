@@ -122,6 +122,10 @@ export default function SignUp({ navigation }) {
     navigation.navigate('Log In');
   };
 
+  const redirectHome = () => {
+    navigation.navigate('Home');
+  };
+
   return (
     <View className="signUp" style={styles.container}>
       <View style={styles.centered}>
@@ -181,6 +185,9 @@ export default function SignUp({ navigation }) {
           <Text style={styles.logInRedirect}> Log In</Text>
         </Pressable>
       </Text>
+      <View>
+        <Button title="Super Special Dev Button😈" onPress={redirectHome} color="#000000" />
+      </View>
     </View>
   );
 }
