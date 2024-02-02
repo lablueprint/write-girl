@@ -24,7 +24,6 @@ const getRandomPlotPoint = async () => {
       console.log('No valid plot point found');
       return 'No plot points here!';
     }
-    console.log('got a plot point in server controller');
     return extractedRandomPoint;
   } catch (err) {
     console.error(err);
