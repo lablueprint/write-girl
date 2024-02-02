@@ -1,5 +1,7 @@
-import { TouchableOpacity, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import {
+  TouchableOpacity, Text, View, Dimensions, StyleSheet,
+} from 'react-native';
+import React from 'react';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -7,11 +9,47 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PropTypes } from 'prop-types';
 
-/**
- * An animated tab bar of buttons - when user selects a button, tab slides and style changes
- */
+const window = Dimensions.get('window');
+const contentWidth = window.width * 0.9;
+const buttonHeight = window.height * 0.05;
+
+const styles = StyleSheet.create({
+  tabBarContainer: {
+    margin: 'auto',
+    backgroundColor: '#B4B4B4',
+    width: '92.5%',
+    borderRadius: 20,
+  },
+  tabBar: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 20,
+    justifyContent: 'space-between',
+    width: contentWidth,
+    height: buttonHeight,
+  },
+
+  animatedFocus: {
+    marginTop: 5,
+    marginLeft: contentWidth * 0.025,
+    height: buttonHeight - 10,
+    width: contentWidth / 3 - 25,
+    backgroundColor: 'white',
+    zIndex: 0,
+    borderRadius: 20,
+    position: 'absolute',
+  },
+
+  tabs: {
+    width: (contentWidth * 0.925) / 3,
+    height: buttonHeight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
 export default function TabBar({
-  buttons, styles, selectedTab, setPage, getText,
+  setPage, getText,
 }) {
   const offset = useSharedValue(0);
   const tabIndexMap = {
@@ -19,85 +57,39 @@ export default function TabBar({
     1: 'writing_tip',
     2: 'saved',
   };
-  // const onTabbarLayout = (e) => {
-  //   setDimensions({
-  //     width: e.nativeEvent.layout.width,
-  //     height: e.nativeEvent.layout.height,
-  //   });
-  // };
 
-  // We can set a callback for any functionality that should fire once the animation is finished
-  // const handlePressCb = (index) => {
-  //   setSelectedTab(index);
-  // };
-
-  const onTabPress = (index) => {
-    // animate the tab and fire callback
-    console.log('pressed!');
-    // tabPositionX.value = withTiming(buttonWidth * index, {}, () => {
-    //   handlePressCb(index);
-    // });
-  };
-
-  // const animatedStyle = useAnimatedStyle(() => ({
-  //   transform: [{ translateX: tabPositionX.value }],
-  // }));
-  // tabIndexMap[selectedTab]
   return (
-    <View style={[styles,
-      {
-        margin: 'auto', backgroundColor: '#B4B4B4', width: '100%', borderRadius: 20,
-      },
-    ]}
-    >
+    <View style={[styles.tabBar, styles.tabBarContainer]}>
       <Animated.View
         style={[
           useAnimatedStyle(() => ({
-            transform: [{ translateX: offset.value * (styles.width / 3) + offset.value * 10 }],
-          })),
-          {
-            marginTop: 5,
-            height: styles.height - 10,
-            width: styles.width / 3 - 25,
-            backgroundColor: 'white',
-            zIndex: 0,
-            borderRadius: 20,
-            position: 'absolute',
-          },
+            transform: [{ translateX: offset.value * (contentWidth / 3) + offset.value * 10 }],
+          })), styles.animatedFocus,
         ]}
       />
-      {[0, 1, 2].map((button, index) => (
-        <TouchableOpacity
-          onPress={() => {
-            offset.value = withSpring(index);
-            getText();
-            setPage(tabIndexMap[index]);
-          }}
-          style={{
-            width: styles.width / 3, height: styles.height, justifyContent: 'center', alignItems: 'center',
-          }}
-        >
-          <Text>
-            {button}
-          </Text>
-        </TouchableOpacity>
-      ))}
+      {['Pep Talk', 'Writing Tip', 'Saved'].map((button, index) => {
+        const route = ['/pepTalk/get', '/writingTip/get', 'none'];
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              offset.value = withSpring(index);
+              getText(route[index]);
+              setPage(tabIndexMap[index]);
+            }}
+            style={styles.tabs}
+            key={button}
+          >
+            <Text>
+              {button}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }
 
 TabBar.propTypes = {
-  buttons: PropTypes.arrayOf(PropTypes.string).isRequired,
-  styles: PropTypes.shape({
-    display: PropTypes.string.isRequired,
-    flexDirection: PropTypes.string.isRequired,
-    gap: PropTypes.number.isRequired,
-    backgroundColor: PropTypes.string.isRequired,
-    justifyContent: PropTypes.string.isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-  }).isRequired,
-  selectedTab: PropTypes.number.isRequired,
-  setSelectedTab: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
   getText: PropTypes.func.isRequired,
 };
