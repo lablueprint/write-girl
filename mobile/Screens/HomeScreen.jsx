@@ -1,20 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Dimensions, TouchableOpacity,
+  StyleSheet, Text, View, Dimensions,
 } from 'react-native';
 import axios from 'axios';
 import HomeScreenCard from '../Components/HomeScreenCard';
 import TabBar from '../Components/HomeScreenTab';
 
 const window = Dimensions.get('window');
-const contentWidth = window.width * 0.9;
-const buttonHeight = window.height * 0.05;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    display: 'space-between',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    gap: 20,
   },
 
   headerBanner: {
@@ -22,25 +20,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     align: 'center',
     height: window.height * 0.20,
-    paddingTop: 30,   // Padding for the top
+    paddingTop: 30, // Padding for the top
     paddingBottom: 10, // Padding for the bottom
-    paddingLeft: 15,  // Padding for the left (if needed)
+    paddingLeft: 15, // Padding for the left (if needed)
     paddingRight: 15, // Padding for the right (if needed)
   },
 
-  tabBar: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 10,
-    // backgroundColor: '#D9D9D9',
-    // justifyContent: 'space-between',
-    width: contentWidth,
-    height: buttonHeight,
+  bottomHalfContainer: {  
+    alignItems: 'center',
   },
 
   cardContainer: {
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
   },
 
@@ -61,12 +52,10 @@ export default function HomeScreen() {
 
   // Retrieves and sets cardText to a PepTalk json object from database
   const getCardText = async (route) => {
+    setCardData('');
     try {
-      console.log('requesting axios data');
       const res = await axios.get(process.env.EXPO_PUBLIC_SERVER_URL + route);
-      console.log('retrieved data');
       setCardData(res.data);
-      console.log(res.data);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -74,24 +63,28 @@ export default function HomeScreen() {
     }
   };
 
+  useEffect(() => {
+    getCardText('/pepTalk/get');
+  }, []);
+
   function displayPage() {
     if (page === 'saved') {
       return (
         <View>
-          <HomeScreenCard text="saved placeholder" />
+          <HomeScreenCard text="saved placeholder" getNewText={() => getCardText()} />
         </View>
       );
     }
     if (page === 'writing_tip') {
       return (
         <View>
-          <HomeScreenCard text="writing tips placeholder" />
+          <HomeScreenCard text={cardData} getNewText={() => getCardText('/writingTip/get')} />
         </View>
       );
     }
     return (
       <View>
-        <HomeScreenCard text={cardData} />
+        <HomeScreenCard text={cardData} getNewText={() => getCardText('/pepTalk/get')} />
       </View>
     );
   }
@@ -112,7 +105,9 @@ export default function HomeScreen() {
       {
         welcomeBanner
       }
-      <TabBar styles={styles.tabBar} selectedTab={page} setPage={setPage} getText={() => { setCardData(''); getCardText('/pepTalk/get'); }} />
+      <View style={styles.bottomHalfContainer}>
+        <TabBar selectedTab={page} setPage={setPage} getText={getCardText} />
+      </View>
       <View style={styles.cardContainer}>
         {
           displayPage()
@@ -121,4 +116,3 @@ export default function HomeScreen() {
     </View>
   );
 }
-
