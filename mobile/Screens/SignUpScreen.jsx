@@ -3,6 +3,8 @@ import {
   View, TextInput, Button, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import Storage from '../Components/Storage';
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
@@ -31,13 +33,31 @@ export default function SignUp({ navigation }) {
     return false;
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!checkInputs()) {
       return;
     }
     setEmail('');
     setPassword('');
-    navigation.navigate('Home');
+    setConfirmedPassword('');
+    try {
+      const userData = {
+        email,
+        password,
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/post`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        const userId = res.data._id;
+        console.log('userId: ', userId);
+        Storage('key', userId, true);
+        // console.log('hiiii: ', userId);
+        navigation.navigate('Home');
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   return (

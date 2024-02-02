@@ -1,12 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import PropTypes from 'prop-types';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
 import MindBodyScreen from '../Screens/MindBodyScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
+// import Storage from '../Components/Storage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -33,3 +35,7 @@ export default function AppNavigation() {
     </NavigationContainer>
   );
 }
+
+// HomeStackScreen.propTypes = {
+//   userId: PropTypes.string.isRequired,
+// };

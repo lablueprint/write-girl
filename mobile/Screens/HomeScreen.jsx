@@ -3,6 +3,8 @@ import {
   StyleSheet, Text, View, Button,
 } from 'react-native';
 import axios from 'axios';
+// import PropTypes from 'prop-types';
+import Storage from '../Components/Storage';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,10 +22,13 @@ export default function HomeScreen() {
   const [pepTalks, setPepTalks] = useState('');
   const [writingTips, setWritingTips] = useState('');
   const [tripleFlips, setTripleFlips] = useState('');
+  const userId = Storage('key', '', false);
+  // const { userId } = route.params;
 
   const getAllSaved = async () => {
     try {
-      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getAllSaved/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      console.log('userId: ', userId);
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getAllSaved/${userId}`, { timeout: 20000 });
       console.log('saved: ', saved.data);
       setAllSaved(saved.data);
       return saved.data;
@@ -35,7 +40,7 @@ export default function HomeScreen() {
 
   const getActivities = async () => {
     try {
-      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getActivities/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getActivities/${userId}`, { timeout: 20000 });
       setActivities(saved.data);
       return saved.data;
     } catch (err) {
@@ -46,7 +51,7 @@ export default function HomeScreen() {
 
   const getStoryStarters = async () => {
     try {
-      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/${userId}`, { timeout: 20000 });
       setStoryStarters(saved.data);
       return saved.data;
     } catch (err) {
@@ -57,7 +62,7 @@ export default function HomeScreen() {
 
   const getPepTalks = async () => {
     try {
-      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getPepTalks/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getPepTalks/${userId}`, { timeout: 20000 });
       setPepTalks(saved.data);
       return saved.data;
     } catch (err) {
@@ -68,7 +73,7 @@ export default function HomeScreen() {
 
   const getWritingTips = async () => {
     try {
-      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getWritingTips/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getWritingTips/${userId}`, { timeout: 20000 });
       setWritingTips(saved.data);
       return saved.data;
     } catch (err) {
@@ -79,7 +84,7 @@ export default function HomeScreen() {
 
   const getTripleFlips = async () => {
     try {
-      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlips/65af51d6b0216a90a6ba01a9`, { timeout: 20000 });
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlips/${userId}`, { timeout: 20000 });
       setTripleFlips(saved.data);
       return saved.data;
     } catch (err) {
@@ -172,3 +177,7 @@ export default function HomeScreen() {
     </View>
   );
 }
+
+// HomeScreen.propTypes = {
+//   route: PropTypes.object.isRequired,
+// };
