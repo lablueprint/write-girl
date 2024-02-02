@@ -58,7 +58,7 @@ export default function TimedWritingScreen() {
           ) : null}
           <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => setShowPicker(true)}
+            onPress={() => !alarmString && setShowPicker(true)}
           >
             <View style={{ marginTop: 30 }}>
               <Text
@@ -87,7 +87,7 @@ export default function TimedWritingScreen() {
           calculateTotalSeconds(pickedDuration);
           setShowPicker(false);
         }}
-        modalTitle="Set Alarm"
+        modalTitle="Set Timer"
         onCancel={() => setShowPicker(false)}
         closeOnOverlayPress
         styles={{
@@ -103,15 +103,11 @@ export default function TimedWritingScreen() {
         duration={totalTime}
         colors={['#004777', '#F7B801', '#A30000', '#A30000']}
         colorsTime={[7, 5, 2, 0]}
+        onComplete={() => restartTimer()}
       >
         {({ remainingTime }) => (
           <Text style={{ color: 'white', fontSize: 20 }}>
             {`${Math.floor(remainingTime / 3600)}:${Math.floor((remainingTime % 3600) / 60)}:${remainingTime % 60}`}
-            {remainingTime === 0 && (
-            <>
-              {restartTimer()}
-            </>
-            )}
           </Text>
         )}
       </CountdownCircleTimer>
