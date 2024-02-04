@@ -1,45 +1,30 @@
+import React from 'react';
 import {
-  StyleSheet, Text, View,
+  View, Text, Dimensions, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
   card: {
-    flex: 1,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: '#E8E8E8',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-  },
-  text: {
-    textAlign: 'center',
-    fontSize: 50,
-    backgroundColor: 'transparent',
-  },
-  done: {
-    textAlign: 'center',
-    fontSize: 30,
-    color: 'white',
-    backgroundColor: 'transparent',
+    height: '100%',
+    width: Dimensions.get('window').width * 0.8,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    padding: 20,
   },
 });
 
 export default function MindBodyCard({ activity, duration }) {
   return (
-    <View style={styles.card}>
+    <View
+      style={styles.card}
+    >
       <Text>
-        Activity:
-        {' '}
+        {'Activity: '}
         {activity}
       </Text>
       <Text>
-        Duration:
-        {' '}
+        {'Duration: '}
         {duration}
       </Text>
     </View>
