@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-// import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,6 +31,18 @@ const styles = StyleSheet.create({
     marginTop: 64,
     width: '80%',
   },
+  saveResultButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 25,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginTop: 16,
+    width: '80%',
+    position: 'absolute',
+  },
   image: {
   },
   imageContainer: {
@@ -42,10 +54,28 @@ const styles = StyleSheet.create({
     width: '65%',
     margin: 16,
   },
+  saveResultButtonBody: {
+    color: 'black',
+    fontSize: 16,
+  },
 });
 // const route = useRoute();
 
 export default function TraitsScreen({ key }) {
+  const [trait, setTrait] = useState('Get a random character trait for your story');
+  const [resultShown, setResultShown] = useState(false);
+
+  const getTrait = async () => {
+    try {
+      const randomTrait = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/characterTrait/get`, { timeout: 20000 });
+      setTrait(randomTrait.data);
+      setResultShown(true);
+    } catch (err) {
+      console.log(err);
+    }
+    return true;
+  };
+
   return (
     <View style={styles.container} key={key}>
       <Text style={styles.heading}>Character Traits</Text>
@@ -54,13 +84,22 @@ export default function TraitsScreen({ key }) {
           style={styles.image}
         />
       </View>
-      <Text style={styles.heading}>Character trait!</Text>
-      <Text style={styles.body}>
-        Get a random character trait for your story
-      </Text>
-      <Pressable style={styles.randomButton}>
+      <View>
+        {resultShown ? (
+          <Text style={styles.heading}>Character Trait Result</Text>
+        ) : <Text style={styles.heading}>Character Trait!</Text>}
+      </View>
+      <Text style={styles.body}>{trait}</Text>
+      <Pressable style={styles.randomButton} onPress={getTrait}>
         <Text style={styles.body}>Randomize</Text>
       </Pressable>
+      <View style={styles.container}>
+        {resultShown ? (
+          <Pressable style={styles.saveResultButton}>
+            <Text style={styles.saveResultButtonBody}>Save Result</Text>
+          </Pressable>
+        ) : <View />}
+      </View>
     </View>
   );
 }

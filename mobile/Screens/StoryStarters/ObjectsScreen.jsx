@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, Pressable, Image,
 } from 'react-native';
@@ -31,6 +31,18 @@ const styles = StyleSheet.create({
     marginTop: 64,
     width: '80%',
   },
+  saveResultButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 25,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginTop: 16,
+    width: '80%',
+    position: 'absolute',
+  },
   image: {
   },
   imageContainer: {
@@ -42,25 +54,27 @@ const styles = StyleSheet.create({
     width: '65%',
     margin: 16,
   },
+  saveResultButtonBody: {
+    color: 'black',
+    fontSize: 16,
+  },
 });
 
 export default function ObjectsScreen({ key }) {
-  const [object, setObject] = useState('');
+  const [object, setObject] = useState('Get a random object for your story');
+  const [resultShown, setResultShown] = useState(false);
 
   const getObject = async () => {
     try {
       const randomItem = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/item/get`, { timeout: 20000 });
       setObject(randomItem.data);
+      setResultShown(true);
       return randomItem.data;
     } catch (err) {
       console.log(err);
     }
     return true;
   };
-
-  useEffect(() => {
-    getObject();
-  }, []);
 
   return (
     <View style={styles.container} key={key}>
@@ -70,14 +84,22 @@ export default function ObjectsScreen({ key }) {
           style={styles.image}
         />
       </View>
-      <Text style={styles.heading}>Object!</Text>
-      <Text style={styles.body}>
-        Get a random object for your story
-      </Text>
+      <View>
+        {resultShown ? (
+          <Text style={styles.heading}>Object Result</Text>
+        ) : <Text style={styles.heading}>Object!</Text>}
+      </View>
+      <Text style={styles.body}>{object}</Text>
       <Pressable style={styles.randomButton} onPress={getObject}>
         <Text style={styles.body}>Randomize</Text>
-        <Text>{object}</Text>
       </Pressable>
+      <View style={styles.container}>
+        {resultShown ? (
+          <Pressable style={styles.saveResultButton}>
+            <Text style={styles.saveResultButtonBody}>Save Result</Text>
+          </Pressable>
+        ) : <View />}
+      </View>
     </View>
   );
 }
