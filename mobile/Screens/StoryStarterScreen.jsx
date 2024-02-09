@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   settingsContainer: {
     position: 'absolute',
     flex: 1,
-    top: 0,
+    top: 120,
     left: 0,
   },
   plotPointsContainer: {
@@ -27,16 +27,17 @@ const styles = StyleSheet.create({
   characterTraitsContainer: {
     position: 'absolute',
     flex: 1,
-    bottom: 0,
+    bottom: 20,
     left: 0,
   },
   objectsContainer: {
     position: 'absolute',
     flex: 1,
-    bottom: 0,
+    bottom: 140,
     right: 0,
   },
   image: {
+    resizeMode: 'stretch',
   },
   imageText: {
     color: 'white',
@@ -47,11 +48,10 @@ const styles = StyleSheet.create({
     marginBottom: 'auto',
   },
   button: {
-    height: 200,
-    // width: 'auto',
-    resizeMode: 'contain',
+    height: 250,
+    width: 180,
     flex: 1,
-    aspectRatio: 0.9,
+    // aspectRatio: 0.9,
   },
 });
 
