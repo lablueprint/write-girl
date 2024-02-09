@@ -24,7 +24,7 @@ export default function SignUp({ navigation }) {
     } else if (password === '') {
       Alert.alert('Please enter a password to proceed');
     } else if (password.length < 6) {
-      Alert.alert('Password must be longer than five');
+      Alert.alert('Password must be longer than five characters');
     } else if (password !== confirmedPassword) {
       Alert.alert('Password confirmation does not match password');
     } else {
@@ -49,9 +49,11 @@ export default function SignUp({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
-        const userId = res.data._id;
+        // const userId = res.data._id;
+        const userId = '65c1caacab4c3d281f5f1aa2';
         console.log('userId: ', userId);
-        Storage('key', userId, true);
+        Storage({ key: 'hello', value: userId, saveKey: true });
+        // Storage(key, userId, true);
         // console.log('hiiii: ', userId);
         navigation.navigate('Home');
       }

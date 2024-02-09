@@ -1,32 +1,25 @@
-// import { useState } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as SecureStore from 'expo-secure-store';
 
-// export default function Storage({ id = '' }) {
-//   const [userId, setUserId] = useState(id);
-//   if (id) {
-//     setUserId(id);
-//     return userId;
-//   } if (userId) {
-//     return userId;
-//   }
-//   console.log('No User ID provided to storage component! Using empty string instead...');
-// }
-
-export default async function Storage({ key, value, saveKey }) {
-  if (saveKey) {
-    await SecureStore.setItemAsync(key, value);
-  } else {
-    const result = await SecureStore.getItemAsync(key);
-    if (result) {
-      console.log("Here's your value \n", result);
-      return result;
+export default function Storage({ key, value, saveKey }) {
+  const saveData = async () => {
+    if (saveKey) {
+      await SecureStore.setItemAsync(key, value).then(() => console.log('hi'));
+    } else {
+      await SecureStore.getItemAsync('hello').then((result) => { console.log('result: ', result); });
+    //   if (result) {
+    //     console.log("Here's your value: ", result);
+    //     return result;
+    //   }
+    //   console.log('No values stored under that key.');
     }
-    console.log('No values stored under that key.');
-  }
+    return false;
+  };
+  saveData();
+
+  return null;
 }
-// need a thing that saves the id of the user created;
-// need a thing that gets the ;
 
 Storage.propTypes = {
   key: PropTypes.string.isRequired,
@@ -34,9 +27,9 @@ Storage.propTypes = {
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.arrayOf(PropTypes.object),
   ]).isRequired,
-  saveKey: PropTypes.bool.isRequired,
+  saveKey: PropTypes.bool,
 };
 
-// Storage.propTypes = {
-//   id: PropTypes.string.isRequired,
-// };
+Storage.defaultProps = {
+  saveKey: false,
+};

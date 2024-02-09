@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, View, Button,
 } from 'react-native';
@@ -22,16 +22,36 @@ export default function HomeScreen() {
   const [pepTalks, setPepTalks] = useState('');
   const [writingTips, setWritingTips] = useState('');
   const [tripleFlips, setTripleFlips] = useState('');
-  const userId = Storage('key', '', false);
-  // const { userId } = route.params;
 
-  const getAllSaved = async () => {
+  // useEffect(() => {
+  //   const async getId = () => {
+  //     const userId = await Storage({ key: 'hello', value: '', saveKey: false });
+
+  //   }
+
+  // });
+
+  const getId = async () => {
     try {
-      console.log('userId: ', userId);
-      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getAllSaved/${userId}`, { timeout: 20000 });
-      console.log('saved: ', saved.data);
-      setAllSaved(saved.data);
-      return saved.data;
+      const id = await Storage({ key: 'hello', value: '', saveKey: false });
+      return id;
+    } catch (error) {
+      console.error(error);
+    }
+    return false;
+  };
+  const getAllSaved = async () => {
+    const userId = await getId();
+    console.log('userId in home: ', userId);
+
+    try {
+      if (userId) {
+        const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getAllSaved/${userId}`, { timeout: 20000 });
+        console.log('saved: ', saved.data);
+        setAllSaved(saved.data);
+        return saved.data;
+      }
+      console.log('User ID is null.');
     } catch (err) {
       console.log(err);
     }
