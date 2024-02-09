@@ -15,29 +15,29 @@ const styles = StyleSheet.create({
   settingsContainer: {
     position: 'absolute',
     flex: 1,
-    top: 120,
+    top: 50,
     left: 0,
   },
   plotPointsContainer: {
     position: 'absolute',
     flex: 1,
-    top: 0,
+    top: -50,
     right: 0,
   },
   characterTraitsContainer: {
     position: 'absolute',
     flex: 1,
-    bottom: 20,
+    bottom: 0,
     left: 0,
   },
   objectsContainer: {
     position: 'absolute',
     flex: 1,
-    bottom: 140,
-    right: 0,
+    bottom: 40,
+    right: -20,
   },
   image: {
-    resizeMode: 'stretch',
+    resizeMode: 'contain',
   },
   imageText: {
     color: 'white',
@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
     marginBottom: 'auto',
   },
   button: {
-    height: 250,
-    width: 180,
+    height: 340,
+    width: 190,
     flex: 1,
     // aspectRatio: 0.9,
   },
