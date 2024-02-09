@@ -6,11 +6,17 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   card: {
-    height: '100%',
+    height: '80%',
     width: Dimensions.get('window').width * 0.8,
-    borderRadius: 24,
+    borderRadius: 16,
     backgroundColor: 'rgba(255, 255, 255, 1)',
-    padding: 20,
+    padding: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardText: {
+    textAlign: 'center',
+    lineHeight: 24,
   },
 });
 
@@ -19,11 +25,10 @@ export default function MindBodyCard({ activity, duration }) {
     <View
       style={styles.card}
     >
-      <Text>
-        {'Activity: '}
+      <Text style={styles.cardText}>
         {activity}
       </Text>
-      <Text>
+      <Text style={styles.cardText}>
         {'Duration: '}
         {duration}
       </Text>

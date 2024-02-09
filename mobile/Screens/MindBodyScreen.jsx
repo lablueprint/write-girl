@@ -1,16 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View, Animated, FlatList, StyleSheet,
+  View, Animated, Text, FlatList, StyleSheet, Pressable,
 } from 'react-native';
 import axios from 'axios';
 import MindBodyCard from '../Components/MindBodyCard';
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heading: {
+    color: '#fff',
+    margin: 32,
+    fontSize: 24,
+    textAlign: 'center',
+  },
   flatList: {
-    backgroundColor: '#c4d735',
+    backgroundColor: '#000',
   },
   flatListContainer: {
-    paddingVertical: 16,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 50,
+    backgroundColor: 'white',
+    width: '80%',
+  },
+  body: {
+    color: '#000',
+    fontSize: 16,
   },
 });
 
@@ -81,7 +105,8 @@ function Card() {
   );
 
   return (
-    <View>
+    <View style={styles.container}>
+      <Text style={styles.heading}>Swipe through suggested activities</Text>
       <FlatList
         horizontal
         data={mindBodyDeck}
@@ -112,6 +137,9 @@ function Card() {
         keyExtractor={(item, index) => `${index}-${item}`}
         renderItem={renderItem}
       />
+      <Pressable style={styles.button}>
+        <Text style={styles.body}>Confirm</Text>
+      </Pressable>
     </View>
   );
 }
