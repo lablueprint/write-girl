@@ -106,6 +106,10 @@ export default function LogIn({ navigation }) {
     navigation.navigate('Sign Up');
   };
 
+  const redirectPasswordReset = () => {
+    navigation.navigate('Forgot Password');
+  };
+
   return (
     <View className="logIn" style={styles.container}>
       <View style={styles.centered}>
@@ -138,10 +142,10 @@ export default function LogIn({ navigation }) {
           placeholderTextColor="#000000"
         />
       </View>
-      
+
       <Text style={styles.smallSubtitle}>
         Forgot your passwords?
-        <Pressable>
+        <Pressable onPress={redirectPasswordReset}>
           <Text style={styles.resetButton}> Reset Here.</Text>
         </Pressable>
       </Text>
