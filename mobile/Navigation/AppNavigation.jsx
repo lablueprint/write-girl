@@ -28,26 +28,105 @@ function HomeStackScreen() {
 }
 
 export default function AppNavigation() {
-  const [isAppFirstLaunched, setIsAppFirstLaunched] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isFirstTimeLoad, setIsFirstTimeLoad] = useState(false);
+
+  const checkForFirstTimeLoaded = async () => {
+    const result = await AsyncStorage.getItem('isFirstTimeOpen');
+    if (result == null) setIsFirstTimeLoad(true);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    async function fetchData() {
-      const appData = await AsyncStorage.getItem('isAppFirstLaunched');
-      if (appData == null) {
-        setIsAppFirstLaunched(true);
-        AsyncStorage.setItem('isAppFirstLaunched', 'false');
+    checkForFirstTimeLoaded();
+  }, []);
+
+  if (loading) return null;
+
+  /*return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {isFirstTimeLoad ? (
+            <Stack.Screen
+              name="OnboardingScreen"
+              component={OnboardingScreen}
+            />
+        ) : (
+          <>
+            <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }}/>
+            <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }}/>
+            <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  ); */
+
+  /*  trying to fix the error of there missing the sign up screen
+  return (
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          {isFirstTimeLoad && (
+            <Stack.Screen
+              name="OnboardingScreen"
+              component={OnboardingScreen}
+            />
+          )}
+          <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }}/>
+          <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }}/>
+          <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+
+
+    );
+  */
+
+  if (isFirstTimeLoad) {
+    AsyncStorage.setItem('isFirstTimeOpen', 'false');
+    return (
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{
+          headerShown: false }}>
+          <Stack.Screen
+            name="OnboardingScreen"
+            component={OnboardingScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+
+  if (!isFirstTimeLoad) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }}/>
+          <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }}/>
+          <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+
+  /*const [isFirstLaunch, setIsFirstLaunch] = useState(null);
+
+  useEffect(() => {
+    AsyncStorage.getItem('isFirstLaunch').then((value) => {
+      if (value === null) {
+        AsyncStorage.setItem('isFirstLaunch', 'true');
+        setIsFirstLaunch(true);
       } else {
-        setIsAppFirstLaunched(false);
+        setIsFirstLaunch(false);
       }
-    }
-    fetchData();
+    });
   }, []);
 
   return (
-    isAppFirstLaunched != null && (
+    isFirstLaunch != null && (
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {isAppFirstLaunched && (
+          {isFirstLaunch && (
             <Stack.Screen
               name="Onboarding"
               component={OnboardingScreen}
@@ -59,5 +138,5 @@ export default function AppNavigation() {
         </Stack.Navigator>
       </NavigationContainer>
     )
-  );
+  ); */
 }

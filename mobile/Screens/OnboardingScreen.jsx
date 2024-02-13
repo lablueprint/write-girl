@@ -1,4 +1,5 @@
-import { React, useState } from 'react';
+import { React } from 'react';
+import PropTypes from 'prop-types';
 import {
   View, Button, StyleSheet, Text,
 } from 'react-native';
@@ -12,10 +13,21 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function OnboardingScreen() {
+export default function Onboarding({ navigation }) {
+  const handleLogIn = () => {
+    navigation.navigate('Sign Up');
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Hi</Text>
+      <Text>Onboarding Screen</Text>
+      <Button title="Next" onPress={handleLogIn} color="#000000" />
     </View>
   );
 }
+
+Onboarding.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
