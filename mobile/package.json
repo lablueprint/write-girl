@@ -25,7 +25,10 @@
     "react-native-screens": "^3.27.0",
     "react-native-typewriter": "^0.7.0",
     "react-typed": "^2.0.12",
-    "vara": "^1.4.1"
+    "vara": "^1.4.1",
+    "react-native-web": "~0.19.6",
+    "react-dom": "18.2.0",
+    "@expo/webpack-config": "^19.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
