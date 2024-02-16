@@ -64,9 +64,9 @@ const styles = StyleSheet.create({
 export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
-  const [changePassword, onChangePassword] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmedPassword, setConfirmedPassword] = useState('');
+  const [password, onChangePassword] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [confirmedPassword, setConfirmedPassword] = useState('');
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
@@ -78,10 +78,10 @@ export default function SignUp({ navigation }) {
 
   const handleChangePassword = (newText) => {
     const lastLetter = newText.slice(-1);
-    if (newText.length > changePassword.length) {
-      onChangePassword(changePassword + lastLetter);
-    } else if (newText.length < changePassword.length) {
-      onChangePassword(changePassword.slice(0, newText.length));
+    if (newText.length > password.length) {
+      onChangePassword(password + lastLetter);
+    } else if (newText.length < password.length) {
+      onChangePassword(password.slice(0, newText.length));
     } else if (newText === '') {
       onChangePassword('');
       setBool(false);
@@ -107,7 +107,8 @@ export default function SignUp({ navigation }) {
     } else if (password.length < 6) {
       Alert.alert('Password must be longer than five characters');
     } else if (password !== confirmedPassword) {
-      Alert.alert('Password confirmation does not match password');
+      return true;
+      // Alert.alert('Password confirmation does not match password');
     } else {
       return true;
     }
@@ -120,8 +121,9 @@ export default function SignUp({ navigation }) {
     }
     setFirstName('');
     setEmail('');
-    setPassword('');
-    setConfirmedPassword('');
+    // setPassword('');
+    onChangePassword('');
+    // setConfirmedPassword('');
     try {
       const userData = {
         email,
@@ -131,12 +133,9 @@ export default function SignUp({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
-        // const userId = res.data._id;
-        const userId = '65c1caacab4c3d281f5f1aa2';
+        const userId = res.data._id;
         console.log('userId: ', userId);
         Storage({ key: 'hello', value: userId, saveKey: true });
-        // Storage(key, userId, true);
-        // console.log('hiiii: ', userId);
         navigation.navigate('Home');
       }
     } catch (err) {
@@ -201,7 +200,7 @@ export default function SignUp({ navigation }) {
       </View>
 
       <Text style={styles.smallSubtitle}>
-        We'd love to know where you're from!
+        We&apos;d love to know where you&apos;re from!
       </Text>
 
       <View style={styles.signButton}>

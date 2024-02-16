@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, Dimensions,
+  StyleSheet, Text, View, Button, Dimensions, ScrollView,
 } from 'react-native';
 import axios from 'axios';
 import Storage from '../Components/Storage';
@@ -57,20 +57,24 @@ export default function HomeScreen() {
   const [page, setPage] = React.useState('pep_talk');
   const [cardData, setCardData] = React.useState('default_text');
 
-  const getAllSaved = async () => {
-    let userId = await Storage({ key: 'hello', value: '', saveKey: false });
-    while (!userId) {
-      userId = Storage({ key: 'hello', value: '', saveKey: false });
-    }
-    if (userId) {
-      console.log('userId in if: ', userId);
-    }
-    console.log('userId in home: ', userId);
+  async function getId() {
+    const userId = await Storage({ key: 'hello', value: '', saveKey: false });
 
+    try {
+      if (!userId) {
+        console.log('User ID is null.');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    return userId;
+  }
+
+  const getAllSaved = async () => {
+    const userId = await getId();
     try {
       if (userId) {
         const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getAllSaved/${userId}`, { timeout: 20000 });
-        console.log('saved: ', saved.data);
         setAllSaved(saved.data);
         return saved.data;
       }
@@ -82,6 +86,8 @@ export default function HomeScreen() {
   };
 
   const getActivities = async () => {
+    const userId = await getId();
+
     try {
       const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getActivities/${userId}`, { timeout: 20000 });
       setActivities(saved.data);
@@ -93,6 +99,8 @@ export default function HomeScreen() {
   };
 
   const getStoryStarters = async () => {
+    const userId = await getId();
+
     try {
       const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/${userId}`, { timeout: 20000 });
       setStoryStarters(saved.data);
@@ -104,6 +112,8 @@ export default function HomeScreen() {
   };
 
   const getPepTalks = async () => {
+    const userId = await getId();
+
     try {
       const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getPepTalks/${userId}`, { timeout: 20000 });
       setPepTalks(saved.data);
@@ -115,6 +125,8 @@ export default function HomeScreen() {
   };
 
   const getWritingTips = async () => {
+    const userId = await getId();
+
     try {
       const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getWritingTips/${userId}`, { timeout: 20000 });
       setWritingTips(saved.data);
@@ -126,6 +138,8 @@ export default function HomeScreen() {
   };
 
   const getTripleFlips = async () => {
+    const userId = await getId();
+
     try {
       const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlips/${userId}`, { timeout: 20000 });
       setTripleFlips(saved.data);
@@ -187,7 +201,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <>
+    <ScrollView>
       <View style={styles.container}>
         {
         welcomeBanner
@@ -282,6 +296,6 @@ export default function HomeScreen() {
           </View>
         ))}
       </View>
-    </>
+    </ScrollView>
   );
 }
