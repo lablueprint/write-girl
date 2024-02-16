@@ -20,7 +20,7 @@ function StoryStarterStackScreen() {
   return (
     <StoryStarterStack.Navigator initialRouteName="Story Starters">
       <StoryStarterStack.Screen
-        name="Story Starters"
+        name="Story Starter Stack"
         component={StoryStarterScreen}
         options={{ title: 'Story Starters' }}
       />

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, Pressable, Image,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 
 const styles = StyleSheet.create({
@@ -43,8 +42,6 @@ const styles = StyleSheet.create({
     width: '80%',
     position: 'absolute',
   },
-  image: {
-  },
   imageContainer: {
     overflow: 'hidden',
     alignItems: 'center',
@@ -59,9 +56,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-// const route = useRoute();
 
-export default function TraitsScreen({ key }) {
+export default function TraitsScreen() {
   const [trait, setTrait] = useState('Get a random character trait for your story');
   const [resultShown, setResultShown] = useState(false);
 
@@ -77,7 +73,7 @@ export default function TraitsScreen({ key }) {
   };
 
   return (
-    <View style={styles.container} key={key}>
+    <View style={styles.container}>
       <Text style={styles.heading}>Character Traits</Text>
       <View style={styles.imageContainer}>
         <Image
@@ -103,7 +99,3 @@ export default function TraitsScreen({ key }) {
     </View>
   );
 }
-
-TraitsScreen.propTypes = {
-  key: PropTypes.number.isRequired,
-};

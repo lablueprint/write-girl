@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, Pressable, Image,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 
 const styles = StyleSheet.create({
@@ -43,8 +42,6 @@ const styles = StyleSheet.create({
     width: '80%',
     position: 'absolute',
   },
-  image: {
-  },
   imageContainer: {
     overflow: 'hidden',
     alignItems: 'center',
@@ -59,9 +56,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-// const route = useRoute();
 
-export default function PlotPointsScreen({ key }) {
+export default function PlotPointsScreen() {
   const [plotPoint, setPlotPoint] = useState('Get a random plot point for your story');
   const [resultShown, setResultShown] = useState(false);
 
@@ -77,7 +73,7 @@ export default function PlotPointsScreen({ key }) {
   };
 
   return (
-    <View style={styles.container} key={key}>
+    <View style={styles.container}>
       <Text style={styles.heading}>Plot Points</Text>
       <View style={styles.imageContainer}>
         <Image
@@ -93,7 +89,6 @@ export default function PlotPointsScreen({ key }) {
       <Pressable style={styles.randomButton} onPress={getPlotPoint}>
         <Text style={styles.body}>Randomize</Text>
       </Pressable>
-      {/* TODO: add an onPress below */}
       <View style={styles.container}>
         {resultShown ? (
           <Pressable style={styles.saveResultButton}>
@@ -104,7 +99,3 @@ export default function PlotPointsScreen({ key }) {
     </View>
   );
 }
-
-PlotPointsScreen.propTypes = {
-  key: PropTypes.number.isRequired,
-};

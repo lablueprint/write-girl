@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, Pressable, Image,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 
 const styles = StyleSheet.create({
@@ -43,8 +42,6 @@ const styles = StyleSheet.create({
     width: '80%',
     position: 'absolute',
   },
-  image: {
-  },
   imageContainer: {
     overflow: 'hidden',
     alignItems: 'center',
@@ -59,9 +56,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-// const route = useRoute();
 
-export default function SettingsScreen({ key }) {
+export default function SettingsScreen() {
   const [setting, setSetting] = useState('Get a random setting for your story');
   const [resultShown, setResultShown] = useState(false);
 
@@ -77,7 +73,7 @@ export default function SettingsScreen({ key }) {
   };
 
   return (
-    <View style={styles.container} key={key}>
+    <View style={styles.container}>
       <Text style={styles.heading}>Settings</Text>
       <View style={styles.imageContainer}>
         <Image
@@ -103,7 +99,3 @@ export default function SettingsScreen({ key }) {
     </View>
   );
 }
-
-SettingsScreen.propTypes = {
-  key: PropTypes.number.isRequired,
-};

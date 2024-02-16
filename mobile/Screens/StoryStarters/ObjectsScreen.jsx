@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, Pressable, Image,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 
 const styles = StyleSheet.create({
@@ -43,8 +42,6 @@ const styles = StyleSheet.create({
     width: '80%',
     position: 'absolute',
   },
-  image: {
-  },
   imageContainer: {
     overflow: 'hidden',
     alignItems: 'center',
@@ -60,7 +57,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function ObjectsScreen({ key }) {
+export default function ObjectsScreen() {
   const [object, setObject] = useState('Get a random object for your story');
   const [resultShown, setResultShown] = useState(false);
 
@@ -77,7 +74,7 @@ export default function ObjectsScreen({ key }) {
   };
 
   return (
-    <View style={styles.container} key={key}>
+    <View style={styles.container}>
       <Text style={styles.heading}>Objects</Text>
       <View style={styles.imageContainer}>
         <Image
@@ -103,7 +100,3 @@ export default function ObjectsScreen({ key }) {
     </View>
   );
 }
-
-ObjectsScreen.propTypes = {
-  key: PropTypes.number.isRequired,
-};

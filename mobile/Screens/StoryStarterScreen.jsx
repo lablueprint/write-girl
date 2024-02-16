@@ -3,7 +3,6 @@ import {
   StyleSheet, Text, View, Pressable, ImageBackground,
 } from 'react-native';
 import PropTypes from 'prop-types';
-// import axios from 'axios';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,7 +40,7 @@ const styles = StyleSheet.create({
   },
   imageText: {
     color: 'white',
-    fontSize: 20, // Adjust as needed
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 'auto',
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
     height: 340,
     width: 190,
     flex: 1,
-    // aspectRatio: 0.9,
   },
 });
 
@@ -61,24 +59,20 @@ const plotPointsImage = require('../assets/story-starter-icons/plot-points.png')
 const settingsImage = require('../assets/story-starter-icons/settings.png');
 
 export default function StoryStarterScreen({ navigation, key }) {
-  // const [trait, setTrait] = useState('');
-  // const [plotPoint, setPlotPoint] = useState('');
-  // const [setting, setSetting] = useState('');
-  // const [object, setObject] = useState('');
   const navigateToSettingsScreen = () => {
-    navigation.navigate('Settings', {});
+    navigation.navigate('Settings');
   };
 
   const navigateToObjectsScreen = () => {
-    navigation.navigate('Objects', {});
+    navigation.navigate('Objects');
   };
 
   const navigateToTraitsScreen = () => {
-    navigation.navigate('Character Traits', {});
+    navigation.navigate('Character Traits');
   };
 
   const navigateToPlotPointsScreen = () => {
-    navigation.navigate('Plot Points', {});
+    navigation.navigate('Plot Points');
   };
 
   return (
@@ -108,7 +102,6 @@ export default function StoryStarterScreen({ navigation, key }) {
 }
 
 StoryStarterScreen.propTypes = {
-  key: PropTypes.number.isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
