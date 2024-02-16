@@ -14,20 +14,20 @@ const styles = StyleSheet.create({
 });
 
 export default function Onboarding({ navigation }) {
-  const handleLogIn = () => {
-    navigation.navigate('Sign Up');
+  const handleNext = () => {
+    navigation.replace('Sign Up');
   };
 
   return (
     <View style={styles.container}>
       <Text>Onboarding Screen</Text>
-      <Button title="Next" onPress={handleLogIn} color="#000000" />
+      <Button title="Next" onPress={handleNext} color="#000000" />
     </View>
   );
-}
+};
 
 Onboarding.propTypes = {
   navigation: PropTypes.shape({
-    navigate: PropTypes.func,
+    replace: PropTypes.func,
   }).isRequired,
 };
