@@ -3,6 +3,8 @@ import {
   View, TextInput, Button, Alert, StyleSheet, Text, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import Storage from '../Components/Storage';
 import welcomeIcon from '../assets/welcomeIcon.png';
 
 const styles = StyleSheet.create({
@@ -62,7 +64,9 @@ const styles = StyleSheet.create({
 export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, onChangePassword] = useState('');
+  const [changePassword, onChangePassword] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmedPassword, setConfirmedPassword] = useState('');
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
@@ -74,10 +78,10 @@ export default function SignUp({ navigation }) {
 
   const handleChangePassword = (newText) => {
     const lastLetter = newText.slice(-1);
-    if (newText.length > password.length) {
-      onChangePassword(password + lastLetter);
-    } else if (newText.length < password.length) {
-      onChangePassword(password.slice(0, newText.length));
+    if (newText.length > changePassword.length) {
+      onChangePassword(changePassword + lastLetter);
+    } else if (newText.length < changePassword.length) {
+      onChangePassword(changePassword.slice(0, newText.length));
     } else if (newText === '') {
       onChangePassword('');
       setBool(false);
@@ -101,19 +105,43 @@ export default function SignUp({ navigation }) {
     } else if (password === '') {
       Alert.alert('Please enter a password to proceed');
     } else if (password.length < 6) {
-      Alert.alert('Password must be longer than five');
+      Alert.alert('Password must be longer than five characters');
+    } else if (password !== confirmedPassword) {
+      Alert.alert('Password confirmation does not match password');
     } else {
       return true;
     }
     return false;
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!checkInputs()) {
       return;
     }
     setFirstName('');
     setEmail('');
+    setPassword('');
+    setConfirmedPassword('');
+    try {
+      const userData = {
+        email,
+        password,
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/post`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        // const userId = res.data._id;
+        const userId = '65c1caacab4c3d281f5f1aa2';
+        console.log('userId: ', userId);
+        Storage({ key: 'hello', value: userId, saveKey: true });
+        // Storage(key, userId, true);
+        // console.log('hiiii: ', userId);
+        navigation.navigate('Home');
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
     onChangePassword('');
     navigation.navigate('Home');
   };
