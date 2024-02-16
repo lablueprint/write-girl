@@ -23,25 +23,14 @@ export default function HomeScreen() {
   const [writingTips, setWritingTips] = useState('');
   const [tripleFlips, setTripleFlips] = useState('');
 
-  // useEffect(() => {
-  //   const async getId = () => {
-  //     const userId = await Storage({ key: 'hello', value: '', saveKey: false });
-
-  //   }
-
-  // });
-
-  const getId = async () => {
-    try {
-      const id = await Storage({ key: 'hello', value: '', saveKey: false });
-      return id;
-    } catch (error) {
-      console.error(error);
-    }
-    return false;
-  };
   const getAllSaved = async () => {
-    const userId = await getId();
+    let userId = await Storage({ key: 'hello', value: '', saveKey: false });
+    while (!userId) {
+      userId = Storage({ key: 'hello', value: '', saveKey: false });
+    }
+    if (userId) {
+      console.log('userId in if: ', userId);
+    }
     console.log('userId in home: ', userId);
 
     try {
@@ -197,7 +186,3 @@ export default function HomeScreen() {
     </View>
   );
 }
-
-// HomeScreen.propTypes = {
-//   route: PropTypes.object.isRequired,
-// };

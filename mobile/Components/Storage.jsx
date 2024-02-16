@@ -7,18 +7,15 @@ export default function Storage({ key, value, saveKey }) {
     if (saveKey) {
       await SecureStore.setItemAsync(key, value).then(() => console.log('hi'));
     } else {
-      await SecureStore.getItemAsync('hello').then((result) => { console.log('result: ', result); });
+      await SecureStore.getItemAsync('hello');
     //   if (result) {
     //     console.log("Here's your value: ", result);
     //     return result;
     //   }
     //   console.log('No values stored under that key.');
     }
-    return false;
   };
   saveData();
-
-  return null;
 }
 
 Storage.propTypes = {
