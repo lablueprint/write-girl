@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 
 export default function Storage({ key, value, saveKey }) {
   async function save() {
-    await SecureStore.setItemAsync(key, value).then(() => console.log('hi'));
+    await SecureStore.setItemAsync(key, value).then();
   }
   async function getValue() {
     const result = await SecureStore.getItemAsync(key);

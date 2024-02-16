@@ -65,8 +65,6 @@ export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, onChangePassword] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [confirmedPassword, setConfirmedPassword] = useState('');
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
@@ -106,9 +104,6 @@ export default function SignUp({ navigation }) {
       Alert.alert('Please enter a password to proceed');
     } else if (password.length < 6) {
       Alert.alert('Password must be longer than five characters');
-    } else if (password !== confirmedPassword) {
-      return true;
-      // Alert.alert('Password confirmation does not match password');
     } else {
       return true;
     }
@@ -121,9 +116,7 @@ export default function SignUp({ navigation }) {
     }
     setFirstName('');
     setEmail('');
-    // setPassword('');
     onChangePassword('');
-    // setConfirmedPassword('');
     try {
       const userData = {
         email,
