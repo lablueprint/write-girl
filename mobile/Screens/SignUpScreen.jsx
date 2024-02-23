@@ -173,7 +173,7 @@ export default function SignUp({ navigation }) {
       </View>
 
       <Text style={styles.smallSubtitle}>
-        We'd love to know where you're from!
+        We&apos;d love to know where you&apos;re from!
       </Text>
 
       <View style={styles.signButton}>
