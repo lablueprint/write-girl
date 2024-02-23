@@ -58,7 +58,7 @@ const objectsImage = require('../assets/story-starter-icons/objects.png');
 const plotPointsImage = require('../assets/story-starter-icons/plot-points.png');
 const settingsImage = require('../assets/story-starter-icons/settings.png');
 
-export default function StoryStarterScreen({ navigation, key }) {
+export default function StoryStarterScreen({ navigation }) {
   const navigateToSettingsScreen = () => {
     navigation.navigate('Settings');
   };
@@ -76,7 +76,7 @@ export default function StoryStarterScreen({ navigation, key }) {
   };
 
   return (
-    <View style={styles.container} key={key}>
+    <View style={styles.container}>
       <Pressable onPress={navigateToSettingsScreen} title="Get random setting" style={styles.settingsContainer}>
         <ImageBackground source={settingsImage} style={styles.button} imageStyle={styles.image}>
           <Text style={styles.imageText}>Settings</Text>
