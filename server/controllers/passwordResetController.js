@@ -24,17 +24,22 @@ const generateFourDigitCode = () => {
   return fourDigitCode;
 };
 
+// Hash Function
 const hash = async (code) => {
   const hashedCode = await bcrypt.hash(code, `${process.env.SALT}`);
   return hashedCode;
 };
 
+// Return true if the code and hashedCode match
 const verifyCode = async (req, res) => {
   // Retrieve info from req.body.[your_param], code and hashedCode
   const rehash = await hash(req.body.code);
   res.send(rehash === req.body.hashedCode);
 };
 
+// Sends an email with a 4 digit verification code
+// Returns the hashedCode
+// Return -1 if the user doesn't exist
 const verifyEmail = async (req, res) => {
   // Send back -1 if the user doesn't exist
   const user = await User.findOne({ email: req.body.email });
@@ -44,7 +49,7 @@ const verifyEmail = async (req, res) => {
   }
   const resetCode = generateFourDigitCode();
   const mailOptions = {
-    from: '3dward.ng@gmail.com',
+    from: `${process.env.EMAIL}`,
     to: req.body.email,
     subject: `WriteGirl Reset Password Code: ${resetCode} `,
     text: `Your reset code for WriteGirl: ${resetCode}`,
@@ -53,13 +58,12 @@ const verifyEmail = async (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email: ', error);
-    } else {
-      console.log('Email sent: ', info.response);
     }
   });
   res.send(await hash(resetCode));
 };
 
+// Updates the password in the databased for the user with the given email
 const updatePassword = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -71,14 +75,6 @@ const updatePassword = async (req, res) => {
     console.log('Error updating password');
   }
 };
-
-// transporter.sendMail(mailOptions, (error, info) => {
-// if (error) {
-// console.error('Error sending email: ', error);
-// } else {
-// console.log('Email sent: ', info.response);
-// }
-// });
 
 module.exports = {
   verifyEmail,

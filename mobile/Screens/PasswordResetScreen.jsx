@@ -24,57 +24,77 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 10,
   },
+  errorContainer: {
+    backgroundColor: 'red',
+  },
+  errorMsg: {
+    color: 'white',
+    fontSize: 16,
+  },
 });
 
 export default function PasswordResetScreen({ navigation }) {
-  // getVerification, verifyCode, inputNewPassword, successPage
+  // Steps are: getVerification, verifyCode, inputNewPassword, successPage
   const [step, setStep] = useState('getVerification');
   const [email, handleChangeEmail] = useState('');
   const [hashedCode, updateHashedCode] = useState(null);
   const [code, handleChangeCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  // This is the confirmation of the new password
   const [confirmation, setConfirmation] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const redirectLogIn = () => {
     navigation.navigate('Log In');
   };
 
+  // Sends a verification code if the email exists
+  // Outputs error message otherwise
   const sendPasswordReset = async () => {
-    // TODO: Check if this is a valid email format
     const data = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/passwordReset/verifyEmail`, { email });
     const codeData = data.data;
     // If no valid email was found, we return -1.
-    if (codeData === '-1') {
-      // error!
-      console.log('User does not exist');
-      // TODO: Banner to indicate that user does not exist
+    if (codeData === -1) {
+      setErrorMsg('No Account with this Email');
       return;
     }
-    console.log('hashedCode: ', codeData);
     updateHashedCode(codeData);
     setStep('verifyCode');
+    setErrorMsg('');
   };
 
+  // Check if the user inputted code is correct
   const verifyCode = async () => {
     const data = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/passwordReset/verifyCode`, { code, hashedCode });
     const match = data.data;
     if (match) {
-      console.log('Code matches');
       setStep('inputNewPassword');
+      setErrorMsg('');
+      return;
     }
-    // TODO: Banner if code doesn't match, have some indicator
+    // Banner if code doesn't match, have some indicator
     // else we indicate to user that code doesn't match, retry
+    setErrorMsg('Invalid Code');
   };
 
+  // Updates the user's password
+  // Outputs an error message otherwise
   const updatePassword = async () => {
-    console.log('password update pressed');
+    if (confirmation !== newPassword) {
+      setErrorMsg('Confirmation must match the new password.');
+      return;
+    }
+    if (newPassword.length < 5) {
+      setErrorMsg('Password must be at least 5 characters.');
+      return;
+    }
     const data = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/passwordReset/updatePassword`, { email, newPassword });
-    // TODO: Banner to indicate that it doesn't match OR disallow from pressing RESET until match
     redirectLogIn();
+    setErrorMsg('');
   };
 
+  // Controls the display based on which step the user is on in the password reset flow
   const updateDisplay = () => {
     let view = [<View />];
-    console.log('Current step', step);
     if (step === 'getVerification') {
       view = [
         <View>
@@ -136,15 +156,7 @@ export default function PasswordResetScreen({ navigation }) {
             secureTextEntry="true"
           />
         </View>,
-        <Button title="Reset" onPress={updatePassword} disabled={newPassword !== confirmation || newPassword.length < 5} />,
-      ];
-    } else {
-      view = [
-        <View>
-          <Text>
-            Password succesfully reset.
-          </Text>
-        </View>,
+        <Button title="Reset" onPress={updatePassword} />,
       ];
     }
     return view.map((elem) => elem);
@@ -152,6 +164,17 @@ export default function PasswordResetScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {
+        errorMsg ? (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorMsg}>
+              {errorMsg}
+            </Text>
+          </View>
+        ) : (
+          <View />
+        )
+      }
       {updateDisplay()}
     </View>
   );
