@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   card: {
-    height: '80%',
+    height: '100%',
     width: Dimensions.get('window').width * 0.8,
     borderRadius: 16,
     backgroundColor: 'rgba(255, 255, 255, 1)',
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   cardText: {
     textAlign: 'center',
     lineHeight: 24,
+    fontSize: 16,
   },
 });
 

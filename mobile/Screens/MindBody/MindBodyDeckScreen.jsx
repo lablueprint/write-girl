@@ -3,7 +3,7 @@ import {
   View, Animated, Text, FlatList, StyleSheet, Pressable,
 } from 'react-native';
 import axios from 'axios';
-import MindBodyCard from '../Components/MindBodyCard';
+import MindBodyCard from '../../Components/MindBodyCard';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +30,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 50,
     backgroundColor: 'white',
-    width: '80%',
+    width: '50%',
+    marginBottom: 32,
+    marginTop: 32,
   },
   body: {
     color: '#000',
