@@ -12,7 +12,7 @@ const svgContent = `<svg width="23" height="23" viewBox="0 0 23 23" fill="none" 
 export default function FreeWriteScreen({ navigation }) {
   return (
     <View>
-      <Pressable onPress={() => navigation.navigate('Home')}>
+      <Pressable onPress={() => navigation.navigate('App Home')}>
         <SvgXml xml={svgContent} />
       </Pressable>
       <Text>FreeWrite</Text>

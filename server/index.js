@@ -10,6 +10,14 @@ const port = process.env.PORT;
 
 // Route Imports
 const testRouter = require('./routes/testRoute');
+const characterTraitRouter = require('./routes/storyStarter/characterTraitRoutes');
+const plotPointRouter = require('./routes/storyStarter/plotPointRoutes');
+const settingRouter = require('./routes/storyStarter/settingRoutes');
+const itemRouter = require('./routes/storyStarter/itemRoutes');
+const activityRouter = require('./routes/progressiveWritingRoutes');
+const pepTalkRouter = require('./routes/pepTalkRoutes');
+const writingTipRouter = require('./routes/writingTipRoutes');
+const mindBodyRouter = require('./routes/mindBodyRoute');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -30,6 +38,14 @@ app.use(express.json());
 
 // API Routes
 app.use('/test', testRouter);
+app.use('/characterTrait', characterTraitRouter);
+app.use('/plotPoint', plotPointRouter);
+app.use('/setting', settingRouter);
+app.use('/item', itemRouter);
+app.use('/activity', activityRouter);
+app.use('/pepTalk', pepTalkRouter);
+app.use('/writingTip', writingTipRouter);
+app.use('/mindBody', mindBodyRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
