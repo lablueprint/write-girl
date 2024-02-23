@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, Pressable,
 } from 'react-native';
@@ -27,6 +27,18 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
   },
+  optionHeading: {
+    color: '#fff',
+    margin: 8,
+    fontSize: 24,
+    textAlign: 'left',
+  },
+  optionBody: {
+    color: '#fff',
+    margin: 8,
+    fontSize: 16,
+    textAlign: 'left',
+  },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -37,16 +49,63 @@ const styles = StyleSheet.create({
     width: '50%',
     marginBottom: 32,
   },
+  unselectedOption: {
+    alignItems: 'left',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    backgroundColor: '#333333',
+    width: '80%',
+    marginBottom: 32,
+  },
+  selectedOption: {
+    alignItems: 'left',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    backgroundColor: '#333333',
+    width: '80%',
+    marginBottom: 32,
+    borderWidth: '2',
+    borderColor: 'white',
+  },
 });
 
 export default function MindBodyScreen({ navigation }) {
+  const [option, setOption] = useState('');
   const navigateToMindBodyDeckScreen = () => {
-    navigation.navigate('Mind and Body Deck');
+    if (option !== '') {
+      navigation.navigate('Mind and Body Deck');
+    }
+  };
+
+  const selectBrisk = () => {
+    setOption('Brisk');
+  };
+  const selectCasual = () => {
+    setOption('Casual');
+  };
+  const selectVacation = () => {
+    setOption('Vacation');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>How much time would you like to allocate to this break?</Text>
+      <Pressable style={[option === 'Brisk' ? styles.selectedOption : styles.unselectedOption]} onPress={selectBrisk}>
+        <Text style={styles.optionHeading}>Brisk</Text>
+        <Text style={styles.optionBody}>Give your mind a break</Text>
+      </Pressable>
+      <Pressable style={[option === 'Casual' ? styles.selectedOption : styles.unselectedOption]} onPress={selectCasual}>
+        <Text style={styles.optionHeading}>Casual</Text>
+        <Text style={styles.optionBody}>Give your mind a break</Text>
+      </Pressable>
+      <Pressable style={[option === 'Vacation' ? styles.selectedOption : styles.unselectedOption]} onPress={selectVacation}>
+        <Text style={styles.optionHeading}>Vacation</Text>
+        <Text style={styles.optionBody}>Give your mind a break</Text>
+      </Pressable>
       <Pressable style={styles.button} onPress={navigateToMindBodyDeckScreen}>
         <Text style={styles.buttonBody}>Next</Text>
       </Pressable>
