@@ -5,7 +5,7 @@ import {
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
-export default function TimedWritingScreen() {
+export default function Timer() {
   const [showPicker, setShowPicker] = useState(false);
   const [alarmString, setAlarmString] = useState(null);
   const [totalTime, setTotalTime] = useState(0);
