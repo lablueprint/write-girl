@@ -1,7 +1,9 @@
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import PropTypes from 'prop-types';
+import * as SecureStore from 'expo-secure-store';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
@@ -14,6 +16,7 @@ import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import WritingTipScreen from '../Screens/WritingTipScreen';
 import LogInScreen from '../Screens/LogInScreen';
+import Loading from '../Components/Loading';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -49,13 +52,60 @@ function HomeStackScreen() {
   );
 }
 
-export default function AppNavigation() {
+function AuthScreen() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default function AuthLoadingScreen() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const checkAuthentication = async () => {
+    try {
+      const authEmailToken = await SecureStore.getItemAsync('email');
+      const authPasswordToken = await SecureStore.getItemAsync('password');
+      if (authEmailToken && authPasswordToken) {
+        setIsAuthenticated(!authEmailToken);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Error checking authentication:', error);
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {isAuthenticated ? (
+          <Stack.Screen
+            name="Main"
+            component={HomeStackScreen}
+            options={{ headerShown: false }}
+          />
+        ) : (
+          <Stack.Screen
+            name="Auth"
+            component={AuthScreen}
+            options={{ headerShown: false }}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
