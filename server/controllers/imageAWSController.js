@@ -23,11 +23,38 @@
 //     console.error(err);
 // }
 
-const { S3Client, ListObjectsV2Command } = require('@aws-sdk/client-s3');
+const { S3Client, ListObjectsV2Command, PutObjectCommand } = require('@aws-sdk/client-s3');
 
 const TripleFlip = require('../models/tripleFlipModel');
 
+const uploadAWS = async (imageObj) => {
+  const S3_BUCKET_NAME = process.env.S3_BUCKET;
+  const client = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+      accessKeyId: process.env.ACCESS_KEY_ID,
+      secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    },
+  });
+
+  try {
+    const command = new PutObjectCommand({
+      Bucket: S3_BUCKET_NAME,
+      Key: imageObj.id,
+      Body: imageObj.blob,
+    });
+    const response = await client.send(command);
+    console.log(response);
+  } catch (err) {
+    console.error(err);
+  }
+};
 const uploadTripleFlip = async (req, res) => {
+  const { imageList } = req.body;
+  console.log(imageList);
+  imageList.forEach(uploadAWS);
+};
+const ListBucket = async (req, res) => {
   console.log('testing');
   const S3_BUCKET_NAME = process.env.S3_BUCKET;
   const client = new S3Client({

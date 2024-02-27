@@ -32,9 +32,11 @@ export default function ImageUploadComponent() {
     });
 
     if (!result.canceled) {
-      const pickedURIs = result.assets.map((imageObj) => imageObj.uri);
-      setSelectedImages((images) => [...images, ...pickedURIs]);
+      const pickedURIs = result.assets.map(({ uri, assetId }) => ({
+        uri, assetId,
+      }));
       console.log(result.assets);
+      setSelectedImages((images) => [...images, ...pickedURIs]);
     } else {
       alert('You did not select any image.');
     }
@@ -44,20 +46,20 @@ export default function ImageUploadComponent() {
   };
 
   const uploadImages = async () => {
-    const imageBlobs = [];
+    console.log(selectedImages);
+    const imageList = [];
     try {
       async function getBlobs(images) {
-        const imageData = await fetch(images);
+        const imageData = await fetch(images.uri);
         const imageBlob = await imageData.blob();
-        imageBlobs.push(imageBlob);
+        imageList.push({ blob: imageBlob, id: images.assetId });
       }
       await Promise.all(selectedImages.map(getBlobs));
-      console.log(imageBlobs);
     } catch (error) {
       // Refresh the UI or perform other actions after successful upload
       console.error('Error uploading images:', error);
     }
-    const respObj = { images: imageBlobs };
+    const respObj = { imageList };
     console.log(respObj);
     await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tripleFlip/tripleFlipUpload`, respObj);
   };
@@ -75,7 +77,14 @@ export default function ImageUploadComponent() {
         ? (
           <View>
             {selectedImages.map((imageUri) => (
-              <Image source={{ uri: imageUri }} style={{ width: 200, height: 200 }} />
+              <View>
+                <Image source={{ uri: imageUri.uri }} style={{ width: 200, height: 200 }} />
+                <Text>
+                  {imageUri.assetId}
+                  {' '}
+                </Text>
+              </View>
+
             ))}
           </View>
         ) : null}
