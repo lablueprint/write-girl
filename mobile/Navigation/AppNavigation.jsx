@@ -13,6 +13,7 @@ import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import WritingTipScreen from '../Screens/WritingTipScreen';
 import LogInScreen from '../Screens/LogInScreen';
+import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -32,19 +33,36 @@ function StoryStarterStackScreen() {
   );
 }
 
+const HomeStack = createNativeStackNavigator();
+
+function HomeScreenStack() {
+  return (
+    <HomeStack.Navigator initialRouteName="App Home">
+      <HomeStack.Screen
+        name="Home Screen"
+        component={HomeScreen}
+        options={{ title: 'HomeScreen' }}
+      />
+      <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
+    </HomeStack.Navigator>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function HomeStackScreen() {
+function MainAppScreen() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="App Home" component={HomeScreen} />
-      <Tab.Screen name="Activities" component={ActivityHomeScreen} />
-      <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Mind & Body" component={MindBodyScreen} />
-      <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
-      <Tab.Screen name="Writing Tips" component={WritingTipScreen} />
-    </Tab.Navigator>
+    <NavigationContainer independent>
+      <Tab.Navigator>
+        <Tab.Screen name="App Home" component={HomeScreenStack} options={{ headerShown: false }} />
+        <Tab.Screen name="Activities" component={ActivityHomeScreen} />
+        <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={{ headerShown: false }} />
+        <Tab.Screen name="Mind & Body" component={MindBodyScreen} />
+        <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
+        <Tab.Screen name="Writing Tips" component={WritingTipScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -54,7 +72,7 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="Home" component={MainAppScreen} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
