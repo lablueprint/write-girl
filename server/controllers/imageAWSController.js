@@ -33,12 +33,12 @@ const uploadTripleFlip = async (req, res) => {
   const client = new S3Client({
     region: process.env.AWS_REGION,
     credentials: {
-      accessKeyId: process.env.accessKeyId,
-      secretAccessKey: process.env.secretAccessKey,
+      accessKeyId: process.env.ACCESS_KEY_ID,
+      secretAccessKey: process.env.SECRET_ACCESS_KEY,
     },
   });
   const command = new ListObjectsV2Command({
-    Bucket: 'my-bucket',
+    Bucket: S3_BUCKET_NAME,
     // The default and maximum number of keys returned is 1000. This limits it to
     // one for demonstration purposes.
     MaxKeys: 1,
