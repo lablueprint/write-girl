@@ -23,7 +23,7 @@ const getRandomMoment = async (req, res) => {
     const randomMindBodyActivity = randomMindBody.length > 0 ? randomMindBody[0].activity : null;
     const randomMindBodyDuration = randomMindBody.length > 0 ? randomMindBody[0].duration : null;
     if (randomMindBodyActivity === null || randomMindBodyActivity === undefined) {
-      console.log('No valid Mind and Body Moment  found');
+      console.log('No valid Mind and Body Moment found');
     }
     if (randomMindBodyDuration === null || randomMindBodyDuration === undefined) {
       console.log('No valid Mind and Body Moment Duration found');
@@ -40,8 +40,17 @@ const getRandomMoment = async (req, res) => {
 const getFiveRandomMoments = async (req, res) => {
   try {
     // Use aggregation to get 5 random documents from the collection
+    console.log(req.body);
     const randomMindBodies = await MindBody.aggregate([
       // Change the number below to change number of cards generated
+      {
+        $match: {
+          $and: [
+            { duration: { $gt: req.body.low, $lt: req.body.high } },
+            { type: req.body.type },
+          ],
+        },
+      },
       { $sample: { size: 5 } }, // $sample stage to get 5 random documents
     ]);
 
@@ -49,6 +58,7 @@ const getFiveRandomMoments = async (req, res) => {
     const randomMoments = randomMindBodies.map((mindBody) => ({
       activity: mindBody.activity || null,
       duration: mindBody.duration || null,
+      type: mindBody.type || null,
     }));
 
     // Check for valid moments
