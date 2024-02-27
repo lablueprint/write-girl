@@ -398,6 +398,22 @@ const removeSavedItems = async (req, res) => {
   }
 };
 
+const userLogIn = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email, password });
+    if (user) {
+      // Authentication successful
+      res.status(200).json({ message: 'Login successful' });
+    } else {
+      // Authentication failed
+      res.status(401).json({ error: 'Invalid username or password' });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -430,4 +446,5 @@ module.exports = {
   removeSavedPlots,
   removeSavedSettings,
   removeSavedItems,
+  userLogIn,
 };

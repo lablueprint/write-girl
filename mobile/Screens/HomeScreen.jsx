@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, Dimensions, ScrollView,
+  StyleSheet, Text, View, Button, Dimensions, ScrollView, Alert,
 } from 'react-native';
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
+import PropTypes from 'prop-types';
 import Storage from '../Components/Storage';
 import HomeScreenCard from '../Components/HomeScreenCard';
 import TabBar from '../Components/HomeScreenTab';
@@ -45,9 +47,17 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
   },
+
+  logoutButton: {
+    backgroundColor: '#D9D9D9',
+    borderRadius: 5,
+    marginTop: 20,
+    marginBottom: 10,
+    padding: 5,
+  },
 });
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [allSaved, setAllSaved] = useState('');
   const [activities, setActivities] = useState('');
   const [storyStarters, setStoryStarters] = useState('');
@@ -56,6 +66,27 @@ export default function HomeScreen() {
   const [tripleFlips, setTripleFlips] = useState('');
   const [page, setPage] = React.useState('pep_talk');
   const [cardData, setCardData] = React.useState('default_text');
+
+  const deleteToken = async () => {
+    try {
+      // Delete email and password asyncronously
+      await SecureStore.deleteItemAsync('email');
+      await SecureStore.deleteItemAsync('password');
+      // Navigate to login screen
+      navigation.navigate('Log In');
+    } catch (error) {
+      console.error('Error deleting user token information:', error);
+    }
+  };
+
+  const handleLogOut = async () => {
+    try {
+      deleteToken();
+    } catch (err) {
+      console.error(err.message);
+      Alert.alert('Error', 'Cannot log out');
+    }
+  };
 
   async function getId() {
     const userId = await Storage({ key: 'hello', value: '', saveKey: false });
@@ -296,6 +327,15 @@ export default function HomeScreen() {
           </View>
         ))}
       </View>
+      <View style={styles.logoutButton}>
+        <Button title="Log Out" onPress={handleLogOut} color="#000000" />
+      </View>
     </ScrollView>
   );
 }
+
+HomeScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 import {
-  View, TextInput, Button, StyleSheet, Text, Pressable, Image,
+  View, TextInput, Button, StyleSheet, Text, Pressable, Image, Alert,
 } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
@@ -104,6 +104,7 @@ export default function LogIn({ navigation }) {
       await SecureStore.setItemAsync('email', email);
       await SecureStore.setItemAsync('password', password);
       // Navigate to home screen
+      navigation.navigate('App Home');
       navigation.navigate('Home');
     } catch (error) {
       console.error('Error storing login information:', error);
@@ -120,12 +121,12 @@ export default function LogIn({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
-        // dispatch(login(res.data)); securely sign in
         // store the token then navigate to the app's main screen
         storeToken();
       }
     } catch (err) {
       console.error(err.message);
+      Alert.alert('Error', 'Invalid username or password');
     }
   };
 

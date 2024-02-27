@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import PropTypes from 'prop-types';
 import * as SecureStore from 'expo-secure-store';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
@@ -48,24 +47,23 @@ function HomeStackScreen() {
       <Tab.Screen name="Mind & Body" component={MindBodyScreen} />
       <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
       <Tab.Screen name="Writing Tips" component={WritingTipScreen} />
+      <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
     </Tab.Navigator>
   );
 }
 
 function AuthScreen() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
+      <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
+      <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+    </Stack.Navigator>
   );
 }
 
-export default function AuthLoadingScreen() {
-  const [isLoading, setIsLoading] = useState(true);
+export default function AppNavigation() {
+  const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const checkAuthentication = async () => {
@@ -73,7 +71,7 @@ export default function AuthLoadingScreen() {
       const authEmailToken = await SecureStore.getItemAsync('email');
       const authPasswordToken = await SecureStore.getItemAsync('password');
       if (authEmailToken && authPasswordToken) {
-        setIsAuthenticated(!authEmailToken);
+        setIsAuthenticated(!isAuthenticated);
         setIsLoading(false);
       }
     } catch (error) {
