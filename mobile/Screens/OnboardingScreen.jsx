@@ -10,8 +10,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 
@@ -19,7 +17,10 @@ const styles = StyleSheet.create({
 function Skip({ ...props }) {
   return (
     <TouchableOpacity
-      style={{ marginHorizontal: 10}}
+      style={{
+        marginLeft: 10,
+        marginHorizontal: 10,
+      }}
       {...props}
     >
       <Text style={{ fontSize: 16 }}>Skip</Text>
@@ -31,7 +32,11 @@ function Skip({ ...props }) {
 function Next({ ...props }) {
   return (
     <TouchableOpacity
-      style={{ marginHorizontal: 10 }}
+      style={{
+        width: 220,
+        height: 60,
+        marginHorizontal: 10,
+      }}
       {...props}
     >
       <Text style={{ fontSize: 16 }}>Next</Text>
@@ -43,11 +48,29 @@ function Next({ ...props }) {
 function Done({ ...props }) {
   return (
     <TouchableOpacity
-      style={{ marginHorizontal: 10 }}
+      style={{
+        width: 220,
+        marginHorizontal: 10,
+      }}
       {...props}
     >
       <Text style={{ fontSize: 16 }}>Done</Text>
     </TouchableOpacity>
+  );
+}
+
+function CustomDot({ selected }) {
+  return (
+    <TouchableOpacity
+      style={{
+        width: 40,
+        height: 10,
+        borderRadius: 10, // Set border radius for a rounded appearance
+        backgroundColor: selected ? '#000' : '#888', // Change colors as needed
+        marginHorizontal: 3,
+        marginBottom: 500,
+      }}
+    />
   );
 }
 
@@ -58,51 +81,39 @@ export default function OnboardingScreen({ navigation }) {
   }; */
 
   return (
-    <Onboarding 
-      SkipButtonComponent={Skip}
-      NextButtonComponent={Next}
-      DoneButtonComponent={Done}
-      onSkip={() => navigation.replace('Sign Up')}
-      onDone={() => navigation.navigate('Sign Up')}
-      pages={[
-        {
-          backgroundColor: '#fff',
-          image: <Image source={welcomeIcon}/>,
-          title: 'Challenge your creativity!',
-          subtitle: 'placeholder',
-        },
-        {
-          backgroundColor: '#fff',
-          image: <Image source={welcomeIcon}/>,
-          title: 'Improve your writing skills!',
-          subtitle: 'placeholder',
-        },
-        {
-          backgroundColor: '#fff',
-          image: <Image source={welcomeIcon}/>,
-          title: 'Your own writing tool!',
-          subtitle: "placeholder",
-        },
-      ]}
-    />
-  );
-};
-
-  /*return (
     <View style={styles.container}>
-
       <Onboarding
+        DotComponent={CustomDot}
+        SkipButtonComponent={Skip}
+        NextButtonComponent={Next}
+        DoneButtonComponent={Done}
+        bottomBarColor="#fff"
+        onSkip={() => navigation.replace('Sign Up')}
+        onDone={() => navigation.navigate('Sign Up')}
         pages={[
           {
             backgroundColor: '#fff',
-            title: 'Onboarding',
-            subtitle: 'Done with React Native Onboarding Swiper',
+            image: <Image source={welcomeIcon} />,
+            title: 'Challenge your creativity!',
+            subtitle: 'placeholder',
+          },
+          {
+            backgroundColor: '#fff',
+            image: <Image source={welcomeIcon} />,
+            title: 'Improve your writing skills!',
+            subtitle: 'placeholder',
+          },
+          {
+            backgroundColor: '#fff',
+            image: <Image source={welcomeIcon} />,
+            title: 'Your own writing tool!',
+            subtitle: 'placeholder',
           },
         ]}
       />
-      <Button title="Next" onPress={handleNext} color="#000000" />
     </View>
-  ); */
+  );
+}
 
 OnboardingScreen.propTypes = {
   navigation: PropTypes.shape({
@@ -111,3 +122,4 @@ OnboardingScreen.propTypes = {
   }).isRequired,
 };
 
+//DELETE ONBOARDING IN APP NAVIGATION LATERRRR
