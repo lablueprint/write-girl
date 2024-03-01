@@ -16,7 +16,6 @@ import LogInScreen from '../Screens/LogInScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
 import WritingTipScreen from '../Screens/WritingTipScreen';
 import HomeNavigation from './HomeNavigation';
-import FreeWriteScreen from '../Screens/FreeWriteScreen';
 import homeIcon from '../assets/home-icon.png';
 import writingActivitiesIcon from '../assets/writing-activities-icon.png';
 import storyStarterIcon from '../assets/story-starters-icon.png';
@@ -32,7 +31,7 @@ function StoryStarterStackScreen() {
       <StoryStarterStack.Screen
         name="Story Starter Stack"
         component={StoryStarterScreen}
-        options={{ title: 'Story Starters' }}
+        options={{ headerShown: false }}
       />
       <StoryStarterStack.Screen name="Objects" component={ObjectsScreen} />
       <StoryStarterStack.Screen name="Settings" component={SettingsScreen} />
@@ -99,6 +98,7 @@ export default function AppNavigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        initialRouteName="Center"
         screenOptions={{
           tabBarStyle: {
             backgroundColor: 'black', // color you want to change
@@ -110,7 +110,7 @@ export default function AppNavigation() {
           component={ActivityHomeScreen}
           options={createtabOptions(writingActivitiesIcon)}
         />
-        <Tab.Screen name="Story Starters" component={StoryStarterScreen} options={createtabOptions(storyStarterIcon)} />
+        <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
         <Tab.Screen
           name="Center"
           component={HomeNavigation}
