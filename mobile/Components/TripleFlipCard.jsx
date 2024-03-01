@@ -2,13 +2,18 @@ import {
   View, StyleSheet, Text, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-const logo = require('../assets/logo.png');
 
 const styles = StyleSheet.create({
   card: {
-    width: '90%',
     borderRadius: 20,
     borderWidth: 8,
+    flex: 1,
+    justifyContent: 'center', // Vertically center
+    alignItems: 'center', // Horizontally center
+  },
+  image: {
+    width: '50%',
+    height: '80%',
   },
 });
 
@@ -27,37 +32,17 @@ const palette = {
   },
 };
 
-const stepStyle = {
-  0: {
-    height: '15%',
-  },
-  1: {
-    height: '20%',
-  },
-  2: {
-    height: '20%',
-  },
-  3: {
-    height: '20%',
-  },
-};
-
-export default function TripleFlipCard({ step, image, color }) {
+export default function TripleFlipCard({ image, color }) {
   // WriteGirl logo
   // Triple Flip Image for this particular card
   return (
-    <View style={[styles.card, palette[color], stepStyle[step]]}>
-      <Text>
-        On step:
-        {step}
-      </Text>
-      <Image source={logo} />
+    <View style={[styles.card, palette[color]]}>
+      <Image style={styles.image} source={image} />
     </View>
   );
 }
 
 TripleFlipCard.propTypes = {
-  step: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
 };
