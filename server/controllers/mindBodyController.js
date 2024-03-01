@@ -40,14 +40,13 @@ const getRandomMoment = async (req, res) => {
 const getFiveRandomMoments = async (req, res) => {
   try {
     // Use aggregation to get 5 random documents from the collection
-    console.log(req.body);
     const randomMindBodies = await MindBody.aggregate([
       // Change the number below to change number of cards generated
       {
         $match: {
           $and: [
-            { duration: { $gt: req.body.low, $lt: req.body.high } },
-            { type: req.body.type },
+            { duration: { $gt: Number(req.query.low), $lt: Number(req.query.high) } },
+            { type: req.query.type },
           ],
         },
       },

@@ -77,32 +77,34 @@ export default function ActivityTypeScreen({ navigation }) {
   const [option, setOption] = useState('');
   const navigateToActivityDurationScreen = () => {
     if (option !== '') {
-      navigation.navigate('Activity Duration');
+      navigation.navigate('Activity Duration', {
+        type: option,
+      });
     }
   };
 
   const selectMental = () => {
-    setOption('Mental');
+    setOption('mental');
   };
   const selectPhysical = () => {
-    setOption('Physical');
+    setOption('physical');
   };
   const selectBoth = () => {
-    setOption('Both');
+    setOption('both');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>What type of break would you prefer right now?</Text>
-      <Pressable style={[option === 'Mental' ? styles.selectedOption : styles.unselectedOption]} onPress={selectMental}>
+      <Pressable style={[option === 'mental' ? styles.selectedOption : styles.unselectedOption]} onPress={selectMental}>
         <Text style={styles.optionHeading}>Mental</Text>
         <Text style={styles.optionBody}>Give your mind a break</Text>
       </Pressable>
-      <Pressable style={[option === 'Physical' ? styles.selectedOption : styles.unselectedOption]} onPress={selectPhysical}>
+      <Pressable style={[option === 'physical' ? styles.selectedOption : styles.unselectedOption]} onPress={selectPhysical}>
         <Text style={styles.optionHeading}>Physical</Text>
         <Text style={styles.optionBody}>Give your mind a break</Text>
       </Pressable>
-      <Pressable style={[option === 'Both' ? styles.selectedOption : styles.unselectedOption]} onPress={selectBoth}>
+      <Pressable style={[option === 'both' ? styles.selectedOption : styles.unselectedOption]} onPress={selectBoth}>
         <Text style={styles.optionHeading}>Both</Text>
         <Text style={styles.optionBody}>Give your mind a break</Text>
       </Pressable>

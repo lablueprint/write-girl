@@ -3,6 +3,7 @@ import {
   View, Animated, Text, FlatList, StyleSheet, Pressable,
 } from 'react-native';
 import axios from 'axios';
+import { useRoute } from '@react-navigation/native';
 import MindBodyCard from '../../Components/MindBodyCard';
 
 const styles = StyleSheet.create({
@@ -48,29 +49,44 @@ function Card() {
   const pan = React.useRef(new Animated.ValueXY()).current;
   const [mindBodyDeck, setMindBodyDeck] = useState([
     {
-      activity: 'activity1',
-      duration: 1,
+      activity: '',
+      duration: null,
     },
     {
-      activity: 'activity2',
-      duration: 2,
+      activity: '',
+      duration: null,
     },
     {
-      activity: 'activity3',
-      duration: 3,
+      activity: '',
+      duration: null,
     },
     {
-      activity: 'activity4',
-      duration: 4,
+      activity: '',
+      duration: null,
     },
     {
-      activity: 'activity5',
-      duration: 5,
+      activity: '',
+      duration: null,
     }]);
+
+  const route = useRoute();
+  const type = route.params?.type;
+  let high = '';
+  let low = '';
+  if (route.params?.duration === 'brisk') {
+    high = String(3);
+    low = String(0);
+  } else if (route.params?.duration === 'casual') {
+    high = String(4);
+    low = String(1);
+  } else {
+    high = String(20);
+    low = String(2);
+  }
 
   const getRandomMindBody = async () => {
     try {
-      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/mindBody/getFiveRandom`);
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/mindBody/getFiveRandom?high=${high}&low=${low}&type=${type}`);
       setMindBodyDeck(res.data);
       return res.data;
     } catch (err) {

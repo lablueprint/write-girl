@@ -3,6 +3,7 @@ import {
   View, Text, StyleSheet, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { useRoute } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -75,34 +76,38 @@ const styles = StyleSheet.create({
 
 export default function MindBodyScreen({ navigation }) {
   const [option, setOption] = useState('');
+  const route = useRoute();
   const navigateToMindBodyDeckScreen = () => {
     if (option !== '') {
-      navigation.navigate('Mind and Body Deck');
+      navigation.navigate('Mind and Body Deck', {
+        type: route.params?.type,
+        duration: option,
+      });
     }
   };
 
   const selectBrisk = () => {
-    setOption('Brisk');
+    setOption('brisk');
   };
   const selectCasual = () => {
-    setOption('Casual');
+    setOption('casual');
   };
   const selectVacation = () => {
-    setOption('Vacation');
+    setOption('vacation');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>How much time would you like to allocate to this break?</Text>
-      <Pressable style={[option === 'Brisk' ? styles.selectedOption : styles.unselectedOption]} onPress={selectBrisk}>
+      <Pressable style={[option === 'brisk' ? styles.selectedOption : styles.unselectedOption]} onPress={selectBrisk}>
         <Text style={styles.optionHeading}>Brisk</Text>
         <Text style={styles.optionBody}>Give your mind a break</Text>
       </Pressable>
-      <Pressable style={[option === 'Casual' ? styles.selectedOption : styles.unselectedOption]} onPress={selectCasual}>
+      <Pressable style={[option === 'casual' ? styles.selectedOption : styles.unselectedOption]} onPress={selectCasual}>
         <Text style={styles.optionHeading}>Casual</Text>
         <Text style={styles.optionBody}>Give your mind a break</Text>
       </Pressable>
-      <Pressable style={[option === 'Vacation' ? styles.selectedOption : styles.unselectedOption]} onPress={selectVacation}>
+      <Pressable style={[option === 'vacation' ? styles.selectedOption : styles.unselectedOption]} onPress={selectVacation}>
         <Text style={styles.optionHeading}>Vacation</Text>
         <Text style={styles.optionBody}>Give your mind a break</Text>
       </Pressable>
