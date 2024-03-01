@@ -1,7 +1,9 @@
 import { React, useState } from 'react';
 import {
-  View, TextInput, Button, Alert, StyleSheet, Text, Pressable, Image,
+  View, TextInput, Button, StyleSheet, Text, Pressable, Image, Alert,
 } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import welcomeIcon from '../assets/welcomeIcon.png';
 
@@ -15,7 +17,7 @@ const styles = StyleSheet.create({
   centered: {
     alignItems: 'center',
   },
-  signButton: {
+  loginButton: {
     backgroundColor: '#D9D9D9',
     borderRadius: 5,
     marginTop: 20,
@@ -96,10 +98,36 @@ export default function LogIn({ navigation }) {
     onChangeHiddenPassword(newTextWithDots);
   };
 
-  const handleLogIn = () => {
-    setEmail('');
-    onChangePassword('');
-    navigation.navigate('Home');
+  const storeToken = async () => {
+    try {
+      // Store username and password securely
+      await SecureStore.setItemAsync('email', email);
+      await SecureStore.setItemAsync('password', password);
+      // Navigate to home screen
+      navigation.navigate('App Home');
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Error storing login information:', error);
+    }
+  };
+
+  const handleLogIn = async () => {
+    try {
+      const userData = {
+        email,
+        password,
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/user-log-in`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        // store the token then navigate to the app's main screen
+        storeToken();
+      }
+    } catch (err) {
+      console.error(err.message);
+      Alert.alert('Error', 'Invalid username or password');
+    }
   };
 
   const redirectSignUp = () => {
@@ -115,7 +143,7 @@ export default function LogIn({ navigation }) {
         Login
       </Text>
       <Text style={styles.subTitle}>
-        Please Sign in to continue.
+        Please Login to continue.
       </Text>
       <View style={styles.inputContainer}>
         <Image source={welcomeIcon} style={styles.icon} />
@@ -138,7 +166,7 @@ export default function LogIn({ navigation }) {
           placeholderTextColor="#000000"
         />
       </View>
-      
+
       <Text style={styles.smallSubtitle}>
         Forgot your passwords?
         <Pressable>
@@ -146,8 +174,8 @@ export default function LogIn({ navigation }) {
         </Pressable>
       </Text>
 
-      <View style={styles.signButton}>
-        <Button title="Sign In" onPress={handleLogIn} color="#000000" />
+      <View style={styles.loginButton}>
+        <Button title="Log In" onPress={handleLogIn} color="#000000" />
       </View>
       <Text style={styles.signUpText}>
         Don't have an account?

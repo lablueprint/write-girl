@@ -3,6 +3,8 @@ import {
   View, TextInput, Button, Alert, StyleSheet, Text, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import Storage from '../Components/Storage';
 import welcomeIcon from '../assets/welcomeIcon.png';
 
 const styles = StyleSheet.create({
@@ -101,19 +103,36 @@ export default function SignUp({ navigation }) {
     } else if (password === '') {
       Alert.alert('Please enter a password to proceed');
     } else if (password.length < 6) {
-      Alert.alert('Password must be longer than five');
+      Alert.alert('Password must be longer than five characters');
     } else {
       return true;
     }
     return false;
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!checkInputs()) {
       return;
     }
     setFirstName('');
     setEmail('');
+    onChangePassword('');
+    try {
+      const userData = {
+        email,
+        password,
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/post`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        const userId = res.data._id;
+        Storage({ key: 'hello', value: userId, saveKey: true });
+        navigation.navigate('Home');
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
     onChangePassword('');
     navigation.navigate('Home');
   };
