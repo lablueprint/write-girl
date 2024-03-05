@@ -138,7 +138,7 @@ export default function LogIn({ navigation }) {
           placeholderTextColor="#000000"
         />
       </View>
-      
+
       <Text style={styles.smallSubtitle}>
         Forgot your passwords?
         <Pressable>

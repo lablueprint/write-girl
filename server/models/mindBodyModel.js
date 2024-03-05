@@ -10,6 +10,10 @@ const mindBodySchema = new mongoose.Schema({
     required: true,
     type: Number,
   },
+  type: {
+    required: true,
+    type: String,
+  },
 });
 
 module.exports = mongoose.model('MindBody', mindBodySchema);

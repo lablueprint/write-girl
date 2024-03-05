@@ -4,11 +4,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
+import MindBodyScreen from '../Screens/MindBody/MindBodyScreen';
+import ActivityTypeScreen from '../Screens/MindBody/ActivityTypeScreen';
+import ActivityDurationScreen from '../Screens/MindBody/ActivityDurationScreen';
+import MindBodyDeckScreen from '../Screens/MindBody/MindBodyDeckScreen';
 import ObjectsScreen from '../Screens/StoryStarters/ObjectsScreen';
 import SettingsScreen from '../Screens/StoryStarters/SettingsScreen';
 import TraitsScreen from '../Screens/StoryStarters/TraitsScreen';
 import PlotPointsScreen from '../Screens/StoryStarters/PlotPointsScreen';
-import MindBodyScreen from '../Screens/MindBodyScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import WritingTipScreen from '../Screens/WritingTipScreen';
@@ -35,13 +38,30 @@ function StoryStarterStackScreen() {
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+const MindBodyStack = createNativeStackNavigator();
+
+function MindBodyStackScreen() {
+  return (
+    <MindBodyStack.Navigator initialRouteName="Mind and Body">
+      <MindBodyStack.Screen
+        name="Mind and Body Stack"
+        component={MindBodyScreen}
+        options={{ title: 'Mind and Body' }}
+      />
+      <MindBodyStack.Screen name="Activity Type" component={ActivityTypeScreen} />
+      <MindBodyStack.Screen name="Activity Duration" component={ActivityDurationScreen} />
+      <MindBodyStack.Screen name="Mind and Body Deck" component={MindBodyDeckScreen} />
+    </MindBodyStack.Navigator>
+  );
+}
+
 function HomeStackScreen() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="App Home" component={HomeScreen} />
       <Tab.Screen name="Activities" component={ActivityHomeScreen} />
+      <Tab.Screen name="Mind & Body" component={MindBodyStackScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Mind & Body" component={MindBodyScreen} />
       <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
       <Tab.Screen name="Writing Tips" component={WritingTipScreen} />
     </Tab.Navigator>
