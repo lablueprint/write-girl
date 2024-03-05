@@ -1,10 +1,14 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { useEffect, useState } from 'react';
 import {
-  View, Animated, Text, FlatList, StyleSheet, Pressable,
+  View, Animated, Text, FlatList, StyleSheet, Pressable, Dimensions,
 } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import * as Progress from 'react-native-progress';
 import MindBodyCard from '../../Components/MindBodyCard';
+
+const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
@@ -15,7 +19,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: '#fff',
-    margin: 32,
+    margin: 24,
     fontSize: 24,
     textAlign: 'center',
   },
@@ -28,16 +32,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingHorizontal: 24,
     borderRadius: 50,
     backgroundColor: 'white',
     width: '50%',
-    marginBottom: 32,
-    marginTop: 32,
+    marginBottom: 24,
+    marginTop: 24,
   },
   body: {
     color: '#000',
     fontSize: 16,
+  },
+  bar: {
+    marginTop: 32,
   },
 });
 
@@ -124,6 +131,7 @@ function Card() {
 
   return (
     <View style={styles.container}>
+      <Progress.Bar progress={1} width={windowWidth * 0.8} height={16} borderRadius={50} borderWidth={0} unfilledColor="#333333" color="white" style={styles.bar} />
       <Text style={styles.heading}>Swipe through suggested activities</Text>
       <FlatList
         horizontal

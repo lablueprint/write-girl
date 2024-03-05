@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MindBodyCard({ activity, duration }) {
+export default function MindBodyCard({ activity }) {
   return (
     <View
       style={styles.card}
@@ -38,5 +38,4 @@ export default function MindBodyCard({ activity, duration }) {
 
 MindBodyCard.propTypes = {
   activity: PropTypes.string.isRequired,
-  duration: PropTypes.number.isRequired,
 };
