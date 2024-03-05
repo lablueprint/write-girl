@@ -2,6 +2,9 @@ import {
   View, StyleSheet, Text, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import Animated, {
+  useSharedValue, useAnimatedStyle, withTiming, interpolate,
+} from 'react-native-reanimated';
 
 const styles = StyleSheet.create({
   card: {
@@ -14,6 +17,17 @@ const styles = StyleSheet.create({
   image: {
     width: '50%',
     height: '80%',
+  },
+  cardFront: {
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+  },
+  cardBack: {
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    backfaceVisibility: 'hidden',
   },
 });
 
@@ -33,11 +47,30 @@ const palette = {
 };
 
 export default function TripleFlipCard({ image, color }) {
+  const spin = useSharedValue(0);
   // WriteGirl logo
-  // Triple Flip Image for this particular card
+
+  const frontAnimatedStyle = useAnimatedStyle(() => {
+    const spinVal = interpolate(spin.value, [0, 1], [0, 180]);
+    return {
+      transform: [
+        {
+          rotateY: withTiming(`${spinVal}deg`, { duration: 500 }),
+        },
+      ],
+    };
+  }, []);
+
   return (
-    <View style={[styles.card, palette[color]]}>
-      <Image style={styles.image} source={image} />
+    <View onPress={() => { spin.value = spin.value ? 0 : 1; }} style={[styles.card, palette[color]]}>
+      <Animated.View style={[styles.cardFront, frontAnimatedStyle]}>
+        <Image style={styles.image} source={image} />
+      </Animated.View>
+      <Animated.View style={styles.cardBack}>
+        <Text>
+          Back!
+        </Text>
+      </Animated.View>
     </View>
   );
 }
