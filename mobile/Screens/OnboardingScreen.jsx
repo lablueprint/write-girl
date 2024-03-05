@@ -1,10 +1,11 @@
-import { React } from 'react';
+import { React, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, TouchableOpacity, StyleSheet, Text, Image,
+  View, TouchableOpacity, StyleSheet, Text, Image, ScrollView, Animated, FlatList
 } from 'react-native';
-import Onboarding from 'react-native-onboarding-swiper';
+//import Onboarding from 'react-native-onboarding-swiper';
 import welcomeIcon from '../assets/welcomeIcon.png';
+import OnboardingItem from '../Components/OnboardingItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,6 +14,58 @@ const styles = StyleSheet.create({
   },
 });
 
+export default function OnboardingScreen({ navigation }) {
+  const slides = [
+    {
+      id: 1,
+      title: 'Challenge your creativity!',
+      description: 'placeholder',
+      image: require('../assets/welcomeIcon.png'),
+    },
+    {
+      id: 2,
+      title: 'Improve your writing skills!',
+      description: 'placeholder',
+      image: require('../assets/welcomeIcon.png'),
+    },
+    {
+      id: 3,
+      title: 'Your own writing tool!',
+      subtitle: 'placeholder',
+      image: require('../assets/welcomeIcon.png'),
+    },
+  ];
+
+  const[currentIndex, setCurrentIndex] = useState(0);
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const slidesRef = useRef(null);
+
+  const viewableItemsChanged = useRef(({ viewableItems }) => {
+    setCurrentIndex(viewableItems[0].index);
+  }).current;
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={slides}
+        renderItem={({ item }) => <OnboardingItem item={item} />}
+        horizontal
+        showsHorizontalScrollIndicator
+        pagingEnabled
+        bounces={false}
+        keyExtractor={(item) => item.id}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+          useNativeDriver: false,
+        })}
+        scrollEventThrottle={32}
+        onViewableItemsChanged={viewableItemsChanged}
+        ref={slidesRef}
+      />
+    </View>
+  );
+}
+
+/*
 // Skip component as a function declaration
 function Skip({ ...props }) {
   return (
@@ -33,8 +86,8 @@ function Next({ ...props }) {
   return (
     <TouchableOpacity
       style={{
-        width: 220,
-        height: 60,
+        //width: 220,
+        //height: 60,
         marginHorizontal: 10,
       }}
       {...props}
@@ -74,11 +127,11 @@ function CustomDot({ selected }) {
   );
 }
 
-
+/*
 export default function OnboardingScreen({ navigation }) {
-  /*const handleNext = () => {
+  const handleNext = () => {
     navigation.replace('Sign Up');
-  }; */
+  };
 
   return (
     <View style={styles.container}>
@@ -111,9 +164,13 @@ export default function OnboardingScreen({ navigation }) {
           },
         ]}
       />
+      <TouchableOpacity>
+        <Text style={{ fontSize: 16 }}>Next</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+*/
 
 OnboardingScreen.propTypes = {
   navigation: PropTypes.shape({
