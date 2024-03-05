@@ -8,10 +8,32 @@ import MindBodyScreen from '../Screens/MindBody/MindBodyScreen';
 import ActivityTypeScreen from '../Screens/MindBody/ActivityTypeScreen';
 import ActivityDurationScreen from '../Screens/MindBody/ActivityDurationScreen';
 import MindBodyDeckScreen from '../Screens/MindBody/MindBodyDeckScreen';
+import ObjectsScreen from '../Screens/StoryStarters/ObjectsScreen';
+import SettingsScreen from '../Screens/StoryStarters/SettingsScreen';
+import TraitsScreen from '../Screens/StoryStarters/TraitsScreen';
+import PlotPointsScreen from '../Screens/StoryStarters/PlotPointsScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import WritingTipScreen from '../Screens/WritingTipScreen';
 import LogInScreen from '../Screens/LogInScreen';
+
+const StoryStarterStack = createNativeStackNavigator();
+
+function StoryStarterStackScreen() {
+  return (
+    <StoryStarterStack.Navigator initialRouteName="Story Starters">
+      <StoryStarterStack.Screen
+        name="Story Starter Stack"
+        component={StoryStarterScreen}
+        options={{ title: 'Story Starters' }}
+      />
+      <StoryStarterStack.Screen name="Objects" component={ObjectsScreen} />
+      <StoryStarterStack.Screen name="Settings" component={SettingsScreen} />
+      <StoryStarterStack.Screen name="Character Traits" component={TraitsScreen} />
+      <StoryStarterStack.Screen name="Plot Points" component={PlotPointsScreen} />
+    </StoryStarterStack.Navigator>
+  );
+}
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -38,8 +60,8 @@ function HomeStackScreen() {
     <Tab.Navigator>
       <Tab.Screen name="App Home" component={HomeScreen} />
       <Tab.Screen name="Activities" component={ActivityHomeScreen} />
-      <Tab.Screen name="Story Starters" component={StoryStarterScreen} />
       <Tab.Screen name="Mind & Body" component={MindBodyStackScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
       <Tab.Screen name="Writing Tips" component={WritingTipScreen} />
     </Tab.Navigator>
