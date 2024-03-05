@@ -1,5 +1,5 @@
 import {
-  View, StyleSheet, Text, Image,
+  View, StyleSheet, Text, Image, TouchableOpacity, Button, Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Animated, {
@@ -22,12 +22,17 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     position: 'absolute',
+    backfaceVisibility: 'hidden',
+    zIndex: 10,
   },
   cardBack: {
     height: '100%',
     width: '100%',
     position: 'absolute',
     backfaceVisibility: 'hidden',
+    zIndex: -10,
+    paddingHorizontal: '5%',
+    paddingVertical: '5%',
   },
 });
 
@@ -52,26 +57,44 @@ export default function TripleFlipCard({ image, color }) {
 
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const spinVal = interpolate(spin.value, [0, 1], [0, 180]);
+    console.log(spin.value);
     return {
       transform: [
         {
-          rotateY: withTiming(`${spinVal}deg`, { duration: 500 }),
+          rotateY: withTiming(`${spinVal}deg`, { duration: 1000 }),
         },
       ],
     };
   }, []);
 
+  const backAnimatedStyle = useAnimatedStyle(() => {
+    const spinVal = interpolate(spin.value, [0, 1], [180, 0]);
+    return {
+      transform: [
+        {
+          rotateY: withTiming(`${spinVal}deg`, { duration: 1000 }),
+        }, {
+          scaleX: withTiming(-1, 1000),
+        },
+      ],
+    };
+  }, []);
+  console.log(spin.value);
   return (
-    <View onPress={() => { spin.value = spin.value ? 0 : 1; }} style={[styles.card, palette[color]]}>
-      <Animated.View style={[styles.cardFront, frontAnimatedStyle]}>
-        <Image style={styles.image} source={image} />
+    <Animated.View style={[styles.card, palette[color], frontAnimatedStyle]}>
+      <Animated.View accessible accessibilityRole="button" style={[styles.cardFront, palette[color], frontAnimatedStyle]}>
+        <Pressable onPress={() => { spin.value = spin.value ? 0 : 1; console.log('pressed'); }}>
+          <Image style={styles.image} source={image} />
+        </Pressable>
       </Animated.View>
-      <Animated.View style={styles.cardBack}>
-        <Text>
-          Back!
-        </Text>
+      <Animated.View style={[styles.cardBack, backAnimatedStyle]}>
+        <Pressable>
+          <Text>
+            Back!
+          </Text>
+        </Pressable>
       </Animated.View>
-    </View>
+    </Animated.View>
   );
 }
 
