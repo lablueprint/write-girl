@@ -1,14 +1,7 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
-
-const createUser = async (req, res) => {
-  const user = new User(req.body);
-  try {
-    const data = await user.save(user);
-    res.send(data);
-  } catch (err) {
-    console.error(err);
-  }
-};
+const passport = require('../utils/passportConfig');
 
 const updateUser = async (req, res) => {
   try {
@@ -398,24 +391,54 @@ const removeSavedItems = async (req, res) => {
   }
 };
 
-const userLogIn = async (req, res) => {
+const userSignUp = async (req, res) => {
+  const userExists = await User.findOne({ email: req.body.email });
+  if (userExists) {
+    return res.json({ error: 'That email already exists.' });
+  }
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email, password });
-    if (user) {
-      // Authentication successful
-      res.status(200).json({ message: 'Login successful' });
-    } else {
-      // Authentication failed
-      res.status(401).json({ error: 'Invalid username or password' });
-    }
+    // Generate a salted passwordr
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hashSync(req.body.password, salt);
+    // Create a new user object with secure password
+    const secureUser = { ...req.body };
+    secureUser.password = hashedPassword;
+    // Save user in database
+    const user = new User(secureUser);
+    await user.save(user);
+    // Send success response
+    return res.send('User successfully created!');
   } catch (err) {
-    console.log(err);
+    return res.status(404).json({ error: 'Unable to create a user properly' });
   }
 };
 
+const userLogIn = async (req, res, next) => {
+  passport.authenticate('user-log-in', (err, user, info) => {
+    if (err) { return next(err); }
+    if (!user) { return res.json({ error: info.message }); }
+    return req.logIn(user, { session: false }, (e) => {
+      if (err) return next(e);
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      return res.json({ id: user._id, token });
+    });
+  })(req, res, next);
+  // try {
+  //   const { email, password } = req.body;
+  //   const user = await User.findOne({ email, password });
+  //   if (user) {
+  //     // Authentication successful
+  //     res.status(200).json({ message: 'Login successful' });
+  //   } else {
+  //     // Authentication failed
+  //     res.status(401).json({ error: 'Invalid username or password' });
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  // }
+};
+
 module.exports = {
-  createUser,
   updateUser,
   addSavedActivities,
   addSavedPepTalks,
@@ -447,4 +470,5 @@ module.exports = {
   removeSavedSettings,
   removeSavedItems,
   userLogIn,
+  userSignUp,
 };

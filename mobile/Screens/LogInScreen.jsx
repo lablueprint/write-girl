@@ -2,10 +2,12 @@ import { React, useState } from 'react';
 import {
   View, TextInput, Button, StyleSheet, Text, Pressable, Image, Alert,
 } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import * as SecureStore from 'expo-secure-store';
 import welcomeIcon from '../assets/welcomeIcon.png';
+import { login } from '../redux/sliceAuth';
 
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
 export default function LogIn({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, onChangePassword] = useState('');
-
+  const dispatch = useDispatch();
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
 
@@ -100,14 +102,10 @@ export default function LogIn({ navigation }) {
 
   const storeToken = async () => {
     try {
-      // Store username and password securely
       await SecureStore.setItemAsync('email', email);
-      await SecureStore.setItemAsync('password', password);
-      // Navigate to home screen
-      navigation.navigate('App Home');
-      navigation.navigate('Home');
-    } catch (error) {
-      console.error('Error storing login information:', error);
+      console.log('nice');
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -118,10 +116,15 @@ export default function LogIn({ navigation }) {
         password,
       };
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/user-log-in`, userData);
+      console.log('res: ', res);
       if (res.data.error) {
         console.error(res.data.error);
+        console.log('couldnt find?');
       } else {
-        // store the token then navigate to the app's main screen
+        // Create tokens for persistent data
+        console.log(res.data);
+        console.log('hi');
+        dispatch(login(res.data));
         storeToken();
       }
     } catch (err) {

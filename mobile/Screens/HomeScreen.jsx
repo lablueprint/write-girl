@@ -3,11 +3,12 @@ import {
   StyleSheet, Text, View, Button, Dimensions, ScrollView, Alert,
 } from 'react-native';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
-import PropTypes from 'prop-types';
 import Storage from '../Components/Storage';
 import HomeScreenCard from '../Components/HomeScreenCard';
 import TabBar from '../Components/HomeScreenTab';
+import { logout } from '../redux/sliceAuth';
 
 const window = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
   const [allSaved, setAllSaved] = useState('');
   const [activities, setActivities] = useState('');
   const [storyStarters, setStoryStarters] = useState('');
@@ -66,22 +67,11 @@ export default function HomeScreen({ navigation }) {
   const [tripleFlips, setTripleFlips] = useState('');
   const [page, setPage] = React.useState('pep_talk');
   const [cardData, setCardData] = React.useState('default_text');
-
-  const deleteToken = async () => {
-    try {
-      // Delete email and password asyncronously
-      await SecureStore.deleteItemAsync('email');
-      await SecureStore.deleteItemAsync('password');
-      // Navigate to login screen
-      navigation.navigate('Log In');
-    } catch (error) {
-      console.error('Error deleting user token information:', error);
-    }
-  };
+  const dispatch = useDispatch();
 
   const handleLogOut = async () => {
     try {
-      deleteToken();
+      dispatch(logout());
     } catch (err) {
       console.error(err.message);
       Alert.alert('Error', 'Cannot log out');
@@ -103,6 +93,7 @@ export default function HomeScreen({ navigation }) {
 
   const getAllSaved = async () => {
     const userId = await getId();
+    console.log('item: ', await SecureStore.getItemAsync('user'));
     try {
       if (userId) {
         const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getAllSaved/${userId}`, { timeout: 20000 });
@@ -333,9 +324,3 @@ export default function HomeScreen({ navigation }) {
     </ScrollView>
   );
 }
-
-HomeScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }).isRequired,
-};
