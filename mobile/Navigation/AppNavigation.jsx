@@ -16,8 +16,10 @@ import homeIcon from '../assets/home-icon.png';
 import writingActivitiesIcon from '../assets/writing-activities-icon.png';
 import storyStarterIcon from '../assets/story-starters-icon.png';
 import mindBodyIcon from '../assets/mind-body-icon.png';
-import howToIcon from '../assets/how-to-icon.png';
+import settingsIcon from '../assets/settings-icon.png';
 import whiteCircle from '../assets/white-circle.png';
+import AppSettingsScreen from '../Screens/AppSettingsScreen';
+import AccountInformationScreen from '../Screens/AccountInformationScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -37,6 +39,21 @@ function StoryStarterStackScreen() {
   );
 }
 
+const SettingsStack = createNativeStackNavigator();
+
+function SettingsStackScreen() {
+  return (
+    <SettingsStack.Navigator initialRouteName="Settings">
+      <SettingsStack.Screen
+        name="App Settings"
+        component={AppSettingsScreen}
+        options={{ headerShown: false, title: 'Story Starters' }}
+      />
+      <SettingsStack.Screen name="Account Information" component={AccountInformationScreen} options={{ headerShown: false }} />
+    </SettingsStack.Navigator>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
 const createtabOptions = (icon) => ({
@@ -45,6 +62,7 @@ const createtabOptions = (icon) => ({
       source={icon}
     />
   ),
+  headerShown: icon !== settingsIcon,
 });
 
 const middleTabOptions = {
@@ -109,7 +127,7 @@ export default function AppNavigation() {
           options={middleTabOptions}
         />
         <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
-        <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
+        <Tab.Screen name="Settings" component={SettingsStackScreen} options={createtabOptions(settingsIcon)} />
       </Tab.Navigator>
     </NavigationContainer>
   );
