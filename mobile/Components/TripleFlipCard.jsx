@@ -12,12 +12,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 8,
     flex: 1,
-    justifyContent: 'center', // Vertically center
-    alignItems: 'center', // Horizontally center
   },
   image: {
-    width: '50%',
-    height: '80%',
+    width: '20%',
+    height: '30%',
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
   cardFront: {
     height: '100%',
