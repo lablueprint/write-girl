@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Dimensions,
+  StyleSheet, Text, View, Dimensions, Button,
 } from 'react-native';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import HomeScreenCard from '../Components/HomeScreenCard';
 import TabBar from '../Components/HomeScreenTab';
 
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     paddingRight: 15, // Padding for the right (if needed)
   },
 
-  bottomHalfContainer: {  
+  bottomHalfContainer: {
     alignItems: 'center',
   },
 
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [page, setPage] = React.useState('pep_talk');
   const [cardData, setCardData] = React.useState('default_text');
 
@@ -100,6 +101,10 @@ export default function HomeScreen() {
     </View>
   );
 
+  const directToTripleFlip = () => {
+    navigation.navigate('Triple Flip');
+  };
+
   return (
     <View style={styles.container}>
       {
@@ -113,6 +118,13 @@ export default function HomeScreen() {
           displayPage()
         }
       </View>
+      <Button title="Triple Flip Screen" onPress={directToTripleFlip} color="#000000" />
     </View>
   );
 }
+
+HomeScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
