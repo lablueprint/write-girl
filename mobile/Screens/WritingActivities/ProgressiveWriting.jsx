@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView,
+  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, ImageBackground,
 } from 'react-native';
 import axios from 'axios';
 
 const window = Dimensions.get('window');
-const activityDim = window.width * 0.45;
+const activityDim = window.width * 0.5;
 const bannerDim = window.width * 0.9;
 const buttonDim = window.height * 0.05;
 
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     width: '100%',
     justifyContent: 'center',
-    gap: 10,
+    gap: 0,
   },
 
   activity: {
@@ -110,8 +110,10 @@ const styles = StyleSheet.create({
 
 // List of genre mappings in order
 const genreLabels = [
-  'Writing Experiments', 'Journalism', 'Songwriting', 'Poetry', 'Screenwriting', 'Comedy', 'Fiction', 'Memoir', 'Sci-Fi', 'Free Genre',
+  'Colors', 'Sounds', 'Textures', 'Weather', 'Nature', 'Relationships',
 ];
+
+const doorImage = require('../../assets/doors/door-2.png');
 
 export default function ProgressiveWritingScreen() {
   const [activities, setActivities] = useState([]);
@@ -269,15 +271,21 @@ export default function ProgressiveWritingScreen() {
               {
               genreLabels.map((label) => (
                 // 10 Doors Screen
-                <TouchableOpacity
-                  key={label}
-                  style={styles.activity}
-                  onPress={() => { selectActivityGenre(label); }}
-                >
-                  <Text>
-                    {label}
-                  </Text>
-                </TouchableOpacity>
+                <ImageBackground source={doorImage} resizeMode="fit">
+                  <TouchableOpacity
+                    key={label}
+                    style={styles.activity}
+                    onPress={() => { selectActivityGenre(label); }}
+                  >
+
+                    <Text>
+
+                      {label}
+
+                    </Text>
+
+                  </TouchableOpacity>
+                </ImageBackground>
               ))
             }
             </ScrollView>
