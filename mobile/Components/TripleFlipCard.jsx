@@ -1,10 +1,11 @@
 import {
-  View, StyleSheet, Text, Image, TouchableOpacity, Button, Pressable,
+  View, StyleSheet, Text, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Animated, {
   useSharedValue, useAnimatedStyle, withTiming, interpolate,
 } from 'react-native-reanimated';
+import { useEffect } from 'react';
 
 const styles = StyleSheet.create({
   card: {
@@ -51,9 +52,12 @@ const palette = {
   },
 };
 
-export default function TripleFlipCard({ image, color }) {
-  const spin = useSharedValue(0);
-  // WriteGirl logo
+export default function TripleFlipCard({ image, color, sideShown }) {
+  const spin = useSharedValue(sideShown);
+
+  useEffect(() => {
+    spin.value = sideShown;
+  }, [sideShown]);
 
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const spinVal = interpolate(spin.value, [0, 1], [0, 180]);
@@ -79,20 +83,15 @@ export default function TripleFlipCard({ image, color }) {
       ],
     };
   }, []);
-  console.log(spin.value);
   return (
     <Animated.View style={[styles.card, palette[color], frontAnimatedStyle]}>
       <Animated.View accessible accessibilityRole="button" style={[styles.cardFront, palette[color], frontAnimatedStyle]}>
-        <Pressable onPress={() => { spin.value = spin.value ? 0 : 1; console.log('pressed'); }}>
-          <Image style={styles.image} source={image} />
-        </Pressable>
+        <Image style={styles.image} source={image} />
       </Animated.View>
       <Animated.View style={[styles.cardBack, backAnimatedStyle]}>
-        <Pressable>
-          <Text>
-            Back!
-          </Text>
-        </Pressable>
+        <Text>
+          Back! This will be the actual card image.
+        </Text>
       </Animated.View>
     </Animated.View>
   );
@@ -101,4 +100,5 @@ export default function TripleFlipCard({ image, color }) {
 TripleFlipCard.propTypes = {
   image: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
+  sideShown: PropTypes.number.isRequired,
 };
