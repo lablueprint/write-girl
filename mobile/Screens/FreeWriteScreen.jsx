@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View, StyleSheet, Pressable, Text, Dimensions,
 } from 'react-native';
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     top: windowHeight * 0.55,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    zIndex: 0,
 
     borderColor: 'purple',
     borderWidth: 2,
@@ -83,6 +84,8 @@ const styles = StyleSheet.create({
 });
 
 export default function FreeWriteScreen() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <View style={styles.container}>
       <SvgXml xml={background} style={styles.svg} />
@@ -93,11 +96,13 @@ export default function FreeWriteScreen() {
       </Text>
 
       <View style={styles.icons}>
-        <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} />
-        <Pressable>
-          <SvgXml xml={timerIcon} />
-        </Pressable>
-        <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} />
+        <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isOpen={isOpen} setIsOpen={setIsOpen} />
+        {!isOpen ? (
+          <Pressable>
+            <SvgXml xml={timerIcon} />
+          </Pressable>
+        ) : null}
+        <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isOpen={isOpen} setIsOpen={setIsOpen} />
       </View>
     </View>
   );

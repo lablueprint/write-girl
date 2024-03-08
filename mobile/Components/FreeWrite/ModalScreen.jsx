@@ -1,6 +1,8 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, {
+  useCallback, useMemo, useRef, useState,
+} from 'react';
 import {
-  View, Text, StyleSheet, Pressable, Dimensions,
+  View, Text, StyleSheet, Pressable, Dimensions, useWindowDimensions,
 } from 'react-native';
 import {
   BottomSheetModal,
@@ -12,38 +14,20 @@ import { SvgXml } from 'react-native-svg';
 import PropTypes from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const windowHeight = Dimensions.get('window').height;
+// const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // justifyContent: 'space-around',
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // position: 'absolute',
-    // ...StyleSheet.absoluteFill,
-    // marginBottom: 'auto',
-
-    // flex: 1,
-    // justifyContent: 'flex-end', // Aligns children to the bottom of the container
-    // alignItems: 'center', // Centers children horizontally
-    // width: '100%', // Takes up the full width of the screen
-    // height: '100%', // Takes up the full height of the screen
-    // display: 'inline-block',
-    borderColor: 'red',
-    borderWidth: 2,
-    borderStyle: 'dotted',
-
+    // borderColor: 'red',
+    // borderWidth: 2,
+    // borderStyle: 'dotted',
   },
   modal: {
-    // flex: 1,
     position: 'absolute',
-    width: windowHeight,
-    height: windowHeight * 0.4,
-    top: -1.2 * windowWidth,
-    left: -35,
-    zIndex: 1,
+    width: windowWidth,
+    maxWidth: '100%',
+    left: -100,
 
     borderColor: 'green',
     borderWidth: 2,
@@ -56,13 +40,20 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function ModalScreen({ icon, name, modalIcon }) {
+export default function ModalScreen({
+  icon, name, modalIcon, isOpen, setIsOpen,
+}) {
+  // const [isOpen, setIsOpen] = useState(false);
   const modalizeRef = useRef(null);
   const snapPoints = useMemo(() => ['100%'], []);
+  const { height } = useWindowDimensions();
+  const modalHeight = isOpen ? height : height * 0.5;
+  const top = -height * 0.55;
 
   const handlePresentModalPress = useCallback(() => {
     if (modalizeRef.current) {
       modalizeRef.current.present();
+      setIsOpen(true);
       console.log('Modal pressed');
     } else {
       console.log('Modal not opened');
@@ -70,10 +61,13 @@ export default function ModalScreen({ icon, name, modalIcon }) {
   }, []);
   const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
+    if (index === -1) {
+      setIsOpen(false);
+    }
   }, []);
 
   const displayModal = () => (
-    <GestureHandlerRootView style={styles.modal}>
+    <GestureHandlerRootView style={{ ...styles.modal, height: modalHeight, top }}>
       <BottomSheetModalProvider>
         <BottomSheetModal
           ref={modalizeRef}
@@ -96,10 +90,17 @@ export default function ModalScreen({ icon, name, modalIcon }) {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={handlePresentModalPress}>
+      {!isOpen ? (
+        <Pressable onPress={handlePresentModalPress}>
+          <SvgXml xml={icon} />
+        </Pressable>
+      ) : null}
+      {displayModal()}
+
+      {/* <Pressable onPress={handlePresentModalPress}>
         <SvgXml xml={icon} />
       </Pressable>
-      {displayModal()}
+      {displayModal()} */}
     </View>
   );
 }
@@ -108,6 +109,8 @@ ModalScreen.propTypes = {
   icon: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   modalIcon: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
 /// ////////////////////////////////////// using Medium article
