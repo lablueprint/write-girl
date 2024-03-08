@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, Image,
+  View, Text, StyleSheet, Image, useWindowDimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -13,22 +13,21 @@ const styles = StyleSheet.create({
   image: {
     justifyContent: 'center',
   },
-  title:{
+  title: {
     fontWeight: '800',
     fontSize: 20,
     marginBottom: 10,
-    textAlign: 'center',
   },
   description: {
     fontWeight: '300',
-    textAlign: 'center',
-    paddingHorizontal: 64,
   },
 });
 
 export default function OnboardingItem({ item }) {
+  const { width } = useWindowDimensions();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { width }]}>
       <Image source={item.image} style={styles.image} />
 
       <View>

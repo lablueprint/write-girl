@@ -1,16 +1,35 @@
 import { React, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, TouchableOpacity, StyleSheet, Text, Image, ScrollView, Animated, FlatList
+  View, TouchableOpacity, StyleSheet, Text, Image, ScrollView, Animated, FlatList,
 } from 'react-native';
 //import Onboarding from 'react-native-onboarding-swiper';
 import welcomeIcon from '../assets/welcomeIcon.png';
 import OnboardingItem from '../Components/OnboardingItem';
+import Paginator from '../Components/Paginator';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  nextAlign: {
+    marginLeft: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between', // Place items at each end of the row
+    alignItems: 'center',
+    width: '80%', // Adjust the width as needed
+  },
+  nextButton: {
+    backgroundColor: '#BFD25A',
+    paddingVertical: 10,
+    paddingHorizontal: 70,
+    borderRadius: 20,
+    marginBottom: 50,
+  },
+  nextText: {
+    // font: 'Lato',
+    fontSize: 20,
   },
 });
 
@@ -24,14 +43,14 @@ export default function OnboardingScreen({ navigation }) {
     },
     {
       id: 2,
-      title: 'Improve your writing skills!',
-      description: 'placeholder',
+      title: 'This is your personal tool.',
+      description: 'helloooooooooo',
       image: require('../assets/welcomeIcon.png'),
     },
     {
       id: 3,
-      title: 'Your own writing tool!',
-      subtitle: 'placeholder',
+      title: 'Unique prompts and features.',
+      description: 'placeholder',
       image: require('../assets/welcomeIcon.png'),
     },
   ];
@@ -44,11 +63,28 @@ export default function OnboardingScreen({ navigation }) {
     setCurrentIndex(viewableItems[0].index);
   }).current;
 
+  const renderItem = ({ item }) => <OnboardingItem item={item} />;
+
+  const handleNext = () => {
+    const nextIndex = currentIndex + 1;
+
+    // If it's the last onboarding page, navigate to another screen
+    if (nextIndex === slides.length) {
+      navigation.navigate('Sign Up'); // Replace 'NextScreen' with the name of your target screen
+    } else {
+      // Scroll to the next page
+      if (slidesRef.current && nextIndex < slides.length) {
+        slidesRef.current.scrollToIndex({ index: nextIndex });
+      }
+    }
+  };
+
+
   return (
     <View style={styles.container}>
       <FlatList
         data={slides}
-        renderItem={({ item }) => <OnboardingItem item={item} />}
+        renderItem={renderItem}
         horizontal
         showsHorizontalScrollIndicator
         pagingEnabled
@@ -60,7 +96,16 @@ export default function OnboardingScreen({ navigation }) {
         scrollEventThrottle={32}
         onViewableItemsChanged={viewableItemsChanged}
         ref={slidesRef}
+        contentContainerStyle={{ paddingHorizontal: 0 }}
       />
+
+      <View style={styles.nextAlign}>
+        <Paginator data={slides} scrollX={scrollX} />
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+          <Text style={styles.nextText}>Next</Text>
+        </TouchableOpacity>
+      </View>
+
     </View>
   );
 }
