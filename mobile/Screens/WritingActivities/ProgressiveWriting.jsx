@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, ImageBackground,
+  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, ImageBackground, Image,
 } from 'react-native';
 import axios from 'axios';
+import colorsImage from '../../assets/doors/colors.png';
+import soundsImage from '../../assets/doors/sounds.png';
+import texturesImage from '../../assets/doors/textures.png';
+import weatherImage from '../../assets/doors/weather.png';
+import natureImage from '../../assets/doors/nature.png';
+import relationshipsImage from '../../assets/doors/relationships.png';
 
 const window = Dimensions.get('window');
 const activityDim = window.width * 0.5;
@@ -22,10 +28,9 @@ const styles = StyleSheet.create({
 
   activity: {
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#EBEBEB',
     width: activityDim,
     height: activityDim,
+    justifyContent: 'center', // will create the gutter between body and footer
   },
 
   banner: {
@@ -106,14 +111,46 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 20,
   },
+
+  doorText: {
+
+  },
 });
 
 // List of genre mappings in order
 const genreLabels = [
-  'Colors', 'Sounds', 'Textures', 'Weather', 'Nature', 'Relationships',
+  {
+    label: 'Colors',
+    color: '#76A785',
+    image: colorsImage,
+  },
+  {
+    label: 'Sounds',
+    color: '#63A1AF',
+    image: soundsImage,
+  },
+  {
+    label: 'Textures',
+    color: '#E97A54',
+    image: texturesImage,
+  },
+  {
+    label: 'Weather',
+    color: '#9FE7FF',
+    image: weatherImage,
+  },
+  {
+    label: 'Nature',
+    color: '#BFD25A',
+    image: natureImage,
+  },
+  {
+    label: 'Relationships',
+    color: '#F0A2B8',
+    image: relationshipsImage,
+  },
+  // 'Sounds', 'Textures', 'Weather', 'Nature', 'Relationships',
 ];
-
-const doorImage = require('../../assets/doors/door-2.png');
 
 export default function ProgressiveWritingScreen() {
   const [activities, setActivities] = useState([]);
@@ -269,20 +306,23 @@ export default function ProgressiveWritingScreen() {
           ? (
             <ScrollView contentContainerStyle={styles.container}>
               {
-              genreLabels.map((label) => (
+              genreLabels.map((category) => (
                 // 10 Doors Screen
-                <ImageBackground source={doorImage} resizeMode="fit">
+                <ImageBackground source={category.image} style={{ backgroundColor: category.color }}>
                   <TouchableOpacity
-                    key={label}
+                    key={category.label}
                     style={styles.activity}
-                    onPress={() => { selectActivityGenre(label); }}
+                    onPress={() => { selectActivityGenre(category.label); }}
                   >
 
-                    <Text>
+                    <Text
+                      style={styles.doorText}
+                    >
 
-                      {label}
+                      {category.label}
 
                     </Text>
+                    {/* <Image source={doorImage} styles={styles.door} resizeMode="stretch" /> */}
 
                   </TouchableOpacity>
                 </ImageBackground>
