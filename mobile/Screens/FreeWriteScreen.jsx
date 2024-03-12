@@ -84,7 +84,9 @@ const styles = StyleSheet.create({
 });
 
 export default function FreeWriteScreen() {
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
+  const [isMusicOpen, setIsMusicOpen] = useState(false);
+  const [isImageOpen, setIsImageOpen] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -96,13 +98,15 @@ export default function FreeWriteScreen() {
       </Text>
 
       <View style={styles.icons}>
-        <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isOpen={isOpen} setIsOpen={setIsOpen} />
-        {!isOpen ? (
-          <Pressable>
-            <SvgXml xml={timerIcon} />
-          </Pressable>
+        <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} />
+        {!isMusicOpen ? (
+          <>
+            <Pressable>
+              <SvgXml xml={timerIcon} />
+            </Pressable>
+            <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} />
+          </>
         ) : null}
-        <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isOpen={isOpen} setIsOpen={setIsOpen} />
       </View>
     </View>
   );
