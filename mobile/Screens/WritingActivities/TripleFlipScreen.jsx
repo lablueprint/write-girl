@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Animated, {
   useAnimatedStyle, useSharedValue, withTiming, withDelay, withSpring,
 } from 'react-native-reanimated';
+import axios from 'axios';
 import TripleFlipCard from '../../Components/TripleFlipCard';
 
 const logo = require('../../assets/logo.png');
@@ -27,6 +28,11 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: '#fff',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  mediumText: {
+    color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -47,7 +53,6 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#BFD25A',
-    color: '#fff',
     padding: 10,
     alignItems: 'center',
     fontSize: 16,
@@ -60,6 +65,25 @@ const styles = StyleSheet.create({
     color: '#21424F',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  navbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  navbarText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  top: {
+    height: '10%',
+    width: '100%',
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
@@ -115,11 +139,12 @@ const locationsX = [
   [0, 0, 0, -screenWidth, -screenWidth],
 ];
 
-export default function TripleFlipScreen() {
+export default function TripleFlipScreen({ navigation }) {
   const [step, setStep] = useState(0);
-  const [shuffleButtonShow, setShuffleButtonShow] = useState(true);
+  const [startDisplay, setDisplay] = useState(true);
   const [flipButtonShow, setFlipButtonShow] = useState(false);
   const [cardShowBack, setCardShowBack] = useState(0);
+  const [endButtonShow, setEndButtonShow] = useState(false);
 
   useEffect(() => {
     if (step === 0) {
@@ -135,25 +160,108 @@ export default function TripleFlipScreen() {
   }, [step]);
 
   const animateShuffle = () => {
+    setFlipButtonShow(false);
+    setEndButtonShow(false);
+    setCardShowBack(0);
     setStep(1);
-    setShuffleButtonShow(false);
+    setDisplay(false);
   };
 
   const flipCards = () => {
     setCardShowBack(1);
     setFlipButtonShow(false);
+    setTimeout(() => {
+      setEndButtonShow(true);
+    }, animationDuration);
+  };
+
+  async function getId() {
+    const userId = await Storage({ key: 'hello', value: '', saveKey: false });
+
+    try {
+      if (!userId) {
+        console.log('User ID is null.');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    return userId;
+  }
+
+  const saveTripleFlip = async () => {
+    const userId = '65bc75ca64a9510aeb9c5cc0';
+    const date = new Date();
+    const tripleFlip = {
+      date: date.toDateString(),
+      flipID: '123456789',
+    };
+
+    try {
+      if (userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlips/${userId}`, tripleFlip);
+        return response;
+      }
+      console.log('User ID is null.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
   };
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.titleText}>
-          Triple Flips
-        </Text>
-        <Text style={styles.text}>
-          Hit the button. Let the collection of ojects and words inspire a poem,
-          story or even a song. Don&apos;t think...
-        </Text>
+      <View style={styles.top}>
+        { startDisplay
+          && (
+            <View>
+              <View style={styles.navbar}>
+                <TouchableOpacity onPress={() => { navigation.navigate('Home Screen'); }}>
+                  <Text style={styles.navbarText}>
+                    &lt;
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { navigation.navigate('History'); }}>
+                  <Text style={styles.navbarText}>
+                    History
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.titleText}>
+                Triple Flips
+              </Text>
+              <Text style={styles.text}>
+                Hit the button. Let the collection of ojects and words inspire a poem,
+                story or even a song. Don&apos;t think...
+              </Text>
+            </View>
+          )}
+        { !startDisplay
+          && (
+            <View>
+              <View>
+                <View style={styles.navbar}>
+                  <TouchableOpacity onPress={() => { navigation.navigate('App Home'); }}>
+                    <Text style={styles.navbarText}>
+                      &lt;
+                    </Text>
+                  </TouchableOpacity>
+                  { endButtonShow
+                    && (
+                      <TouchableOpacity onPress={() => { saveTripleFlip(); }}>
+                        <Text style={styles.navbarText}>
+                          Bookmark_icon_jpg_here
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                </View>
+              </View>
+              <View style={styles.title}>
+                <Text style={styles.mediumText}>
+                  Triple Flip
+                </Text>
+              </View>
+            </View>
+          )}
       </View>
       <View style={styles.cardContainer}>
         <Animated.View
@@ -188,7 +296,7 @@ export default function TripleFlipScreen() {
         </Animated.View>
       </View>
       {
-        shuffleButtonShow
+        startDisplay
         && (
           <TouchableOpacity style={styles.button} onPress={animateShuffle}>
             <Text style={styles.buttonText}>Shuffle</Text>
@@ -198,8 +306,16 @@ export default function TripleFlipScreen() {
       {
         flipButtonShow
         && (
-          <TouchableOpacity style={styles.button} onPress={flipCards} >
+          <TouchableOpacity style={styles.button} onPress={flipCards}>
             <Text style={styles.buttonText}>Flip</Text>
+          </TouchableOpacity>
+        )
+      }
+      {
+        endButtonShow
+        && (
+          <TouchableOpacity style={styles.button} onPress={animateShuffle}>
+            <Text style={styles.buttonText}>Re-shuffle</Text>
           </TouchableOpacity>
         )
       }

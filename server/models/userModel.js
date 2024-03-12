@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
     required: false,
     type: [String],
   },
+  tripleFlipHistory: {
+    required: false,
+    type: [Object],
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [allSaved, setAllSaved] = useState('');
   const [activities, setActivities] = useState('');
   const [storyStarters, setStoryStarters] = useState('');
@@ -301,6 +301,7 @@ export default function HomeScreen() {
           </View>
         ))}
       </View>
+      <Button title="Triple Flips" onPress={directToTripleFlip} />
     </ScrollView>
   );
 }

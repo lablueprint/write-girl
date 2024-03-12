@@ -67,6 +67,29 @@ const addSavedTripleFlips = async (req, res) => {
   }
 };
 
+const addTripleFlipHistory = async (req, res) => {
+  try {
+    const data = await User.updateOne(
+      { _id: req.params.userId },
+      { $push: { tripleFlipHistory: req.body } },
+    );
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getTripleFlipHistory = async (req, res) => {
+  try {
+    const data = await User.find({ _id: req.params.userId }, 'tripleFlipHistory -_id');
+    res.json({
+      msg: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const addSavedTraits = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -401,6 +424,7 @@ const removeSavedItems = async (req, res) => {
 module.exports = {
   createUser,
   updateUser,
+  addTripleFlipHistory,
   addSavedActivities,
   addSavedPepTalks,
   addSavedWritingTips,
@@ -421,6 +445,7 @@ module.exports = {
   getSavedPlots,
   getSavedSettings,
   getSavedItems,
+  getTripleFlipHistory,
   deleteUser,
   removeSavedActivities,
   removeSavedPepTalks,

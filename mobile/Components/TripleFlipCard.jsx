@@ -62,7 +62,6 @@ export default function TripleFlipCard({ image, color, sideShown }) {
 
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const spinVal = interpolate(spin.value, [0, 1], [0, 180]);
-    console.log(spin.value);
     return {
       transform: [
         {
