@@ -53,7 +53,6 @@ export default function AppNavigation() {
               component={OnboardingScreen}
             />
           )}
-          <Stack.Screen name="Onboarding" component={OnboardingScreen}/>
           <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }}/>
           <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }}/>
           <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />

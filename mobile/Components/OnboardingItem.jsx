@@ -7,19 +7,26 @@ import PropTypes from 'prop-types';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
+    bottom: '10%',
   },
   image: {
-    justifyContent: 'center',
+    width: 430,
+    height: 500,
+    marginBottom: 50,
   },
   title: {
     fontWeight: '800',
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: 40,
+    marginBottom: 20,
+    marginLeft: 50,
+    color: '#fff',
   },
   description: {
-    fontWeight: '300',
+    fontSize: 20,
+    marginLeft: 50,
+    marginRight: 80,
+    color: '#fff',
   },
 });
 

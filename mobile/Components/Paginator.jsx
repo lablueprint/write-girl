@@ -1,16 +1,15 @@
-import { React, useState, useRef } from 'react';
+import { React } from 'react';
 import PropTypes from 'prop-types';
 import {
   View, StyleSheet, Animated, useWindowDimensions,
 } from 'react-native';
-import welcomeIcon from '../assets/welcomeIcon.png';
 
 const styles = StyleSheet.create({
   dot: {
-    height: 10,
-    backgroundColor: '#000',
+    height: 9.7,
+    color: '#fff',
     borderRadius: 5,
-    marginHorizontal: 5,
+    marginHorizontal: 2,
   },
 });
 
@@ -24,7 +23,7 @@ export default function Paginator({ data, scrollX }) {
 
         const dotBackgroundColor = scrollX.interpolate({
           inputRange,
-          outputRange: ['rgba(0,0,0,0.3)', 'rgba(0,0,0,1)', 'rgba(0,0,0,0.3)'],
+          outputRange: ['rgba(255,255,255,0.6)', 'rgba(191, 210, 90, 1)', 'rgba(191, 210, 90, 1)'],
           extrapolate: 'clamp',
         });
 
@@ -49,5 +48,5 @@ Paginator.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape,
   ).isRequired,
-  scrollX: PropTypes.instanceOf(Animated.Value).isRequired, // Assuming scrollX is an Animated.Value
+  scrollX: PropTypes.instanceOf(Animated.Value).isRequired,
 };

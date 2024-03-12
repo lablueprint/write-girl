@@ -1,12 +1,11 @@
 import { React, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, TouchableOpacity, StyleSheet, Text, Image, ScrollView, Animated, FlatList,
+  View, TouchableOpacity, StyleSheet, Text, Animated, FlatList,
 } from 'react-native';
-//import Onboarding from 'react-native-onboarding-swiper';
-import welcomeIcon from '../assets/welcomeIcon.png';
 import OnboardingItem from '../Components/OnboardingItem';
 import Paginator from '../Components/Paginator';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,19 +15,19 @@ const styles = StyleSheet.create({
   nextAlign: {
     marginLeft: 50,
     flexDirection: 'row',
-    justifyContent: 'space-between', // Place items at each end of the row
+    justifyContent: 'space-between',
     alignItems: 'center',
-    width: '80%', // Adjust the width as needed
+    width: '80%',
+    marginBottom: 60,
   },
   nextButton: {
     backgroundColor: '#BFD25A',
     paddingVertical: 10,
     paddingHorizontal: 70,
     borderRadius: 20,
-    marginBottom: 50,
+    marginBottom: 60,
   },
   nextText: {
-    // font: 'Lato',
     fontSize: 20,
   },
 });
@@ -38,24 +37,24 @@ export default function OnboardingScreen({ navigation }) {
     {
       id: 1,
       title: 'Challenge your creativity!',
-      description: 'placeholder',
-      image: require('../assets/welcomeIcon.png'),
+      description: 'placeholder to make it look nice and beautiful',
+      image: require('../assets/welcome1.png'),
     },
     {
       id: 2,
       title: 'This is your personal tool.',
-      description: 'helloooooooooo',
-      image: require('../assets/welcomeIcon.png'),
+      description: 'placeholder to make it look nice and beautiful',
+      image: require('../assets/welcome2.png'),
     },
     {
       id: 3,
       title: 'Unique prompts and features.',
-      description: 'placeholder',
-      image: require('../assets/welcomeIcon.png'),
+      description: 'placeholder to make it look nice and beautiful',
+      image: require('../assets/welcome3.png'),
     },
   ];
 
-  const[currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const slidesRef = useRef(null);
 
@@ -81,12 +80,17 @@ export default function OnboardingScreen({ navigation }) {
 
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      style={styles.container}
+      colors={['#DE5B45', '#7EA591', '#5CB1CE']}
+      start={{ x: 0, y: 0.8 }}
+      end={{ x: 1, y: 0 }}
+    >
       <FlatList
         data={slides}
         renderItem={renderItem}
         horizontal
-        showsHorizontalScrollIndicator
+        showsHorizontalScrollIndicator={false}
         pagingEnabled
         bounces={false}
         keyExtractor={(item) => item.id}
@@ -105,117 +109,9 @@ export default function OnboardingScreen({ navigation }) {
           <Text style={styles.nextText}>Next</Text>
         </TouchableOpacity>
       </View>
-
-    </View>
+    </LinearGradient>
   );
 }
-
-/*
-// Skip component as a function declaration
-function Skip({ ...props }) {
-  return (
-    <TouchableOpacity
-      style={{
-        marginLeft: 10,
-        marginHorizontal: 10,
-      }}
-      {...props}
-    >
-      <Text style={{ fontSize: 16 }}>Skip</Text>
-    </TouchableOpacity>
-  );
-}
-
-// Next component as a function declaration
-function Next({ ...props }) {
-  return (
-    <TouchableOpacity
-      style={{
-        //width: 220,
-        //height: 60,
-        marginHorizontal: 10,
-      }}
-      {...props}
-    >
-      <Text style={{ fontSize: 16 }}>Next</Text>
-    </TouchableOpacity>
-  );
-}
-
-// Done component as a function declaration
-function Done({ ...props }) {
-  return (
-    <TouchableOpacity
-      style={{
-        width: 220,
-        marginHorizontal: 10,
-      }}
-      {...props}
-    >
-      <Text style={{ fontSize: 16 }}>Done</Text>
-    </TouchableOpacity>
-  );
-}
-
-function CustomDot({ selected }) {
-  return (
-    <TouchableOpacity
-      style={{
-        width: 40,
-        height: 10,
-        borderRadius: 10, // Set border radius for a rounded appearance
-        backgroundColor: selected ? '#000' : '#888', // Change colors as needed
-        marginHorizontal: 3,
-        marginBottom: 500,
-      }}
-    />
-  );
-}
-
-/*
-export default function OnboardingScreen({ navigation }) {
-  const handleNext = () => {
-    navigation.replace('Sign Up');
-  };
-
-  return (
-    <View style={styles.container}>
-      <Onboarding
-        DotComponent={CustomDot}
-        SkipButtonComponent={Skip}
-        NextButtonComponent={Next}
-        DoneButtonComponent={Done}
-        bottomBarColor="#fff"
-        onSkip={() => navigation.replace('Sign Up')}
-        onDone={() => navigation.navigate('Sign Up')}
-        pages={[
-          {
-            backgroundColor: '#fff',
-            image: <Image source={welcomeIcon} />,
-            title: 'Challenge your creativity!',
-            subtitle: 'placeholder',
-          },
-          {
-            backgroundColor: '#fff',
-            image: <Image source={welcomeIcon} />,
-            title: 'Improve your writing skills!',
-            subtitle: 'placeholder',
-          },
-          {
-            backgroundColor: '#fff',
-            image: <Image source={welcomeIcon} />,
-            title: 'Your own writing tool!',
-            subtitle: 'placeholder',
-          },
-        ]}
-      />
-      <TouchableOpacity>
-        <Text style={{ fontSize: 16 }}>Next</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-*/
 
 OnboardingScreen.propTypes = {
   navigation: PropTypes.shape({
@@ -223,5 +119,3 @@ OnboardingScreen.propTypes = {
     replace: PropTypes.func,
   }).isRequired,
 };
-
-//DELETE ONBOARDING IN APP NAVIGATION LATERRRR
