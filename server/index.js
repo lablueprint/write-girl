@@ -18,6 +18,7 @@ const activityRouter = require('./routes/progressiveWritingRoutes');
 const pepTalkRouter = require('./routes/pepTalkRoutes');
 const writingTipRouter = require('./routes/writingTipRoutes');
 const mindBodyRouter = require('./routes/mindBodyRoute');
+const userRouter = require('./routes/userRoutes');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -46,6 +47,7 @@ app.use('/activity', activityRouter);
 app.use('/pepTalk', pepTalkRouter);
 app.use('/writingTip', writingTipRouter);
 app.use('/mindBody', mindBodyRouter);
+app.use('/user', userRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
