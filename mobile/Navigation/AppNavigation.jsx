@@ -15,7 +15,7 @@ import SignUpScreen from '../Screens/SignUpScreen';
 import WritingTipScreen from '../Screens/WritingTipScreen';
 import LogInScreen from '../Screens/LogInScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
-import HistoryScreen from '../Screens/History';
+import HistoryScreen from '../Screens/HistoryScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 

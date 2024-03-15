@@ -18,7 +18,6 @@ userRouter.get('/getPlots/:userId', userController.getSavedPlots);
 userRouter.get('/getSettings/:userId', userController.getSavedSettings);
 userRouter.get('/getItems/:userId', userController.getSavedItems);
 userRouter.get('/getTripleFlipHistory/:userId', userController.getTripleFlipHistory);
-
 userRouter.patch('/update/:id', userController.updateUser);
 userRouter.patch('/addActivities/:userId', userController.addSavedActivities);
 userRouter.patch('/addPepTalks/:userId', userController.addSavedPepTalks);
@@ -36,7 +35,7 @@ userRouter.patch('/removeTraits/:userId', userController.removeSavedTraits);
 userRouter.patch('/removePlots/:userId', userController.removeSavedPlots);
 userRouter.patch('/removeSettings/:userId', userController.removeSavedSettings);
 userRouter.patch('/removeItems/:userId', userController.removeSavedItems);
-userRouter.patch('/tripleFlipHistory/:userId', userController.tripleFlipHistory);
+userRouter.patch('/addTripleFlipHistory/:userId', userController.addTripleFlipHistory);
 
 userRouter.delete('/delete/:id', userController.deleteUser);
 

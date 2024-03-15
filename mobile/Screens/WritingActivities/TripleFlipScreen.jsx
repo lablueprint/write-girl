@@ -135,8 +135,8 @@ const locationsX = [
   [-screenWidth, -screenWidth, -screenWidth, -screenWidth, -screenWidth],
   [0, -screenWidth, -screenWidth, -screenWidth, -screenWidth],
   [0, 0, -screenWidth, -screenWidth, -screenWidth],
-  [0, 0, 0, -screenWidth, -screenWidth],
-  [0, 0, 0, -screenWidth, -screenWidth],
+  [0, 0, 0, -2 * screenWidth, -2 * screenWidth],
+  [0, 0, 0, -2 * screenWidth, -2 * screenWidth],
 ];
 
 export default function TripleFlipScreen({ navigation }) {
@@ -167,11 +167,32 @@ export default function TripleFlipScreen({ navigation }) {
     setDisplay(false);
   };
 
+  const addTripleFlipToHistory = async () => {
+    const userId = '65bc75ca64a9510aeb9c5cc0';
+    const date = new Date();
+    const tripleFlip = {
+      date: date.toDateString(),
+      flipID: '123456789',
+    };
+
+    try {
+      if (userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlipHistory/65bc75ca64a9510aeb9c5cc0`, tripleFlip);
+        return response;
+      }
+      console.log('User ID is null.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
+
   const flipCards = () => {
     setCardShowBack(1);
     setFlipButtonShow(false);
     setTimeout(() => {
       setEndButtonShow(true);
+      addTripleFlipToHistory();
     }, animationDuration);
   };
 
@@ -240,7 +261,7 @@ export default function TripleFlipScreen({ navigation }) {
             <View>
               <View>
                 <View style={styles.navbar}>
-                  <TouchableOpacity onPress={() => { navigation.navigate('App Home'); }}>
+                  <TouchableOpacity onPress={() => { navigation.navigate('Home Screen'); }}>
                     <Text style={styles.navbarText}>
                       &lt;
                     </Text>

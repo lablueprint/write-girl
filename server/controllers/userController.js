@@ -68,12 +68,28 @@ const addSavedTripleFlips = async (req, res) => {
 };
 
 const addTripleFlipHistory = async (req, res) => {
+  const history = await User.findOne(
+    { _id: req.params.userId },
+    {
+      _id: 0,
+      tripleFlipHistory: 1,
+    },
+  );
+  let data = null;
   try {
-    const data = await User.updateOne(
-      { _id: req.params.userId },
-      { $push: { tripleFlipHistory: req.body } },
-    );
-    res.json(data);
+    if (history.tripleFlipHistory.length >= 5) {
+      data = await User.updateOne(
+        { _id: req.params.userId },
+        { $pop: { tripleFlipHistory: -1 } },
+        { $push: { tripleFlipHistory: req.body } },
+      );
+    } else {
+      data = await User.updateOne(
+        { _id: req.params.userId },
+        { $push: { tripleFlipHistory: req.body } },
+      );
+    }
+    res.send(data);
   } catch (err) {
     console.log(err);
   }
@@ -81,10 +97,8 @@ const addTripleFlipHistory = async (req, res) => {
 
 const getTripleFlipHistory = async (req, res) => {
   try {
-    const data = await User.find({ _id: req.params.userId }, 'tripleFlipHistory -_id');
-    res.json({
-      msg: data,
-    });
+    const data = await User.findOne({ _id: req.params.userId }, 'tripleFlipHistory -_id');
+    res.json(data);
   } catch (err) {
     console.log(err);
   }
