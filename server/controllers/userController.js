@@ -19,6 +19,7 @@ const updateUser = async (req, res) => {
   }
 };
 
+// Send [activityID]
 const addSavedActivities = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -31,6 +32,7 @@ const addSavedActivities = async (req, res) => {
   }
 };
 
+// Send [pepTalkID]
 const addSavedPepTalks = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -43,6 +45,7 @@ const addSavedPepTalks = async (req, res) => {
   }
 };
 
+// Send [writingTipID]
 const addSavedWritingTips = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -55,6 +58,7 @@ const addSavedWritingTips = async (req, res) => {
   }
 };
 
+// Send [tripleFlipID]
 const addSavedTripleFlips = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -67,6 +71,7 @@ const addSavedTripleFlips = async (req, res) => {
   }
 };
 
+// Send [traitsID]
 const addSavedTraits = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -79,6 +84,7 @@ const addSavedTraits = async (req, res) => {
   }
 };
 
+// Send [plotID]
 const addSavedPlots = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -91,6 +97,7 @@ const addSavedPlots = async (req, res) => {
   }
 };
 
+// Send [settingID]
 const addSavedSettings = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -103,6 +110,7 @@ const addSavedSettings = async (req, res) => {
   }
 };
 
+// Send [itemID]
 const addSavedItems = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -342,7 +350,7 @@ const removeSavedTripleFlips = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pullAll: { savedTripleFlips: req.body } },
+      { $pull: { savedTripleFlips: req.body } },
     );
     res.json(data);
   } catch (err) {
