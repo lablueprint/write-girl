@@ -23,23 +23,23 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     // borderStyle: 'dotted',
   },
-  modal: {
-    position: 'absolute',
-    width: windowWidth,
-    maxWidth: '100%',
-    left: -345,
-
-    borderColor: 'green',
-    borderWidth: 2,
-    borderStyle: 'dotted',
-  },
   musicModal: {
     position: 'absolute',
     width: windowWidth,
-    maxWidth: '100%',
-    left: -163,
+    left: '50%',
+    transform: [{ translateX: -windowWidth * 0.5 }],
 
     borderColor: 'red',
+    borderWidth: 2,
+    borderStyle: 'dotted',
+  },
+  imageModal: {
+    position: 'absolute',
+    width: windowWidth,
+    left: '90%',
+    transform: [{ translateX: -windowWidth * 0.90 }],
+
+    borderColor: 'green',
     borderWidth: 2,
     borderStyle: 'dotted',
   },
@@ -84,7 +84,7 @@ export default function ModalScreen({
   }, []);
 
   const displayModal = () => (
-    <GestureHandlerRootView style={{ ...(name === 'Music' ? { ...styles.musicModal, height: musicHeight, top } : { ...styles.modal, height: imageHeight, top }) }}>
+    <GestureHandlerRootView style={{ ...(name === 'Music' ? { ...styles.musicModal, height: musicHeight, top } : { ...styles.imageModal, height: imageHeight, top }) }}>
       <BottomSheetModalProvider>
         <BottomSheetModal
           ref={modalizeRef}
