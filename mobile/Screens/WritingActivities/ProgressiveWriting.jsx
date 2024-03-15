@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
   activity: {
     alignItems: 'center',
     width: activityDim,
-    height: activityDim,
-    justifyContent: 'center', // will create the gutter between body and footer
+    height: activityDim * 1.25,
+    justifyContent: 'flex-end', // will create the gutter between body and footer
   },
 
   banner: {
@@ -113,7 +113,9 @@ const styles = StyleSheet.create({
   },
 
   doorText: {
-
+    padding: 16,
+    fontWeight: 'bold',
+    fontSize: 20,
   },
 });
 
@@ -308,7 +310,13 @@ export default function ProgressiveWritingScreen() {
               {
               genreLabels.map((category) => (
                 // 10 Doors Screen
-                <ImageBackground source={category.image} style={{ backgroundColor: category.color }}>
+                <ImageBackground
+                  source={category.image}
+                  style={{
+                    backgroundColor: category.color,
+                  }}
+                  resizeMode="contain"
+                >
                   <TouchableOpacity
                     key={category.label}
                     style={styles.activity}
