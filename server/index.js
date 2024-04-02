@@ -16,6 +16,7 @@ const settingRouter = require('./routes/storyStarter/settingRoutes');
 const itemRouter = require('./routes/storyStarter/itemRoutes');
 const activityRouter = require('./routes/progressiveWritingRoutes');
 const pepTalkRouter = require('./routes/pepTalkRoutes');
+const pocketPromptRouter = require('./routes/pocketPromptRoutes');
 const writingTipRouter = require('./routes/writingTipRoutes');
 const mindBodyRouter = require('./routes/mindBodyRoute');
 
@@ -44,6 +45,7 @@ app.use('/setting', settingRouter);
 app.use('/item', itemRouter);
 app.use('/activity', activityRouter);
 app.use('/pepTalk', pepTalkRouter);
+app.use('/pocketPrompt', pocketPromptRouter);
 app.use('/writingTip', writingTipRouter);
 app.use('/mindBody', mindBodyRouter);
 
