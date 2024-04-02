@@ -100,14 +100,14 @@ export default function LogIn({ navigation }) {
     onChangeHiddenPassword(newTextWithDots);
   };
 
-  const storeToken = async () => {
-    try {
-      await SecureStore.setItemAsync('email', email);
-      console.log('nice');
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  // const storeToken = async () => {
+  //   try {
+  //     await SecureStore.setItemAsync('email', email);
+  //     console.log('nice');
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
 
   const handleLogIn = async () => {
     try {
@@ -125,7 +125,7 @@ export default function LogIn({ navigation }) {
         console.log(res.data);
         console.log('hi');
         dispatch(login(res.data));
-        storeToken();
+        // storeToken();
       }
     } catch (err) {
       console.error(err.message);

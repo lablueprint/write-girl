@@ -40,48 +40,29 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigation() {
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // const checkAuthentication = async () => {
-  //   try {
-  //     const authEmailToken = await SecureStore.getItemAsync('email');
-  //     const authPasswordToken = await SecureStore.getItemAsync('password');
-  //     if (authEmailToken && authPasswordToken) {
-  //       setIsAuthenticated(!isAuthenticated);
-  //       setIsLoading(false);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error checking authentication:', error);
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
-
   // useEffect(() => {
   //   checkAuthentication();
   // }, []);
 
+  console.log(SecureStore.getItemAsync('user'));
   const { id, token } = useSelector((state) => state.auth);
   console.log('nav token: ', token);
   console.log('nav id: ', id);
 
-  // eslint-disable-next-line no-unused-vars
-  const getToken = async () => {
-    try {
-      console.log('gettoken: ', await SecureStore.getItemAsync('email'));
-      console.log('woooo');
-    } catch (e) {
-      console.log(e);
-    }
-    return true;
-  };
+  // // eslint-disable-next-line no-unused-vars
+  // const getToken = async () => {
+  //   try {
+  //     console.log('gettoken: ', await SecureStore.getItemAsync('user'));
+  //     console.log('woooo');
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  //   return true;
+  // };
+  // getToken();
 
   useEffect(() => {
-    getToken();
+    // getToken();
   }, []);
 
   return (

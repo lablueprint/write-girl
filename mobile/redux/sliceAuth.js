@@ -4,15 +4,33 @@ import * as SecureStore from 'expo-secure-store';
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
 
-const user = SecureStore.getItemAsync('email');
-console.log(user);
+// const user = SecureStore.getItemAsync('user');
+const fetchUser = async () => {
+  const user = await SecureStore.getItemAsync('user');
+  console.log('check');
+  console.log(SecureStore.getItemAsync('user'));
+  return user;
+};
 
-const initialState = user.token ? {
-  refresh: 0, id: user.id, token: user.token, authHeader: 'user.authHeader',
-}
-  : {
-    refresh: 0, id: null, token: null, authHeader: null,
-  };
+const initialState = fetchUser().then((user) => {
+  const userState = user.token ? {
+    refresh: 0, id: user.id, token: user.token,
+  }
+    : {
+      refresh: 0, id: null, token: null,
+    };
+  return userState;
+});
+console.log('plz');
+
+// const initialState = user.token ? {
+//   refresh: 0, id: user.id, token: user.token,
+// }
+//   : {
+//     refresh: 0, id: null, token: null,
+//   };
+console.log('initial state: ', initialState);
+console.log(SecureStore.getItemAsync('user'));
 
 const authSlice = createSlice({
   name: 'auth',
@@ -22,23 +40,14 @@ const authSlice = createSlice({
       state.refresh = 0;
       state.id = action.payload.id;
       state.token = action.payload.token;
-      state.authHeader = 'authhhh';
-    //   state.authHeader = {
-    //     Authorization: `Bearer ${action.payload.token}`,
-    //   };
-    //   // Store username and password securely
-    //   try {
-    //     await SecureStore.setItemAsync('email', JSON.stringify(action.payload.email));
-    //   } catch (e) {
-    //     console.error(e);
-    //   }
+      console.log('state: ', state);
+      SecureStore.setItemAsync('user', JSON.stringify(action.payload));
     },
     logout: (state) => {
       state.refresh = 0;
       state.id = null;
       state.token = null;
-      state.authHeader = null;
-      SecureStore.deleteItemAsync('email');
+      SecureStore.deleteItemAsync('user');
     },
     refresh: (state) => {
       state.refresh += 1;
