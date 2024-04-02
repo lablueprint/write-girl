@@ -107,11 +107,11 @@ const CHOSEN_CARDS_OFFSET = cardHeight * 0.20;
 const OFFSET = cardHeight * 0.30;
 const locationsY = [
   [2 * cardHeight - OFFSET, cardHeight - OFFSET, 0 - OFFSET, -cardHeight + 10 - OFFSET, -2 * cardHeight + 20 - OFFSET],
-  [2 * cardHeight - OFFSET, cardHeight - OFFSET, 0 - OFFSET, -cardHeight - OFFSET, -2 * cardHeight - OFFSET] ,
-  [0, - CHOSEN_CARDS_OFFSET, - 2*CHOSEN_CARDS_OFFSET,- 3* CHOSEN_CARDS_OFFSET,- 4*CHOSEN_CARDS_OFFSET],
-  [2 * cardHeight + 2*SHUFFLE_OFFSET, cardHeight - 3 * SHUFFLE_OFFSET, 0, -cardHeight - 4 * SHUFFLE_OFFSET, -2 * cardHeight + 1*SHUFFLE_OFFSET],
-  [2 * cardHeight - SHUFFLE_OFFSET, cardHeight + 3*SHUFFLE_OFFSET, 0 - SHUFFLE_OFFSET, -cardHeight, -2 * cardHeight - 4 * SHUFFLE_OFFSET],
-  [2 * cardHeight -3*SHUFFLE_OFFSET, cardHeight - 4*SHUFFLE_OFFSET, 0 + 2*SHUFFLE_OFFSET, -cardHeight +1*SHUFFLE_OFFSET, -2 * cardHeight -1*SHUFFLE_OFFSET],
+  [2 * cardHeight - OFFSET, cardHeight - OFFSET, 0 - OFFSET, -cardHeight - OFFSET, -2 * cardHeight - OFFSET],
+  [0, -CHOSEN_CARDS_OFFSET, -2 * CHOSEN_CARDS_OFFSET, -3 * CHOSEN_CARDS_OFFSET, -4 * CHOSEN_CARDS_OFFSET],
+  [2 * cardHeight + 2 * SHUFFLE_OFFSET, cardHeight - 3 * SHUFFLE_OFFSET, 0, -cardHeight - 4 * SHUFFLE_OFFSET, -2 * cardHeight + 1 * SHUFFLE_OFFSET],
+  [2 * cardHeight - SHUFFLE_OFFSET, cardHeight + 3 * SHUFFLE_OFFSET, 0 - SHUFFLE_OFFSET, -cardHeight, -2 * cardHeight - 4 * SHUFFLE_OFFSET],
+  [2 * cardHeight - 3 * SHUFFLE_OFFSET, cardHeight - 4 * SHUFFLE_OFFSET, 0 + 2 * SHUFFLE_OFFSET, -cardHeight + 1 * SHUFFLE_OFFSET, -2 * cardHeight - 1 * SHUFFLE_OFFSET],
   [2 * cardHeight - 2 * SHUFFLE_OFFSET, cardHeight + 3 * SHUFFLE_OFFSET, 0 - SHUFFLE_OFFSET, -cardHeight, -2 * cardHeight - 4 * SHUFFLE_OFFSET],
   [2 * cardHeight, cardHeight, 0, -cardHeight + 10, -2 * cardHeight + 20],
   [2 * cardHeight, cardHeight, 0, -cardHeight, -2 * cardHeight],
