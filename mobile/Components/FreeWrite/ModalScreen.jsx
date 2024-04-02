@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
   imageModal: {
     position: 'absolute',
     width: windowWidth,
-    left: '90%',
-    transform: [{ translateX: -windowWidth * 0.90 }],
+    left: '100%',
+    transform: [{ translateX: -windowWidth * 0.886 }],
 
     borderColor: 'green',
     borderWidth: 2,
@@ -121,8 +121,15 @@ ModalScreen.propTypes = {
   icon: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   modalIcon: PropTypes.string.isRequired,
-  isMusicOpen: PropTypes.bool.isRequired,
-  setIsMusicOpen: PropTypes.func.isRequired,
-  isImageOpen: PropTypes.bool.isRequired,
-  setIsImageOpen: PropTypes.func.isRequired,
+  isMusicOpen: PropTypes.bool,
+  setIsMusicOpen: PropTypes.func,
+  isImageOpen: PropTypes.bool,
+  setIsImageOpen: PropTypes.func,
+};
+
+ModalScreen.defaultProps = {
+  isMusicOpen: false,
+  setIsMusicOpen: null,
+  isImageOpen: false,
+  setIsImageOpen: null,
 };
