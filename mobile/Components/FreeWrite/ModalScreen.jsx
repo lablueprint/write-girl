@@ -12,7 +12,6 @@ import {
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 import PropTypes from 'prop-types';
-import { LinearGradient } from 'expo-linear-gradient';
 
 // const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -47,6 +46,12 @@ const styles = StyleSheet.create({
     color: 'white',
     margin: 24,
     fontSize: 50,
+  },
+  rectangle: {
+    width: 100 * 2,
+    height: 100,
+    backgroundColor: '#FFFFFF',
+    alignItem: 'center',
   },
 });
 
@@ -87,22 +92,23 @@ export default function ModalScreen({
     <GestureHandlerRootView style={{ ...(name === 'Music' ? { ...styles.musicModal, height: musicHeight, top } : { ...styles.imageModal, height: imageHeight, top }) }}>
       <BottomSheetModalProvider>
         <BottomSheetModal
+          backgroundStyle={{ backgroundColor: '#151716' }}
           ref={modalizeRef}
           index={0}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
         >
-          <LinearGradient colors={['#81875F', '#21424F', '#21424F']}>
-            <BottomSheetView>
-              <Text style={styles.text}>
-                {name}
-                <SvgXml xml={modalIcon} style={styles.modalIcon} />
-              </Text>
-            </BottomSheetView>
-          </LinearGradient>
+          <BottomSheetView>
+            <Text style={styles.text}>
+              {name}
+              <SvgXml xml={modalIcon} style={styles.modalIcon} />
+            </Text>
+          </BottomSheetView>
+          <View style={styles.rectangle} />
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
+
   );
 
   return (
