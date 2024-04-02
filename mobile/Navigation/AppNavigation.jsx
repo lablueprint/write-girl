@@ -13,6 +13,7 @@ import PepTalkScreen from '../Screens/PepTalkScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import WritingTipScreen from '../Screens/WritingTipScreen';
 import LogInScreen from '../Screens/LogInScreen';
+import SavedScreen from '../Screens/SavedScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -44,6 +45,7 @@ function HomeStackScreen() {
       <Tab.Screen name="Mind & Body" component={MindBodyScreen} />
       <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
       <Tab.Screen name="Writing Tips" component={WritingTipScreen} />
+      <Tab.Screen name="Saved" component={SavedScreen} />
     </Tab.Navigator>
   );
 }
