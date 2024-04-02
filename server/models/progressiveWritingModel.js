@@ -10,6 +10,10 @@ const progressiveWriting = new mongoose.Schema({
     required: true,
     type: String,
   },
+  month: {
+    required: true,
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model('Activity', progressiveWriting);

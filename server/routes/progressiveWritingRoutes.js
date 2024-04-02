@@ -6,5 +6,6 @@ const progressiveWritingController = require('../controllers/progressiveWritingC
 
 // Generate all the routes necessary for endpoints connecting front-end to database.
 progressiveWritingRouter.get('/getAllActivities', progressiveWritingController.getAllActivities);
+progressiveWritingRouter.get('/getMonthActivity', progressiveWritingController.getMonthActivity);
 
 module.exports = progressiveWritingRouter;

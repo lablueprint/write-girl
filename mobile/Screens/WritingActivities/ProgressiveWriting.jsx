@@ -15,6 +15,10 @@ const activityDim = window.width * 0.5;
 const bannerDim = window.width * 0.9;
 const buttonDim = window.height * 0.05;
 
+const date = new Date();
+const month = date.getMonth();
+const monthActivityNum = Math.ceil((month + 1) / 2) - 1;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
@@ -117,6 +121,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
+
+  heading: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    margin: 16,
+  },
+
+  monthDoorText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+
+  monthDoorImage: {
+    flex: 1,
+    width: '100%',
+    height: 400,
+    resizeMode: 'contain',
+  },
 });
 
 // List of genre mappings in order
@@ -156,6 +180,7 @@ const genreLabels = [
 
 export default function ProgressiveWritingScreen() {
   const [activities, setActivities] = useState([]);
+  const [monthActivity, setMonthActivity] = useState(null);
   const [genreFilter, setGenreFilter] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [step, setStep] = useState(0);
@@ -168,6 +193,11 @@ export default function ProgressiveWritingScreen() {
   const getAllActivities = async () => {
     const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/getAllActivities`);
     setActivities(res.data);
+  };
+
+  const getMonthActivity = async () => {
+    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/getMonthActivity?month=${String(monthActivityNum)}`);
+    setMonthActivity(res.data[0]);
   };
 
   /*
@@ -204,6 +234,7 @@ export default function ProgressiveWritingScreen() {
 
   useEffect(() => {
     getAllActivities();
+    getMonthActivity();
   }, [activities]);
 
   // Note: there are ridiculous issues when returning a styled element (i.e. styling disappears :( )
@@ -306,8 +337,27 @@ export default function ProgressiveWritingScreen() {
       {
         genreFilter === null
           ? (
-            <ScrollView contentContainerStyle={styles.container}>
-              {
+            <ScrollView>
+              <View style={{
+                backgroundColor: genreLabels[monthActivityNum].color,
+              }}
+              >
+                <Text style={styles.heading}>
+                  Door Activity
+                </Text>
+                <Text style={styles.monthDoorText}>
+                  Door of the month
+                </Text>
+                <Image source={genreLabels[monthActivityNum].image} style={styles.monthDoorImage} />
+                {/* <Text>
+                  {monthActivity.genre}
+                </Text> */}
+                <Text style={styles.monthDoorText}>
+                  {genreLabels[monthActivityNum].label}
+                </Text>
+              </View>
+              <View style={styles.container}>
+                {
               genreLabels.map((category) => (
                 // 10 Doors Screen
                 <ImageBackground
@@ -336,6 +386,7 @@ export default function ProgressiveWritingScreen() {
                 </ImageBackground>
               ))
             }
+              </View>
             </ScrollView>
           )
           : (
