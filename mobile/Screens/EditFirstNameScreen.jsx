@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Image, View, Text, Dimensions, StyleSheet, ScrollView,
-  TouchableOpacity, TextInput, TouchableHighlight,
+  Image, View, Text, Dimensions, StyleSheet, ScrollView, TouchableOpacity, TextInput,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { LinearGradient } from 'expo-linear-gradient';
 import leftArrowIcon from '../assets/settings-icons/left-arrow-icon.png';
-import pencilIcon from '../assets/settings-icons/pencil-icon.png';
 import gears from '../assets/settings-icons/gears.png';
-import accountIcon from '../assets/settings-icons/account-icon.png';
-import trashIcon from '../assets/settings-icons/trash-icon.png';
-import logoutIcon from '../assets/settings-icons/logout-icon.png';
+import xIcon from '../assets/settings-icons/x-icon.png';
 
 const styles = StyleSheet.create({
   all: {
@@ -21,9 +18,9 @@ const styles = StyleSheet.create({
     right: 0,
   },
   content: {
-    // marginTop: Dimensions.get('window').height / 12,
     marginLeft: Dimensions.get('window').width / 15,
     marginRight: Dimensions.get('window').width / 15,
+    height: Dimensions.get('window').height * 7 / 10,
   },
   title: {
     marginBottom: Dimensions.get('window').height / 20,
@@ -54,8 +51,19 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     flexDirection: 'row',
   },
+  saveButton: {
+    marginVertical: Dimensions.get('window').height / 100,
+    paddingVertical: Dimensions.get('window').height / 50,
+    paddingHorizontal: Dimensions.get('window').width / 20,
+    borderRadius: 14,
+    marginTop: 'auto',
+  },
   field: {
     flexGrow: 1,
+  },
+  saveText: {
+    fontSize: 20,
+    textAlign: 'center',
   },
   buttontext: {
     marginLeft: 20,
@@ -87,27 +95,17 @@ const styles = StyleSheet.create({
   },
 });
 
-function AccountInformationScreen({ navigation }) {
-  const [firstName, setFirstName] = useState('Angela');
-  const [email, setEmail] = useState('angelaling@gmail.com');
-  const [password, onChangePassword] = useState('********');
+function EditFirstNameScreen({ navigation }) {
+  const [firstName, setFirstName] = useState('asdf');
 
-  const navigateAppSettings = () => {
-    navigation.navigate('App Settings');
-  };
-
-  const navigateEditFirstName = () => {
-    navigation.navigate('Edit First Name');
-  };
-
-  const navigateEditPassword = () => {
-    navigation.navigate('Edit Password');
+  const navigateAccountInfo = () => {
+    navigation.navigate('Account Information');
   };
 
   return (
     <ScrollView style={styles.all}>
       <Image style={styles.gear} source={gears} />
-      <TouchableOpacity style={styles.backArrow} onPress={navigateAppSettings}>
+      <TouchableOpacity style={styles.backArrow} onPress={navigateAccountInfo}>
         <Image
           source={leftArrowIcon}
         />
@@ -121,57 +119,37 @@ function AccountInformationScreen({ navigation }) {
             Information
           </Text>
         </View>
-        <TouchableHighlight onPress={navigateEditFirstName}>
-          <View style={styles.button}>
-            <View style={styles.field}>
-              <Text style={styles.subtitle}>
-                First Name
-              </Text>
-              <Text style={styles.textfields}>
-                {firstName}
-              </Text>
-            </View>
-            <View style={styles.icon}>
-              <Image source={pencilIcon} />
-            </View>
+        <View style={styles.button}>
+          <View style={styles.field}>
+            <Text style={styles.subtitle}>
+              First Name
+            </Text>
+            <TextInput
+              style={styles.textfields}
+              onChangeText={setFirstName}
+              value={firstName}
+              placeholder="Enter First Name"
+              placeholderTextColor="#000000"
+            />
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight>
-          <View style={styles.button}>
-            <View style={styles.field}>
-              <Text style={styles.subtitle}>
-                Email
-              </Text>
-              <Text style={styles.textfields}>
-                {email}
-              </Text>
-            </View>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={navigateEditPassword}>
-          <View style={styles.button}>
-            <View style={styles.field}>
-              <Text style={styles.subtitle}>
-                Password
-              </Text>
-              <Text style={styles.textfields}>
-                {password}
-              </Text>
-            </View>
-            <View style={styles.icon}>
-              <Image source={pencilIcon} />
-            </View>
-          </View>
-        </TouchableHighlight>
+          <TouchableOpacity style={styles.icon} onPress={() => { setFirstName(''); }}>
+            <Image source={xIcon} />
+          </TouchableOpacity>
+        </View>
+        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#84C2C9', '#BFD25A']} style={styles.saveButton}>
+          <Text style={styles.saveText}>
+            Save
+          </Text>
+        </LinearGradient>
       </View>
     </ScrollView>
   );
 }
 
-AccountInformationScreen.propTypes = {
+EditFirstNameScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
 };
 
-export default AccountInformationScreen;
+export default EditFirstNameScreen;

@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import {
   Image, View, ImageBackground, Dimensions,
 } from 'react-native';
@@ -20,6 +20,8 @@ import settingsIcon from '../assets/settings-icon.png';
 import whiteCircle from '../assets/white-circle.png';
 import AppSettingsScreen from '../Screens/AppSettingsScreen';
 import AccountInformationScreen from '../Screens/AccountInformationScreen';
+import EditFirstNameScreen from '../Screens/EditFirstNameScreen';
+import EditPasswordScreen from '../Screens/EditPasswordScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -50,6 +52,8 @@ function SettingsStackScreen() {
         options={{ headerShown: false, title: 'Story Starters' }}
       />
       <SettingsStack.Screen name="Account Information" component={AccountInformationScreen} options={{ headerShown: false }} />
+      <SettingsStack.Screen name="Edit First Name" component={EditFirstNameScreen} options={{ headerShown: false }} />
+      <SettingsStack.Screen name="Edit Password" component={EditPasswordScreen} options={{ headerShown: false }} />
     </SettingsStack.Navigator>
   );
 }
