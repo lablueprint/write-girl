@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeNavigation from './HomeNavigation';
+import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
 import ObjectsScreen from '../Screens/StoryStarters/ObjectsScreen';
@@ -108,7 +108,7 @@ function HomeStackScreen() {
       <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
       <Tab.Screen
         name="Center"
-        component={HomeNavigation}
+        component={HomeScreen}
         options={middleTabOptions}
       />
       <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
