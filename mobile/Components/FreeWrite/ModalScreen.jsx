@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
     width: windowWidth,
     left: '50%',
     transform: [{ translateX: -windowWidth * 0.5 }],
+    // alignItems: 'center',
+    // flex: 1,
+    // justifyContent: 'center',
 
     borderColor: 'red',
     borderWidth: 2,
@@ -51,7 +54,11 @@ const styles = StyleSheet.create({
     width: 100 * 2,
     height: 100,
     backgroundColor: '#FFFFFF',
-    alignItem: 'center',
+    alignSelf: 'center',
+    // position: 'absolute',
+    // top: '50%',
+    // left: '50%',
+    // alignItem: 'center',
   },
 });
 

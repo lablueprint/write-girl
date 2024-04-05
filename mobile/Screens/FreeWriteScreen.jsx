@@ -98,8 +98,6 @@ export default function FreeWriteScreen() {
       </Text>
 
       <View style={styles.icons}>
-        {/* <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} /> */}
-
         <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} />
         {!isMusicOpen ? (
           <>
