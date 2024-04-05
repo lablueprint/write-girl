@@ -1,73 +1,138 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, Text, Dimensions,
+  StyleSheet, View, Text, Dimensions, TouchableOpacity,
 } from 'react-native';
+import Animated, {
+  useAnimatedStyle, useSharedValue, withTiming, withDelay, withSpring,
+} from 'react-native-reanimated';
 import PropTypes from 'prop-types';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 const cardHeight = screenHeight * 0.20;
-const expandBox = cardHeight * 0.5;
+const cardWidth = screenWidth * 0.9;
+const expandBoxHeight = 0.35 * cardHeight;
+const expandBoxWidth = 0.15 * cardWidth;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#19333D',
     borderRadius: '20',
-    height: cardHeight,
-    margin: '5%',
+    width: cardWidth,
+    marginTop: '5%',
   },
   header: {
+    backgroundColor: '#19333D',
     flex: 'row',
     flexDirection: 'row',
-    backgroundColor: 'blue',
-    paddingVertical: '5%',
-    paddingHorizontal: '5%',
+    paddingLeft: cardWidth * 0.05,
+    paddingTop: cardHeight * 0.1,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    height: expandBox,
-    // width: 100% - expandBox,
-    width: '80%',
+    height: cardHeight * 0.35,
+    width: cardWidth * 0.85,
   },
   headerText: {
     fontSize: 26,
-    fontWeight: 'bold',
+    fontWeight: '900',
   },
   expand: {
     backgroundColor: '#151716',
-    height: expandBox,
-    width: expandBox,
-    borderRadius: '20',
+    height: expandBoxHeight,
+    width: expandBoxWidth,
+    borderBottomLeftRadius: 20,
+    marginLeft: '-15%',
   },
 });
 
+const animationDuration = 350;
+
+function CustomLayoutTransition(values) {
+  'worklet';
+
+  return {
+    animations: {
+      originY: withTiming(values.targetOriginY, { duration: animationDuration }),
+      originX: withTiming(values.targetOriginX, { duration: animationDuration }),
+      height: withTiming(values.targetHeight, { duration: animationDuration }),
+    },
+    initialValues: {
+      originY: values.currentOriginY,
+      originX: values.currentOriginX,
+      height: values.currentHeight,
+    },
+  };
+}
+
 // Pulls the associated Triple Flip from AWS with the respective flipID :D
 export default function TripleFlipHistoryCard({ flipId, date }) {
-  console.log(date);
+  const [expanded, setExpanded] = useState(false);
   const current = new Date(date);
   const dateInfo = current.toLocaleDateString('en-US', { weekday: 'long' }).split(', ');
-
+  // Query for the flip id here!
+  const tripleFlip = ['hello', 'world', 'card'];
   return (
-    <View style={styles.card}>
-      <View style={{ flex: 1, flexDirection: 'row', height: '20%' }}>
-        <View style={styles.header}>
-          <Text style={[styles.headerText, { color: '#BFD25A' }]}>
-            {dateInfo[0]}
-            ,
-          </Text>
-          <Text style={[styles.headerText, { color: '#FFF' }]}>{dateInfo[1]}</Text>
-        </View>
-        <View style={styles.expand}>
-          <Text>
-            ICON
-          </Text>
-        </View>
-      </View>
-      <View style={{ backgroundColor: 'red', borderTopRightRadius: '20', height: '50%' }}>
-        <Text>{flipId}</Text>
-      </View>
+    <Animated.View
+      layout={CustomLayoutTransition}
+      style={styles.card}
+    >
+      <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <View>
+          <View style={styles.header}>
+            <Text style={[styles.headerText, { color: '#BFD25A' }]}>
+              {dateInfo[0]}
+              ,
+            </Text>
+            <Text style={[styles.headerText, { color: '#FFF' }]}>{dateInfo[1]}</Text>
+          </View>
 
-    </View>
+          <View style={{
+            backgroundColor: '#19333D', height: cardHeight * 0.08, width: cardWidth, marginTop: -0.08 * cardHeight,
+          }}
+          />
+        </View>
+
+        <View style={styles.expand}>
+          <TouchableOpacity onPress={() => { setExpanded(!expanded); }}>
+            {/* <Text style={{ color: '#FFF' }}>
+              Press to Expand
+            </Text> */}
+            <View style={{
+              backgroundColor: '#BFD25A', width: expandBoxWidth * 0.8, height: '10%', borderRadius: 20,
+            }}
+            />
+            <View
+              style={{
+                backgroundColor: '#BFD25A', height: expandBoxWidth * 0.8, width: '10%', borderRadius: 20,
+              }}
+            />
+            <View />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <Animated.View
+        layout={CustomLayoutTransition}
+        style={{
+          display: 'flex', flexDirection: 'column', rowGap: '5%', backgroundColor: '#19333D', borderTopRightRadius: '20', borderBottomRightRadius: '20', borderBottomLeftRadius: '20', alignItems: 'center', paddingTop: '2.5%', paddingBottom: '2.5%',
+        }}
+      >
+        {
+          tripleFlip.map((flipTopic) => (
+            <Animated.View
+              layout={CustomLayoutTransition}
+              style={{
+                height: expanded ? 2 * expandBoxHeight : expandBoxHeight, backgroundColor: '#D9D9D9BF', width: '95%', paddingHorizontal: '5%', paddingVertical: '5%', borderRadius: 20, alignItems: 'center',
+              }}
+            >
+              <Text style={{ fontSize: 25, fontWeight: 600 }}>
+                { flipTopic }
+              </Text>
+            </Animated.View>
+          ))
+        }
+      </Animated.View>
+
+    </Animated.View>
   );
 }
 TripleFlipHistoryCard.propTypes = {

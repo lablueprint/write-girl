@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import {
   View, Text, StyleSheet, Dimensions, Button, TouchableOpacity, ScrollView, FlatList,
 } from 'react-native';
+import Animated, {
+  useAnimatedStyle, useSharedValue, withTiming, withDelay, withSpring,
+} from 'react-native-reanimated';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
@@ -41,6 +44,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
   },
+  caption: {
+    color: 'white',
+    fontSize: 16,
+  },
 });
 
 async function getId() {
@@ -55,6 +62,25 @@ async function getId() {
   }
   return userId;
 }
+
+// const animationDuration = 350;
+
+// function CustomLayoutTransition(values) {
+//   'worklet';
+
+//   return {
+//     animations: {
+//       originY: withTiming(values.targetOriginY, { duration: animationDuration }),
+//       originX: withTiming(values.targetOriginX, { duration: animationDuration }),
+//       height: withTiming(values.targetHeight, { duration: animationDuration }),
+//     },
+//     initialValues: {
+//       originY: values.currentOriginY,
+//       originX: values.currentOriginX,
+//       height: values.currentHeight,
+//     },
+//   };
+// }
 
 export default function HistoryScreen({ navigation }) {
   const [flipIDs, setFlipHistory] = useState([]);
@@ -80,20 +106,6 @@ export default function HistoryScreen({ navigation }) {
     (tripleFlip) => <TripleFlipHistoryCard flipId={flipIDs[tripleFlip].flipID} date={flipIDs[tripleFlip].date} />,
   );
 
-  const DATA = [
-    { id: '1', date: ['Monday', 'March 4 2024'] },
-    { id: '2', date: ['Tuesday', 'March 4 2024'] },
-    { id: '3', date: ['Wednesday', 'March 4 2024'] },
-    { id: '4', date: ['Thursday', 'March 4 2024'] },
-    { id: '5', date: ['Friday', 'March 4 2024'] },
-    { id: '6', date: ['Saturday', 'March 4 2024'] },
-    { id: '7', date: ['Sunday', 'March 4 2024'] },
-  ];
-
-  const renderItem = ({ item }) => (
-    <TripleFlipHistoryCard flipId={item.id} date={item.date} />
-  );
-
   return (
     <View style={styles.main}>
       <View>
@@ -107,23 +119,18 @@ export default function HistoryScreen({ navigation }) {
         <Text style={styles.title}>
           Triple Flips History
         </Text>
-        <Text>
-          See all your past flips
+        <Text style={styles.caption}>
+          See all your past flips!
         </Text>
       </View>
       <View style={{
-        flex: 1,
+        flex: 1, borderRadius: 20,
       }}
       >
         <ScrollView>
-          <View style={{
-            paddingTop: 16, paddingBottom: 16, flex: 1, flexDirection: 'column', rowGap: 20,
-          }}
-          >
-            {
+          {
               flipHistory
             }
-          </View>
         </ScrollView>
       </View>
 
