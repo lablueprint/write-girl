@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, ImageBackground, Image,
+  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, ImageBackground, Image, Pressable,
 } from 'react-native';
 import axios from 'axios';
 import colorsImage from '../../assets/doors/colors.png';
@@ -28,6 +28,17 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     gap: 0,
+  },
+
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+    justifyContent: 'center',
+    gap: 0,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 
   activity: {
@@ -125,22 +136,45 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 48,
     fontWeight: 'bold',
-    margin: 16,
+    marginLeft: 16,
+    marginRight: 20,
+    marginBottom: 20,
+    marginTop: 64,
   },
 
   monthDoorText: {
     fontWeight: 'bold',
     fontSize: 20,
-    marginLeft: 16,
-    marginRight: 16,
+    marginLeft: 20,
+    marginRight: 20,
   },
 
   monthDoorImage: {
     flex: 1,
     width: '100%',
-    height: 400,
-    resizeMode: 'contain',
+    height: 360,
+    resizeMode: 'cover',
   },
+
+  doorButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    backgroundColor: 'black',
+    width: '100%',
+    marginBottom: 64,
+  },
+
+  doorButtonText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginLeft: 16,
+    marginRight: 16,
+    color: 'white',
+  },
+
 });
 
 // List of genre mappings in order
@@ -180,7 +214,6 @@ const genreLabels = [
 
 export default function ProgressiveWritingScreen() {
   const [activities, setActivities] = useState([]);
-  const [monthActivity, setMonthActivity] = useState(null);
   const [genreFilter, setGenreFilter] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [step, setStep] = useState(0);
@@ -193,11 +226,6 @@ export default function ProgressiveWritingScreen() {
   const getAllActivities = async () => {
     const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/getAllActivities`);
     setActivities(res.data);
-  };
-
-  const getMonthActivity = async () => {
-    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/getMonthActivity?month=${String(monthActivityNum)}`);
-    setMonthActivity(res.data[0]);
   };
 
   /*
@@ -234,7 +262,6 @@ export default function ProgressiveWritingScreen() {
 
   useEffect(() => {
     getAllActivities();
-    getMonthActivity();
   }, [activities]);
 
   // Note: there are ridiculous issues when returning a styled element (i.e. styling disappears :( )
@@ -349,12 +376,16 @@ export default function ProgressiveWritingScreen() {
                   Door of the month
                 </Text>
                 <Image source={genreLabels[monthActivityNum].image} style={styles.monthDoorImage} />
-                {/* <Text>
-                  {monthActivity.genre}
-                </Text> */}
-                <Text style={styles.monthDoorText}>
-                  {genreLabels[monthActivityNum].label}
-                </Text>
+                <View style={styles.buttonContainer}>
+                  <Pressable
+                    style={styles.doorButton}
+                    onPress={() => { selectActivityGenre(genreLabels[monthActivityNum].label); }}
+                  >
+                    <Text style={styles.doorButtonText}>
+                      {genreLabels[monthActivityNum].label}
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
               <View style={styles.container}>
                 {
@@ -380,8 +411,6 @@ export default function ProgressiveWritingScreen() {
                       {category.label}
 
                     </Text>
-                    {/* <Image source={doorImage} styles={styles.door} resizeMode="stretch" /> */}
-
                   </TouchableOpacity>
                 </ImageBackground>
               ))
