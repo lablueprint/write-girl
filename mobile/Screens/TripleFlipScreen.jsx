@@ -23,45 +23,57 @@ const styles = StyleSheet.create({
 });
 
 export default function ImageUploadComponent() {
+  // displays local selected images to upload
   const [selectedImages, setSelectedImages] = useState([]);
+  // stores image data to upload
+  const [assetArray, setAssetArray] = useState([]);
+  // displays images requested from AWS/Mongo combo
+  const [displayedImages, setDisplayedImages] = useState([]);
+
+  const getImage = async () => {
+    const test = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/tripleFlip/GetTripleFlip`);
+    setDisplayedImages(test.data);
+  };
 
   const pickImageAsync = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      aspect: [4, 3],
       quality: 1,
       allowsMultipleSelection: true,
+      selectionLimit: 3,
     });
 
     if (!result.canceled) {
       const pickedURIs = result.assets.map(({ uri, assetId }) => ({
         uri, assetId,
       }));
-      console.log(result.assets);
-      setSelectedImages((images) => [...images, ...pickedURIs]);
+
+      if (assetArray.length + result.assets.length <= 3) {
+        setSelectedImages((images) => [...images, ...pickedURIs]);
+        setAssetArray(result.assets);
+      } else {
+        alert('Invalid number of images: triple flip requires 3 images');
+      }
     } else {
-      alert('You did not select any image.');
+      alert('Please select 3 images');
     }
   };
+
   const resetImages = () => {
     setSelectedImages([]);
+    setAssetArray([]);
+    setDisplayedImages([]);
   };
 
   const uploadImages = async () => {
-    console.log(selectedImages);
-    const imageList = [];
+    const respObj = { assetArray };
     try {
-      async function getBlobs(images) {
-        const imageData = await fetch(images.uri);
-        const imageBlob = await imageData.blob();
-        imageList.push({ blob: imageBlob, id: images.assetId });
-      }
-      await Promise.all(selectedImages.map(getBlobs));
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tripleFlip/tripleFlipUpload`, respObj);
     } catch (error) {
-      // Refresh the UI or perform other actions after successful upload
-      console.error('Error uploading images:', error);
+      console.log(error);
     }
-    const respObj = { imageList };
-    console.log(respObj);
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tripleFlip/tripleFlipUpload`, respObj);
   };
 
   return (
@@ -69,16 +81,23 @@ export default function ImageUploadComponent() {
       <View style={styles.container}>
         <Text style={styles.titleText}>Triple Flip Upload</Text>
       </View>
-      <Button title="Pick Images" onPress={pickImageAsync} />
-      <Button title="Upload Images" onPress={uploadImages} />
+      <Button title="Get Images" onPress={getImage} />
       <Button title="Reset Images" onPress={resetImages} />
+      <Button title="Pick Images" onPress={pickImageAsync} />
+      {/* only show upload image button if there are exactly 3 images to upload */}
+      {selectedImages.length === 3
+        ? (<Button title="Upload Images" onPress={uploadImages} />) : null }
 
       {selectedImages
         ? (
           <View>
             {selectedImages.map((imageUri) => (
               <View>
-                <Image source={{ uri: imageUri.uri }} style={{ width: 200, height: 200 }} />
+                <Image
+                  key={imageUri.uri}
+                  source={{ uri: imageUri.uri }}
+                  style={{ width: 200, height: 200 }}
+                />
                 <Text>
                   {imageUri.assetId}
                   {' '}
@@ -88,9 +107,24 @@ export default function ImageUploadComponent() {
             ))}
           </View>
         ) : null}
-      {/* <View>
-        <Image source={{ uri: selectedImages }} style={{ width: 200, height: 200 }} />
-      </View> */}
+      <View />
+      {displayedImages
+        ? (
+          <View>
+            {displayedImages.map((imageUri) => (
+              <View>
+                <Image
+                  key={imageUri}
+                  source={{ uri: imageUri }}
+                  style={{
+                    width: 200, height: 200, borderColor: 'red', borderWidth: 5,
+                  }}
+                />
+              </View>
+
+            ))}
+          </View>
+        ) : null}
     </ScrollView>
   );
 }

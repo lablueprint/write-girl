@@ -9,6 +9,7 @@ const uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
 
 // Route Imports
+const bodyParser = require('body-parser');
 const testRouter = require('./routes/testRoute');
 const pepTalkRouter = require('./routes/pepTalkRoutes');
 const mindBodyRouter = require('./routes/mindBodyRoute');
@@ -29,7 +30,8 @@ connectToDatabase();
 // Start the Node Express server
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '200mb' }));
+app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 
 // API Routes
 app.use('/test', testRouter);

@@ -1,132 +1,98 @@
-// const AWS = require('aws-sdk');
-
-// // Connect to the AWS S3 Storage
-// const s3 = new AWS.S3({
-//   accessKeyId: process.env.ACCESS_KEY_ID,
-//   secretAccessKey: process.env.SECRET_ACCESS_KEY,
-// });
-
-// const retrieveImage = async (req, res) => {
-// try {
-//     await s3.getObject({
-//       Bucket: process.env.S3_BUCKET,
-//       Key: 'test.png',
-//     }, (err, data) => {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//        res.send((`data:${data.ContentType};
-// base64,${Buffer.from(data.Body, 'binary').toString('base64')}`));
-//       }
-//     });
-//   } catch (err) {
-//     console.error(err);
-// }
-
-const { S3Client, ListObjectsV2Command, PutObjectCommand } = require('@aws-sdk/client-s3');
+const {
+  S3Client, GetObjectCommand, PutObjectCommand,
+} = require('@aws-sdk/client-s3');
 
 const TripleFlip = require('../models/tripleFlipModel');
 
-const uploadAWS = async (imageObj) => {
-  const S3_BUCKET_NAME = process.env.S3_BUCKET;
-  const client = new S3Client({
-    region: process.env.AWS_REGION,
-    credentials: {
-      accessKeyId: process.env.ACCESS_KEY_ID,
-      secretAccessKey: process.env.SECRET_ACCESS_KEY,
-    },
-  });
+const client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  },
+});
 
+const uploadImageAWS = async (imageAsset) => {
   try {
-    const command = new PutObjectCommand({
-      Bucket: S3_BUCKET_NAME,
-      Key: imageObj.id,
-      Body: imageObj.blob,
-    });
-    const response = await client.send(command);
-    console.log(response);
+    const { uri, base64 } = imageAsset;
+    const parts = uri.split('/');
+    const fileName = parts[parts.length - 1];
+    const imageBuffer = Buffer.from(base64, 'base64');
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: fileName,
+      Body: imageBuffer,
+      ContentType: 'image/jpeg',
+    };
+    const command = new PutObjectCommand(params);
+    await client.send(command);
+    console.log('Image uploaded successfully');
   } catch (err) {
     console.error(err);
   }
 };
+
+const uploadKeysMongo = async (imageKeys) => {
+  const tripleFlip = new TripleFlip({ images: imageKeys });
+  try {
+    await tripleFlip.save(tripleFlip);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const uploadTripleFlip = async (req, res) => {
-  const { imageList } = req.body;
-  console.log(imageList);
-  imageList.forEach(uploadAWS);
-};
-const ListBucket = async (req, res) => {
-  console.log('testing');
-  const S3_BUCKET_NAME = process.env.S3_BUCKET;
-  const client = new S3Client({
-    region: process.env.AWS_REGION,
-    credentials: {
-      accessKeyId: process.env.ACCESS_KEY_ID,
-      secretAccessKey: process.env.SECRET_ACCESS_KEY,
-    },
-  });
-  const command = new ListObjectsV2Command({
-    Bucket: S3_BUCKET_NAME,
-    // The default and maximum number of keys returned is 1000. This limits it to
-    // one for demonstration purposes.
-    MaxKeys: 1,
-  });
-
+  const imageList = req.body.assetArray;
   try {
-    let isTruncated = true;
+    // upload images to AWS S3
+    imageList.forEach(uploadImageAWS);
+    const mongoDBkeys = imageList.map((obj) => {
+      const parts = obj.uri.split('/');
+      return parts[parts.length - 1];
+    });
+    // upload image keys to MongoDB
+    uploadKeysMongo(mongoDBkeys);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
-    console.log('Your bucket contains the following objects:\n');
-    let contents = '';
-
-    while (isTruncated) {
-      const { Contents, IsTruncated, NextContinuationToken } = await client.send(command);
-      const contentsList = Contents.map((c) => ` • ${c.Key}`).join('\n');
-      contents += `${contentsList}\n`;
-      isTruncated = IsTruncated;
-      command.input.ContinuationToken = NextContinuationToken;
-    }
-    console.log(contents);
+const getImageAWS = async (key) => {
+  const command = new GetObjectCommand({
+    Bucket: process.env.S3_BUCKET,
+    Key: key,
+  });
+  try {
+    const response = await client.send(command);
+    // The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
+    const str = await response.Body.transformToString('base64');
+    const b64str = `data:image/${response.ContentType};base64,${str}`;
+    // console.log(b64str.slice(0, 100));
+    return (b64str);
   } catch (err) {
     console.error(err);
   }
-
-  // const s3 = new AWS.S3({
-  //   accessKeyId: process.env.ACCESS_KEY_ID,
-  //   secretAccessKey: process.env.SECRET_ACCESS_KEY,
-  //   region: process.env.S3_REGION,
-  // });
-  // // response is of type array of blobs
-  // const response = req.body.images;
-  // // console.log(s3.listBuckets((err, data) => {
-  // //   if (err) console.log(err, err.stack);
-  // //   else console.log(data);
-  // // }));
-  // console.log('testing');
-  // try {
-  //   console.log('starting');
-  //   // const fin = await s3.upload({
-  //   //   Bucket: S3_BUCKET_NAME,
-  //   //   Key: 'test.txt',
-  //   //   Body: response,
-  //   // });
-  //   // console.log(fin);
-  // } catch (e) {
-  //   console.log('error uploading images');
-  //   console.log(e);
-  // }
-  // const imageKeys = response.map(async (blob) => {
-  //   const key = `images/${Date.now()}.jpg`;
-  //   await s3.putObject({
-  //     Bucket: S3_BUCKET_NAME,
-  //     Key: key,
-  //     ContentType: 'image/jpeg',
-  //     Body: blob,
-  //   });
-  //   return (key);
-  // });
-  // console.log(imageKeys);
-  // const resp = new s3.listObjectsV2({ Bucket: S3_BUCKET_NAME });
-  // console.log(resp);
+  return 'error';
 };
-// const key = `images/${Date.now()}_${i}.jpg`; // Change the key format as per your requirement
 
-module.exports = { uploadTripleFlip };
+const getImage = async (req, res) => {
+  try {
+    const randomTripleflip = await TripleFlip.aggregate([
+      { $sample: { size: 1 } }, // $sample stage to get a random document
+    ]);
+    // Extract the talk string from the random document
+    const randomTripleFlipKeys = randomTripleflip.length > 0 ? randomTripleflip[0].images : null;
+    if (randomTripleFlipKeys === null) {
+      console.log('No valid keys found');
+      return 'ERROR: Empty MongoDB collection';
+    }
+    const b64Arr = await Promise.all(randomTripleFlipKeys.map(getImageAWS));
+    res.send(b64Arr);
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+  return 'ERROR: MongoDB Error';
+};
+
+module.exports = { uploadTripleFlip, getImage };
