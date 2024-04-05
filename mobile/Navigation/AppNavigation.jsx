@@ -18,6 +18,9 @@ import storyStarterIcon from '../assets/story-starters-icon.png';
 import mindBodyIcon from '../assets/mind-body-icon.png';
 import howToIcon from '../assets/how-to-icon.png';
 import whiteCircle from '../assets/white-circle.png';
+import SignUpScreen from '../Screens/SignUpScreen';
+import LogInScreen from '../Screens/LogInScreen';
+// import SavedScreen from '../Screens/SavedScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -38,6 +41,7 @@ function StoryStarterStackScreen() {
 }
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const createtabOptions = (icon) => ({
   tabBarIcon: () => (
@@ -85,32 +89,42 @@ const middleTabOptions = {
 
 };
 
+function HomeStackScreen() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: 'black',
+          height: Dimensions.get('window').height / 10,
+        },
+      }}
+      initialRouteName="Center"
+    >
+      <Tab.Screen
+        name="Writing Activities"
+        component={ActivityHomeScreen}
+        options={createtabOptions(writingActivitiesIcon)}
+      />
+      <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
+      <Tab.Screen
+        name="Center"
+        component={HomeNavigation}
+        options={middleTabOptions}
+      />
+      <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
+      <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
+    </Tab.Navigator>
+  );
+}
+
 export default function AppNavigation() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{
-          tabBarStyle: {
-            backgroundColor: 'black',
-            height: Dimensions.get('window').height / 10,
-          },
-        }}
-        initialRouteName="Center"
-      >
-        <Tab.Screen
-          name="Writing Activities"
-          component={ActivityHomeScreen}
-          options={createtabOptions(writingActivitiesIcon)}
-        />
-        <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
-        <Tab.Screen
-          name="Center"
-          component={HomeNavigation}
-          options={middleTabOptions}
-        />
-        <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
-        <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
