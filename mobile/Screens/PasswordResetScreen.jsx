@@ -97,10 +97,10 @@ export default function PasswordResetScreen({ navigation }) {
     let view = [<View />];
     if (step === 'getVerification') {
       view = [
-        <View>
+        <View key="back1">
           <Button title="Back" onPress={redirectLogIn} />
         </View>,
-        <View style={styles.inputContainer}>
+        <View style={styles.inputContainer} key="email">
           <TextInput
             style={styles.textfields}
             onChangeText={handleChangeEmail}
@@ -110,14 +110,14 @@ export default function PasswordResetScreen({ navigation }) {
             autoCapitalize="none"
           />
         </View>,
-        <Button title="Submit" onPress={sendPasswordReset} />,
+        <Button key="submit" title="Submit" onPress={sendPasswordReset} />,
       ];
     } else if (step === 'verifyCode') {
       view = [
-        <View>
+        <View key="back2">
           <Button title="Back" onPress={() => { setStep('getVerification'); }} />
         </View>,
-        <View style={styles.inputContainer}>
+        <View style={styles.inputContainer} key="verify">
           <TextInput
             style={styles.textfields}
             onChangeText={handleChangeCode}
@@ -126,15 +126,15 @@ export default function PasswordResetScreen({ navigation }) {
             value={code}
           />
         </View>,
-        <Button title="Get Another Code" onPress={sendPasswordReset} />,
-        <Button title="Check Code" onPress={verifyCode} />,
+        <Button key="submit2" title="Get Another Code" onPress={sendPasswordReset} />,
+        <Button key="submit3" title="Check Code" onPress={verifyCode} />,
       ];
     } else if (step === 'inputNewPassword') {
       view = [
-        <View>
+        <View key="cancel">
           <Button title="Cancel" onPress={redirectLogIn} />
         </View>,
-        <View style={styles.inputContainer}>
+        <View style={styles.inputContainer} key="newpswd">
           <TextInput
             style={styles.textfields}
             onChangeText={setNewPassword}
@@ -142,10 +142,10 @@ export default function PasswordResetScreen({ navigation }) {
             placeholderTextColor="#000000"
             autoCapitalize="none"
             value={newPassword}
-            secureTextEntry="true"
+            secureTextEntry
           />
         </View>,
-        <View style={styles.inputContainer}>
+        <View style={styles.inputContainer} key="confirmpswd">
           <TextInput
             style={styles.textfields}
             onChangeText={setConfirmation}
@@ -153,13 +153,13 @@ export default function PasswordResetScreen({ navigation }) {
             placeholderTextColor="#000000"
             autoCapitalize="none"
             value={confirmation}
-            secureTextEntry="true"
+            secureTextEntry
           />
         </View>,
-        <Button title="Reset" onPress={updatePassword} />,
+        <Button key="submit3" title="Reset" onPress={updatePassword} />,
       ];
     }
-    return view.map((elem) => elem);
+    return view;
   };
 
   return (
