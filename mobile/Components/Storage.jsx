@@ -1,21 +1,24 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as SecureStore from 'expo-secure-store';
 
 export default function Storage({ key, value, saveKey }) {
-  const saveData = async () => {
-    if (saveKey) {
-      await SecureStore.setItemAsync(key, value).then(() => console.log('hi'));
-    } else {
-      await SecureStore.getItemAsync('hello');
-    //   if (result) {
-    //     console.log("Here's your value: ", result);
-    //     return result;
-    //   }
-    //   console.log('No values stored under that key.');
+  async function save() {
+    await SecureStore.setItemAsync(key, value).then();
+  }
+  async function getValue() {
+    const result = await SecureStore.getItemAsync(key);
+    if (!result) {
+      console.log('No values stored under that key.');
+      return 'No values stored under this key.';
     }
-  };
-  saveData();
+    return result;
+  }
+
+  if (saveKey) {
+    save();
+  } else {
+    return getValue();
+  }
 }
 
 Storage.propTypes = {

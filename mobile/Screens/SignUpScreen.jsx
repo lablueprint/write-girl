@@ -64,9 +64,7 @@ const styles = StyleSheet.create({
 export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
-  const [changePassword, onChangePassword] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmedPassword, setConfirmedPassword] = useState('');
+  const [password, onChangePassword] = useState('');
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
@@ -78,10 +76,10 @@ export default function SignUp({ navigation }) {
 
   const handleChangePassword = (newText) => {
     const lastLetter = newText.slice(-1);
-    if (newText.length > changePassword.length) {
-      onChangePassword(changePassword + lastLetter);
-    } else if (newText.length < changePassword.length) {
-      onChangePassword(changePassword.slice(0, newText.length));
+    if (newText.length > password.length) {
+      onChangePassword(password + lastLetter);
+    } else if (newText.length < password.length) {
+      onChangePassword(password.slice(0, newText.length));
     } else if (newText === '') {
       onChangePassword('');
       setBool(false);
@@ -106,8 +104,6 @@ export default function SignUp({ navigation }) {
       Alert.alert('Please enter a password to proceed');
     } else if (password.length < 6) {
       Alert.alert('Password must be longer than five characters');
-    } else if (password !== confirmedPassword) {
-      Alert.alert('Password confirmation does not match password');
     } else {
       return true;
     }
@@ -120,8 +116,7 @@ export default function SignUp({ navigation }) {
     }
     setFirstName('');
     setEmail('');
-    setPassword('');
-    setConfirmedPassword('');
+    onChangePassword('');
     try {
       const userData = {
         email,
@@ -131,12 +126,8 @@ export default function SignUp({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
-        // const userId = res.data._id;
-        const userId = '65c1caacab4c3d281f5f1aa2';
-        console.log('userId: ', userId);
-        Storage({ key: 'hello', value: userId, saveKey: true });
-        // Storage(key, userId, true);
-        // console.log('hiiii: ', userId);
+        const userId = res.data._id;
+        await Storage({ key: 'userId', value: userId, saveKey: true });
         navigation.navigate('Home');
       }
     } catch (err) {

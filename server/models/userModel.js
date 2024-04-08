@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 
+const tripleFlipsSchema = new mongoose.Schema({
+  savedTripleFlips: {
+    required: false,
+    type: [Object],
+  },
+});
+
 // Model schema to validate and structure user info
 const userSchema = new mongoose.Schema({
   email: {
@@ -22,13 +29,13 @@ const userSchema = new mongoose.Schema({
     required: false,
     type: [String],
   },
-  savedTripleFlips: {
-    required: false,
-    type: [Object],
-  },
   savedTraits: {
     required: false,
     type: [String],
+  },
+  savedTripleFlips: {
+    required: false,
+    type: [tripleFlipsSchema],
   },
   savedPlots: {
     required: false,

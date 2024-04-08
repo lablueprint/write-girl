@@ -19,7 +19,6 @@ export default function PepTalkScreen() {
     try {
       const randomPepTalk = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/pepTalk/get`, { timeout: 20000 });
       setPepTalk(randomPepTalk.data);
-      console.log('peptalk: ', randomPepTalk.data);
       return randomPepTalk.data;
     } catch (err) {
       console.log(err);
