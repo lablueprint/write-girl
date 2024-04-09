@@ -9,6 +9,7 @@ const uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
 
 // Route Imports
+const bodyParser = require('body-parser');
 const testRouter = require('./routes/testRoute');
 const characterTraitRouter = require('./routes/storyStarter/characterTraitRoutes');
 const plotPointRouter = require('./routes/storyStarter/plotPointRoutes');
@@ -18,6 +19,7 @@ const activityRouter = require('./routes/progressiveWritingRoutes');
 const pepTalkRouter = require('./routes/pepTalkRoutes');
 const writingTipRouter = require('./routes/writingTipRoutes');
 const mindBodyRouter = require('./routes/mindBodyRoute');
+const tripleFlipRouter = require('./routes/tripleFlipRoutes');
 const userRouter = require('./routes/userRoutes');
 
 // Connect to the MongoDB database
@@ -35,7 +37,8 @@ connectToDatabase();
 // Start the Node Express server
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '200mb' }));
+app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 
 // API Routes
 app.use('/test', testRouter);
@@ -47,6 +50,7 @@ app.use('/activity', activityRouter);
 app.use('/pepTalk', pepTalkRouter);
 app.use('/writingTip', writingTipRouter);
 app.use('/mindBody', mindBodyRouter);
+app.use('/tripleFlip', tripleFlipRouter);
 app.use('/user', userRouter);
 
 app.get('/', (req, res) => {

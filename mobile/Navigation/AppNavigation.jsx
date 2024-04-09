@@ -12,6 +12,7 @@ import SettingsScreen from '../Screens/StoryStarters/SettingsScreen';
 import TraitsScreen from '../Screens/StoryStarters/TraitsScreen';
 import PlotPointsScreen from '../Screens/StoryStarters/PlotPointsScreen';
 import MindBodyScreen from '../Screens/MindBodyScreen';
+import TripleflipScreen from '../Screens/TripleFlipScreen';
 import homeIcon from '../assets/home-icon.png';
 import writingActivitiesIcon from '../assets/writing-activities-icon.png';
 import storyStarterIcon from '../assets/story-starters-icon.png';
@@ -112,7 +113,7 @@ function HomeStackScreen() {
         options={middleTabOptions}
       />
       <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
-      <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
+      <Tab.Screen name="Triple Flip" component={TripleflipScreen} options={createtabOptions(howToIcon)} />
     </Tab.Navigator>
   );
 }
