@@ -15,8 +15,10 @@ const client = new S3Client({
 const uploadImageAWS = async (imageAsset) => {
   try {
     const { uri, base64 } = imageAsset;
+    // find fileName from URI to use as S3 key
     const parts = uri.split('/');
     const fileName = parts[parts.length - 1];
+    // create buffer to store image data as S3 body
     const imageBuffer = Buffer.from(base64, 'base64');
     const params = {
       Bucket: process.env.S3_BUCKET,
@@ -32,6 +34,7 @@ const uploadImageAWS = async (imageAsset) => {
   }
 };
 
+// imageKeys is an array of 3 strings containing image URI's
 const uploadKeysMongo = async (imageKeys) => {
   const tripleFlip = new TripleFlip({ images: imageKeys });
   try {
@@ -41,6 +44,9 @@ const uploadKeysMongo = async (imageKeys) => {
   }
 };
 
+// takes in {assetArray: array of image objects with metada}
+// image data is uploaded to AWS S3
+// image URI is uploaded to MongoDB in a triplet
 const uploadTripleFlip = async (req, res) => {
   const imageList = req.body.assetArray;
   try {
@@ -57,6 +63,7 @@ const uploadTripleFlip = async (req, res) => {
   }
 };
 
+// retrieves image data from AWS S3 and encodes in b64 format
 const getImageAWS = async (key) => {
   const command = new GetObjectCommand({
     Bucket: process.env.S3_BUCKET,
@@ -73,6 +80,8 @@ const getImageAWS = async (key) => {
   return 'error';
 };
 
+// samples MongoDB for random array of 3 image URI strings
+// calls getImageAWS for each URI and returns b64 encoding of each image in an array
 const getImage = async (req, res) => {
   try {
     const randomTripleflip = await TripleFlip.aggregate([

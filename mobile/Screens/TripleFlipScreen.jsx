@@ -31,8 +31,9 @@ export default function ImageUploadComponent() {
   const [displayedImages, setDisplayedImages] = useState([]);
 
   const getImage = async () => {
-    const test = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/tripleFlip/GetTripleFlip`);
-    setDisplayedImages(test.data);
+    // imagesArray is an array of 3 images encoded in b64 format
+    const imagesArray = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/tripleFlip/GetTripleFlip`);
+    setDisplayedImages(imagesArray.data);
   };
 
   const pickImageAsync = async () => {
@@ -60,7 +61,7 @@ export default function ImageUploadComponent() {
       alert('Please select 3 images');
     }
   };
-
+  // clears the screen of images
   const resetImages = () => {
     setSelectedImages([]);
     setAssetArray([]);
@@ -68,6 +69,7 @@ export default function ImageUploadComponent() {
   };
 
   const uploadImages = async () => {
+    // assetArray contains image metadata including filename, URI, etc
     const respObj = { assetArray };
     try {
       await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/tripleFlip/tripleFlipUpload`, respObj);
@@ -88,6 +90,7 @@ export default function ImageUploadComponent() {
       {selectedImages.length === 3
         ? (<Button title="Upload Images" onPress={uploadImages} />) : null }
 
+      {/* Below component shows images selected from the user to upload, or nothing otherwise */}
       {selectedImages
         ? (
           <View>
@@ -107,6 +110,8 @@ export default function ImageUploadComponent() {
             ))}
           </View>
         ) : null}
+
+      {/* Below component shows images received from "get images" button, or nothing otherwise */}
       <View />
       {displayedImages
         ? (
