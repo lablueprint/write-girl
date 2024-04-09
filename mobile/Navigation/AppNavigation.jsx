@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   Image, View, ImageBackground, Dimensions,
@@ -113,63 +113,6 @@ export default function AppNavigation() {
   //   return true;
   // };
   // getToken();
-
-  useEffect(() => {
-    // getToken();
-  }, []);
-
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: {
-          backgroundColor: 'black',
-          height: Dimensions.get('window').height / 10,
-        },
-      }}
-      initialRouteName="Center"
-    >
-      <Tab.Screen
-        name="Writing Activities"
-        component={ActivityHomeScreen}
-        options={createtabOptions(writingActivitiesIcon)}
-      />
-      <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
-      <Tab.Screen
-        name="Center"
-        component={HomeScreen}
-        options={middleTabOptions}
-      />
-      <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
-      <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
-    </Tab.Navigator>
-  );
-}
-
-export default function AppNavigation() {
-  // useEffect(() => {
-  //   checkAuthentication();
-  // }, []);
-
-  console.log(SecureStore.getItemAsync('user'));
-  const { id, token } = useSelector((state) => state.auth);
-  console.log('nav token: ', token);
-  console.log('nav id: ', id);
-
-  // // eslint-disable-next-line no-unused-vars
-  // const getToken = async () => {
-  //   try {
-  //     console.log('gettoken: ', await SecureStore.getItemAsync('user'));
-  //     console.log('woooo');
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   return true;
-  // };
-  // getToken();
-
-  useEffect(() => {
-    // getToken();
-  }, []);
 
   return (
     (token && !isTokenExpired(token) && id) ? (
