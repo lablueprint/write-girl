@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     marginLeft: '-15%',
   },
+  arrow: {
+    backgroundColor: '#BFD25A',
+    height: expandBoxWidth * 0.5,
+    width: '12.5%',
+    borderRadius: 20,
+  },
 });
 
 const animationDuration = 350;
@@ -93,20 +99,29 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
         </View>
 
         <View style={styles.expand}>
-          <TouchableOpacity onPress={() => { setExpanded(!expanded); }}>
-            {/* <Text style={{ color: '#FFF' }}>
-              Press to Expand
-            </Text> */}
-            <View style={{
-              backgroundColor: '#BFD25A', width: expandBoxWidth * 0.8, height: '10%', borderRadius: 20,
+          <TouchableOpacity
+            style={{
+              paddingVertical: '10%', paddingHorizontal: '10%', height: expandBoxHeight, width: expandBoxWidth,
             }}
+            onPress={() => { setExpanded(!expanded); }}
+          >
+            <Animated.View
+              layout={CustomLayoutTransition}
+              style={
+                [styles.arrow, { transform: [{ rotate: '90deg' }], top: expanded ? '40%' : '-8%', right: '-45%' }]
+              }
             />
-            <View
+            <Animated.View
+              layout={CustomLayoutTransition}
+              style={
+                [styles.arrow, { top: '-40%', right: expanded ? '-20%' : '-75%' }]
+              }
+            />
+            <Animated.View
               style={{
-                backgroundColor: '#BFD25A', height: expandBoxWidth * 0.8, width: '10%', borderRadius: 20,
+                backgroundColor: '#BFD25A', height: expandBoxWidth * 0.6, width: '12.5%', borderRadius: 20, transform: [{ rotate: '-135deg' }], top: '-100%', right: '-50%',
               }}
             />
-            <View />
           </TouchableOpacity>
         </View>
       </View>

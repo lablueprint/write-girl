@@ -78,9 +78,13 @@ const addTripleFlipHistory = async (req, res) => {
   let data = null;
   try {
     if (history.tripleFlipHistory.length >= 5) {
-      data = await User.updateOne(
+      await User.updateOne(
         { _id: req.params.userId },
         { $pop: { tripleFlipHistory: -1 } },
+      );
+
+      data = await User.updateOne(
+        { _id: req.params.userId },
         { $push: { tripleFlipHistory: req.body } },
       );
     } else {

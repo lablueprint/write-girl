@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
 
+const buffer = Dimensions.get('screen').width * 0.05;
+const halfBuffer = 0.5 * buffer;
 const styles = StyleSheet.create({
   main: {
     paddingTop: '10%',
@@ -17,6 +19,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
+    paddingBottom: '2.5%',
+    paddingVertical: '10%',
     color: '#FFF',
     fontSize: 32,
     fontWeight: 'bold',
@@ -47,6 +51,7 @@ const styles = StyleSheet.create({
   caption: {
     color: 'white',
     fontSize: 16,
+    paddingBottom: buffer,
   },
 });
 
@@ -62,25 +67,6 @@ async function getId() {
   }
   return userId;
 }
-
-// const animationDuration = 350;
-
-// function CustomLayoutTransition(values) {
-//   'worklet';
-
-//   return {
-//     animations: {
-//       originY: withTiming(values.targetOriginY, { duration: animationDuration }),
-//       originX: withTiming(values.targetOriginX, { duration: animationDuration }),
-//       height: withTiming(values.targetHeight, { duration: animationDuration }),
-//     },
-//     initialValues: {
-//       originY: values.currentOriginY,
-//       originX: values.currentOriginX,
-//       height: values.currentHeight,
-//     },
-//   };
-// }
 
 export default function HistoryScreen({ navigation }) {
   const [flipIDs, setFlipHistory] = useState([]);
@@ -122,6 +108,19 @@ export default function HistoryScreen({ navigation }) {
         <Text style={styles.caption}>
           See all your past flips!
         </Text>
+        <TouchableOpacity
+          style={{
+            display: 'flex', backgroundColor: 'red', borderRadius: 20, paddingHorizontal: halfBuffer, width: '30%', justifyContent: 'center', alignItems: 'center',
+          }}
+          onPress={() => { setFlipHistory(Array.from(flipIDs.reverse())); }}
+        >
+          <Text style={{
+            color: 'white', borderRadius: 20,
+          }}
+          >
+            Most Recent
+          </Text>
+        </TouchableOpacity>
       </View>
       <View style={{
         flex: 1, borderRadius: 20,
@@ -131,6 +130,24 @@ export default function HistoryScreen({ navigation }) {
           {
               flipHistory
             }
+          <View style={{
+            display: 'flex', justifyContent: 'center', alignItems: 'center', paddingHorizontal: buffer, paddingVertical: buffer,
+          }}
+          >
+            <Text style={{
+              color: 'white', fontWeight: '800', paddingHorizontal: halfBuffer, paddingVertical: halfBuffer,
+            }}
+            >
+              Reached the End?
+            </Text>
+            <Text style={{
+              color: 'white', paddingHorizontal: buffer, paddingBottom: 4 * buffer, paddingTop: buffer,
+            }}
+            >
+              Your creativity hasn&apos;t.
+              Flipped anew and continue on your journey of inspiration.
+            </Text>
+          </View>
         </ScrollView>
       </View>
 
