@@ -38,13 +38,24 @@ const PocketPromptStack = createNativeStackNavigator();
 
 function PocketPromptStackScreen() {
   return (
-    <PocketPromptStack.Navigator initialRouteName="Pocket Prompts">
+    <PocketPromptStack.Navigator
+      initialRouteName="Pocket Prompts Home"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#151716',
+        },
+        headerTitleStyle: {
+          fontSize: 24,
+        },
+        headerTintColor: '#fff',
+      }}
+    >
       <PocketPromptStack.Screen
         name="Pocket Prompt Stack"
         component={PocketPromptHomeScreen}
-        options={{ title: '' }}
+        options={{ headerShown: false }}
       />
-      <PocketPromptStack.Screen name="Pocket Prompts Generator" component={PocketPromptScreen} />
+      <PocketPromptStack.Screen name="Pocket Prompts" component={PocketPromptScreen} />
     </PocketPromptStack.Navigator>
   );
 }
@@ -60,7 +71,7 @@ function HomeStackScreen() {
       <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Mind & Body" component={MindBodyScreen} />
       <Tab.Screen name="Pep Talks" component={PepTalkScreen} />
-      <Tab.Screen name="Pocket Prompts" component={PocketPromptStackScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Pocket Prompts Home" component={PocketPromptStackScreen} options={{ headerShown: false }}/>
       <Tab.Screen name="Writing Tips" component={WritingTipScreen} />
     </Tab.Navigator>
   );
