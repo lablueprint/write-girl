@@ -7,18 +7,30 @@ import {
 import {
   BottomSheetModal,
   BottomSheetView,
+  BottomSheetScrollView,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, NativeViewGestureHandler, ScrollView } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 import PropTypes from 'prop-types';
+import ScrollList from './ScrollList';
 
-// const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
+
+const playIcon = `<svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.31032 22C1.92653 21.9993 1.54954 21.9031 1.21642 21.7208C0.466315 21.3143 0 20.5252 0 19.6685V2.33162C0 1.47254 0.466315 0.685809 1.21642 0.279289C1.55747 0.0918332 1.94491 -0.00456619 2.33824 0.000166217C2.73157 0.00489863 3.11635 0.110589 3.45236 0.306191L18.9451 9.1755C19.268 9.36912 19.5342 9.63801 19.7187 9.95693C19.9032 10.2759 20 10.6344 20 10.9989C20 11.3633 19.9032 11.7219 19.7187 12.0408C19.5342 12.3597 19.268 12.6286 18.9451 12.8222L3.44986 21.6939C3.10599 21.8927 2.71214 21.9985 2.31032 22Z" fill="url(#paint0_linear_3073_17125)"/>
+<defs>
+<linearGradient id="paint0_linear_3073_17125" x1="0" y1="11" x2="20" y2="11" gradientUnits="userSpaceOnUse">
+<stop stop-color="#84C2C9"/>
+<stop offset="1" stop-color="#BFD25A"/>
+</linearGradient>
+</defs>
+</svg>`;
 
 const styles = StyleSheet.create({
   container: {
-    // borderColor: 'red',
+    // borderColor: 'purple',
     // borderWidth: 2,
     // borderStyle: 'dotted',
   },
@@ -27,9 +39,9 @@ const styles = StyleSheet.create({
     width: windowWidth,
     left: '50%',
     transform: [{ translateX: -windowWidth * 0.5 }],
-    // alignItems: 'center',
-    // flex: 1,
-    // justifyContent: 'center',
+    height: 'auto',
+    bottom: '0%',
+    overflow: 'auto',
 
     borderColor: 'red',
     borderWidth: 2,
@@ -45,25 +57,51 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderStyle: 'dotted',
   },
-  text: {
+  title: {
     color: 'white',
     margin: 24,
     fontSize: 50,
   },
   rectangle: {
-    width: 100 * 2,
-    height: 100,
-    backgroundColor: '#FFFFFF',
+    width: '80%',
+    height: '20%',
+    backgroundColor: '#2A2A2A',
     alignSelf: 'center',
-    // position: 'absolute',
-    // top: '50%',
-    // left: '50%',
-    // alignItem: 'center',
+    borderRadius: 14,
+  },
+  square: {
+    width: '20%',
+    height: '40%',
+    left: '5%',
+    top: '10%',
+    position: 'absolute',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderRadius: 14,
+    justifyContent: 'center',
+  },
+  playIcon: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: '70%',
+  },
+  text: {
+    position: 'absolute',
+    left: '30%',
+    top: '20%',
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  subtext: {
+    position: 'absolute',
+    left: '30%',
+    top: '30%',
+    color: 'rgba(255, 255, 255, 0.5)',
   },
 });
 
 export default function ModalScreen({
   icon, name, modalIcon, isMusicOpen, setIsMusicOpen, isImageOpen, setIsImageOpen,
+  mediaTitle, creator, mediaName,
 }) {
   // const [isOpen, setIsOpen] = useState(false);
   const modalizeRef = useRef(null);
@@ -106,16 +144,25 @@ export default function ModalScreen({
           onChange={handleSheetChanges}
         >
           <BottomSheetView>
-            <Text style={styles.text}>
+            <Text style={styles.title}>
               {name}
               <SvgXml xml={modalIcon} style={styles.modalIcon} />
             </Text>
           </BottomSheetView>
-          <View style={styles.rectangle} />
+          <View style={styles.rectangle}>
+            <View style={styles.square} />
+            <Text style={styles.text}>
+              {mediaTitle}
+            </Text>
+            <Text style={styles.subtext}>
+              {mediaName}
+            </Text>
+            <SvgXml xml={playIcon} style={styles.playIcon} />
+            <ScrollList title="Navigate" />
+          </View>
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
-
   );
 
   return (
@@ -138,6 +185,9 @@ ModalScreen.propTypes = {
   setIsMusicOpen: PropTypes.func,
   isImageOpen: PropTypes.bool,
   setIsImageOpen: PropTypes.func,
+  mediaTitle: PropTypes.string.isRequired,
+  creator: PropTypes.string,
+  mediaName: PropTypes.string,
 };
 
 ModalScreen.defaultProps = {
@@ -145,4 +195,6 @@ ModalScreen.defaultProps = {
   setIsMusicOpen: null,
   isImageOpen: false,
   setIsImageOpen: null,
+  creator: '',
+  mediaName: '',
 };

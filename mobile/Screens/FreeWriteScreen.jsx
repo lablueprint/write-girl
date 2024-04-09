@@ -87,6 +87,12 @@ export default function FreeWriteScreen() {
   // const [isOpen, setIsOpen] = useState(false);
   const [isMusicOpen, setIsMusicOpen] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
+  const songTitle = 'Gentle River Stream';
+  const artist = 'Joji';
+  const songName = 'Water Sounds';
+  const photoTitle = 'Icy River';
+  const photographer = 'Bob';
+  const photoName = 'Still Image';
 
   return (
     <View style={styles.container}>
@@ -98,13 +104,13 @@ export default function FreeWriteScreen() {
       </Text>
 
       <View style={styles.icons}>
-        <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} />
+        <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} mediaTitle={songTitle} creator={artist} mediaName={songName} />
         {!isMusicOpen ? (
           <>
             <Pressable>
               <SvgXml xml={timerIcon} />
             </Pressable>
-            <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} />
+            <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} mediaTitle={photoTitle} creator={photographer} mediaName={photoName} />
           </>
         ) : null}
       </View>
