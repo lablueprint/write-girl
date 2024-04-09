@@ -1,27 +1,27 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
+// import { createTransform } from 'redux-persist';
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
 
-// const user = SecureStore.getItemAsync('user');
-const fetchUser = async () => {
-  const user = await SecureStore.getItemAsync('user');
-  console.log('check');
-  console.log(SecureStore.getItemAsync('user'));
-  return user;
-};
+const user = SecureStore.getItemAsync('user');
+console.log('currUser: ', user);
 
-const initialState = fetchUser().then((user) => {
-  const userState = user.token ? {
-    refresh: 0, id: user.id, token: user.token,
-  }
-    : {
-      refresh: 0, id: null, token: null,
-    };
-  return userState;
-});
-console.log('plz');
+// const userObj = JSON.parse(user._j);
+
+// console.log('userObject: ', userObj);
+
+// console.log('userToken: ', userObj.token);
+
+const initialState = user ? {
+  refresh: 0, id: user.id, token: user.token,
+}
+  : {
+    refresh: 0, id: null, token: null,
+  };
+
+console.log('plz: ', initialState);
 
 // const initialState = user.token ? {
 //   refresh: 0, id: user.id, token: user.token,
@@ -30,12 +30,19 @@ console.log('plz');
 //     refresh: 0, id: null, token: null,
 //   };
 console.log('initial state: ', initialState);
-console.log(SecureStore.getItemAsync('user'));
+console.log('pp: ', SecureStore.getItemAsync('user'));
+console.log('timing');
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    setUser: (state, action) => {
+      state.loading = false;
+      state.refresh = action.payload.refresh;
+      state.id = action.payload.id;
+      state.token = action.payload.token;
+    },
     login: (state, action) => {
       state.refresh = 0;
       state.id = action.payload.id;
@@ -56,17 +63,35 @@ const authSlice = createSlice({
 });
 
 export const {
+  setUser,
   login,
   logout,
   refresh,
 } = authSlice.actions;
-const { reducer } = authSlice;
-export default reducer;
 
-export const isTokenExpired = (token) => {
-  console.log('token: ', token);
-  return false;
-//   const decodedToken = jwt_decode(token);
-//   const currentTime = Date.now() / 1000;
-//   return decodedToken.exp < currentTime;
+// const user = SecureStore.getItemAsync('user');
+export const fetchUser = () => async (dispatch) => {
+  try {
+    console.log('fetchUser');
+    const user = await SecureStore.getItemAsync('user');
+    if (user) {
+      dispatch(setUser(JSON.parse(user)));
+    }
+  } catch (e) {
+    console.error('Error fetching user: ', e);
+  }
+  // console.log('check');
+  // console.log('mm: ', SecureStore.getItemAsync('user'));
 };
+
+export default authSlice.reducer;
+// const { userReducer } = authSlice;
+// export default userReducer;
+
+// export const isTokenExpired = (token) => {
+//   console.log('token: ', token);
+//   return false;
+// //   const decodedToken = jwt_decode(token);
+// //   const currentTime = Date.now() / 1000;
+// //   return decodedToken.exp < currentTime;
+// };
