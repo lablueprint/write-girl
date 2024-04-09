@@ -127,8 +127,8 @@ export default function SignUp({ navigation }) {
         console.error(res.data.error);
       } else {
         const userId = res.data._id;
-        Storage({ key: 'hello', value: userId, saveKey: true });
-        navigation.navigate('Log In');
+        await Storage({ key: 'userId', value: userId, saveKey: true });
+        navigation.navigate('Home');
       }
     } catch (err) {
       console.log(err.message);
