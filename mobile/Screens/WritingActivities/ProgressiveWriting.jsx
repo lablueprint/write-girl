@@ -12,7 +12,7 @@ import relationshipsImage from '../../assets/doors/relationships.png';
 
 const window = Dimensions.get('window');
 const activityDim = window.width * 0.5;
-const bannerDim = window.width * 0.9;
+const bannerDim = window.width - 40;
 const buttonDim = window.height * 0.05;
 
 const date = new Date();
@@ -50,11 +50,12 @@ const styles = StyleSheet.create({
 
   banner: {
     width: bannerDim,
-    height: activityDim,
+    height: 150,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#EBEBEB',
     padding: 10,
+    marginTop: 20,
   },
 
   buttonBanner: {
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#EBEBEB',
     padding: 10,
+    marginTop: 20,
   },
 
   unchecked: {
@@ -100,7 +102,6 @@ const styles = StyleSheet.create({
   },
 
   bg: {
-    backgroundColor: '#fff',
     width: '100%',
     height: '100%',
   },
@@ -116,8 +117,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     flexDirection: 'column',
-    gap: 20,
-    padding: 10,
+    padding: 0,
   },
 
   progressBar: {
@@ -136,10 +136,23 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 48,
     fontWeight: 'bold',
-    marginLeft: 16,
+    marginLeft: 20,
     marginRight: 20,
     marginBottom: 20,
     marginTop: 64,
+  },
+
+  activityHeading: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+
+  activityText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginTop: 64,
+    marginBottom: 20,
   },
 
   monthDoorText: {
@@ -154,6 +167,27 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 360,
     resizeMode: 'cover',
+  },
+
+  monthDoorImageSmall: {
+    width: '200%',
+    height: 220,
+    resizeMode: 'cover',
+  },
+
+  welcomeBannerTextContainer: {
+    width: '50%',
+  },
+
+  welcomeBannerImageContainer: {
+    width: '25%',
+  },
+
+  welcomeBannerContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start', // if you want to fill rows left to right
   },
 
   doorButton: {
@@ -183,38 +217,44 @@ const genreLabels = [
     label: 'Colors',
     color: '#76A785',
     image: colorsImage,
+    id: 1,
   },
   {
     label: 'Sounds',
     color: '#63A1AF',
     image: soundsImage,
+    id: 2,
   },
   {
     label: 'Textures',
     color: '#E97A54',
     image: texturesImage,
+    id: 3,
   },
   {
     label: 'Weather',
     color: '#9FE7FF',
     image: weatherImage,
+    id: 4,
   },
   {
     label: 'Nature',
     color: '#BFD25A',
     image: natureImage,
+    id: 5,
   },
   {
     label: 'Relationships',
     color: '#F0A2B8',
     image: relationshipsImage,
+    id: 6,
   },
-  // 'Sounds', 'Textures', 'Weather', 'Nature', 'Relationships',
 ];
 
 export default function ProgressiveWritingScreen() {
   const [activities, setActivities] = useState([]);
   const [genreFilter, setGenreFilter] = useState(null);
+  const [genreInfo, setGenreInfo] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [step, setStep] = useState(0);
 
@@ -258,6 +298,7 @@ export default function ProgressiveWritingScreen() {
       (activity) => activity.genre === name,
     );
     setGenreFilter(filteredList);
+    setGenreInfo(genreLabels.filter((info) => info.label === name));
   };
 
   useEffect(() => {
@@ -269,6 +310,21 @@ export default function ProgressiveWritingScreen() {
   const displayPage = () => {
     if (step === 0) {
       return (
+        <ScrollView>
+          <View style={styles.welcomeBannerContainer}>
+            <View style={styles.welcomeBannerTextContainer}>
+              <Text style={styles.activityText}>
+                Welcome to
+              </Text>
+              <Text style={styles.activityHeading}>
+                {genreInfo[0].label}
+              </Text>
+            </View>
+            <View style={styles.welcomeBannerImageContainer}>
+              <Image source={genreInfo[0].image} style={styles.monthDoorImageSmall} />
+            </View>
+          </View>
+          {
         genreFilter.map((activity, idx) => {
           if (activity.activity.length > 0) {
             return (
@@ -285,6 +341,8 @@ export default function ProgressiveWritingScreen() {
           }
           return (<View />);
         })
+      }
+        </ScrollView>
       );
     } if (step === 1) {
       const content = [];
@@ -320,14 +378,14 @@ export default function ProgressiveWritingScreen() {
           <Text>Graphic holder</Text>
         </View>,
         <View key="exit" style={styles.finishActivityInteractives}>
-          <TouchableOpacity title="Save" onPress={() => { console.log('save placeholder'); }} style={[styles.buttonBanner, { width: bannerDim * 0.25 }]}>
+          <TouchableOpacity title="Save" onPress={() => { console.log('save placeholder'); }} style={[styles.buttonBanner, { width: bannerDim * 0.4 - 10, marginRight: 10 }]}>
             <Text>
               Save
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => { setStep(0); }}
-            style={[styles.buttonBanner, { width: bannerDim * 0.75 }]}
+            style={[styles.buttonBanner, { width: bannerDim * 0.6 - 10 }]}
           >
             <Text>Back to Activity List</Text>
           </TouchableOpacity>
@@ -419,9 +477,14 @@ export default function ProgressiveWritingScreen() {
             </ScrollView>
           )
           : (
-            <View style={styles.bg}>
+            <View style={{
+              backgroundColor: genreInfo[0].color,
+              width: '100%',
+              height: '100%',
+            }}
+            >
               <View style={styles.backButton}>
-                <Button title="< back" onPress={() => { if (step === 0) { setGenreFilter(null); } else { setStep(0); } }} />
+                <Button title="< back" onPress={() => { if (step === 0) { setGenreFilter(null); setGenreInfo(null); } else { setStep(0); } }} />
               </View>
               {/* Filtered Activity Screen */}
               <View style={styles.activityDisplay}>
@@ -451,7 +514,7 @@ export default function ProgressiveWritingScreen() {
                 }
               </View>
 
-              <TouchableOpacity title="Back" onPress={() => { setGenreFilter(null); setStep(0); }} />
+              <TouchableOpacity title="Back" onPress={() => { setGenreFilter(null); setGenreInfo(null); setStep(0); }} />
             </View>
           )
       }
