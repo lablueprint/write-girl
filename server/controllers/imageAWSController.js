@@ -64,10 +64,8 @@ const getImageAWS = async (key) => {
   });
   try {
     const response = await client.send(command);
-    // The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
     const str = await response.Body.transformToString('base64');
     const b64str = `data:image/${response.ContentType};base64,${str}`;
-    // console.log(b64str.slice(0, 100));
     return (b64str);
   } catch (err) {
     console.error(err);
@@ -80,12 +78,13 @@ const getImage = async (req, res) => {
     const randomTripleflip = await TripleFlip.aggregate([
       { $sample: { size: 1 } }, // $sample stage to get a random document
     ]);
-    // Extract the talk string from the random document
+    // Extract the images array from the random document
     const randomTripleFlipKeys = randomTripleflip.length > 0 ? randomTripleflip[0].images : null;
     if (randomTripleFlipKeys === null) {
       console.log('No valid keys found');
       return 'ERROR: Empty MongoDB collection';
     }
+    // for each image key, get the b64 encoding from AWS S3
     const b64Arr = await Promise.all(randomTripleFlipKeys.map(getImageAWS));
     res.send(b64Arr);
   } catch (err) {
