@@ -19,6 +19,8 @@ const pepTalkRouter = require('./routes/pepTalkRoutes');
 const pocketPromptRouter = require('./routes/pocketPromptRoutes');
 const writingTipRouter = require('./routes/writingTipRoutes');
 const mindBodyRouter = require('./routes/mindBodyRoute');
+const userRouter = require('./routes/userRoutes');
+const passwordResetRouter = require('./routes/passwordResetRoute');
 
 // Connect to the MongoDB database
 async function connectToDatabase() {
@@ -48,6 +50,8 @@ app.use('/pepTalk', pepTalkRouter);
 app.use('/pocketPrompt', pocketPromptRouter);
 app.use('/writingTip', writingTipRouter);
 app.use('/mindBody', mindBodyRouter);
+app.use('/user', userRouter);
+app.use('/passwordReset', passwordResetRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
