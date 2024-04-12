@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, Dimensions, Button, TouchableOpacity, ScrollView, FlatList,
+  View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView,
 } from 'react-native';
-import Animated, {
-  useAnimatedStyle, useSharedValue, withTiming, withDelay, withSpring,
-} from 'react-native-reanimated';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
@@ -53,6 +50,50 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingBottom: buffer,
   },
+  recentFilter: {
+    display: 'flex',
+    paddingHorizontal: halfBuffer,
+    width: '60%',
+    flexDirection: 'row',
+    columnGap: '2%',
+  },
+  filterArrowIndicator: {
+    color: 'white', borderRadius: 20,
+  },
+  mostRecent: {
+    color: 'white',
+    borderRadius: 20,
+    fontWeight: 'bold',
+  },
+  divider: {
+    backgroundColor: '#FFF',
+    height: 0.25,
+    width: '100%',
+    marginVertical: 20,
+  },
+  scrollViewContainer: {
+    flex: 1,
+    borderRadius: 20,
+  },
+  postHistoryBuffer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: buffer,
+    paddingVertical: buffer,
+  },
+  endScrollText: {
+    color: 'white',
+    fontWeight: '800',
+    paddingHorizontal: halfBuffer,
+    paddingVertical: halfBuffer,
+  },
+  endScrollQuote: {
+    color: 'white',
+    paddingHorizontal: buffer,
+    paddingBottom: 4 * buffer,
+    paddingTop: buffer,
+  },
 });
 
 async function getId() {
@@ -70,26 +111,32 @@ async function getId() {
 
 export default function HistoryScreen({ navigation }) {
   const [flipIDs, setFlipHistory] = useState([]);
-  useEffect(async () => {
-    const getHistory = async () => {
-      try {
-        const userId = await getId();
-        console.log(userId);
-        const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlipHistory/${userId}`);
-        setFlipHistory(res.data);
-        return res.data;
-      } catch (err) {
-        console.log(err);
-        return err;
-      }
-    };
-    let history = await getHistory();
-    history = JSON.parse(JSON.stringify(history.tripleFlipHistory));
-    setFlipHistory(history);
+  const [recent, setRecent] = useState(true);
+
+  const getHistory = async () => {
+    try {
+      const userId = await getId();
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlipHistory/${userId}`);
+      setFlipHistory(JSON.parse(JSON.stringify(res.data.tripleFlipHistory)).reverse());
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
+  useEffect(() => {
+    getHistory();
   }, []);
 
   const flipHistory = Object.keys(flipIDs).map(
-    (tripleFlip) => <TripleFlipHistoryCard flipId={flipIDs[tripleFlip].flipID} date={flipIDs[tripleFlip].date} />,
+    (tripleFlip, index) => (
+      <TripleFlipHistoryCard
+        key={index}
+        flipId={flipIDs[tripleFlip].flipID}
+        date={flipIDs[tripleFlip].date}
+      />
+    ),
   );
 
   return (
@@ -109,41 +156,44 @@ export default function HistoryScreen({ navigation }) {
           See all your past flips!
         </Text>
         <TouchableOpacity
-          style={{
-            display: 'flex', backgroundColor: 'red', borderRadius: 20, paddingHorizontal: halfBuffer, width: '30%', justifyContent: 'center', alignItems: 'center',
-          }}
-          onPress={() => { setFlipHistory(Array.from(flipIDs.reverse())); }}
+          style={styles.recentFilter}
+          onPress={() => { setFlipHistory(Array.from(flipIDs.reverse())); setRecent(!recent); }}
         >
-          <Text style={{
-            color: 'white', borderRadius: 20,
-          }}
-          >
-            Most Recent
-          </Text>
+          {
+            recent
+              ? (
+                <Text style={styles.filterArrowIndicator}>
+                  &#x25BC; Sorting by
+                </Text>
+              ) : (
+                <Text style={styles.filterArrowIndicator}>
+                  &#x25B2; Sorting by
+                </Text>
+              )
+          }
+          { recent
+            ? (
+              <Text style={styles.mostRecent}>
+                Most Recent
+              </Text>
+            ) : (
+              <Text style={styles.mostRecent}>
+                Least Recent
+              </Text>
+            )}
         </TouchableOpacity>
       </View>
-      <View style={{
-        flex: 1, borderRadius: 20,
-      }}
-      >
+      <View style={styles.divider} />
+      <View style={styles.scrollViewContainer}>
         <ScrollView>
           {
               flipHistory
             }
-          <View style={{
-            display: 'flex', justifyContent: 'center', alignItems: 'center', paddingHorizontal: buffer, paddingVertical: buffer,
-          }}
-          >
-            <Text style={{
-              color: 'white', fontWeight: '800', paddingHorizontal: halfBuffer, paddingVertical: halfBuffer,
-            }}
-            >
+          <View style={styles.postHistoryBuffer}>
+            <Text style={styles.endScrollText}>
               Reached the End?
             </Text>
-            <Text style={{
-              color: 'white', paddingHorizontal: buffer, paddingBottom: 4 * buffer, paddingTop: buffer,
-            }}
-            >
+            <Text style={styles.endScrollQuote}>
               Your creativity hasn&apos;t.
               Flipped anew and continue on your journey of inspiration.
             </Text>

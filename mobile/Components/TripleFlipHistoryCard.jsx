@@ -3,7 +3,7 @@ import {
   StyleSheet, View, Text, Dimensions, TouchableOpacity,
 } from 'react-native';
 import Animated, {
-  useAnimatedStyle, useSharedValue, withTiming, withDelay, withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 import PropTypes from 'prop-types';
 
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     width: cardWidth * 0.85,
   },
   headerText: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: '900',
   },
   expand: {
@@ -48,6 +48,45 @@ const styles = StyleSheet.create({
     height: expandBoxWidth * 0.5,
     width: '12.5%',
     borderRadius: 20,
+  },
+  topicText: {
+    fontSize: 25,
+    fontWeight: 600,
+  },
+  topPart: {
+    backgroundColor: '#19333D',
+    height: cardHeight * 0.08,
+    width: cardWidth,
+    marginTop: -0.08 * cardHeight,
+  },
+  diagonalArrow: {
+    backgroundColor: '#BFD25A',
+    height: expandBoxWidth * 0.6,
+    width: '12.5%',
+    borderRadius: 20,
+    transform: [{ rotate: '-135deg' }],
+    top: '-100%',
+    right: '-50%',
+  },
+  outerCard: {
+    display: 'flex',
+    flexDirection: 'column',
+    rowGap: '5%',
+    backgroundColor: '#19333D',
+    borderTopRightRadius: '20',
+    borderBottomRightRadius: '20',
+    borderBottomLeftRadius: '20',
+    alignItems: 'center',
+    paddingTop: '2.5%',
+    paddingBottom: '2.5%',
+  },
+  innerCard: {
+    backgroundColor: '#D9D9D9BF',
+    width: '95%',
+    paddingHorizontal: '5%',
+    paddingVertical: '5%',
+    borderRadius: 20,
+    alignItems: 'center',
   },
 });
 
@@ -92,10 +131,7 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
             <Text style={[styles.headerText, { color: '#FFF' }]}>{dateInfo[1]}</Text>
           </View>
 
-          <View style={{
-            backgroundColor: '#19333D', height: cardHeight * 0.08, width: cardWidth, marginTop: -0.08 * cardHeight,
-          }}
-          />
+          <View style={styles.topPart} />
         </View>
 
         <View style={styles.expand}>
@@ -118,28 +154,25 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
               }
             />
             <Animated.View
-              style={{
-                backgroundColor: '#BFD25A', height: expandBoxWidth * 0.6, width: '12.5%', borderRadius: 20, transform: [{ rotate: '-135deg' }], top: '-100%', right: '-50%',
-              }}
+              style={styles.diagonalArrow}
             />
           </TouchableOpacity>
         </View>
       </View>
       <Animated.View
         layout={CustomLayoutTransition}
-        style={{
-          display: 'flex', flexDirection: 'column', rowGap: '5%', backgroundColor: '#19333D', borderTopRightRadius: '20', borderBottomRightRadius: '20', borderBottomLeftRadius: '20', alignItems: 'center', paddingTop: '2.5%', paddingBottom: '2.5%',
-        }}
+        style={styles.outerCard}
       >
         {
-          tripleFlip.map((flipTopic) => (
+          tripleFlip.map((flipTopic, index) => (
             <Animated.View
+              key={index}
               layout={CustomLayoutTransition}
-              style={{
-                height: expanded ? 2 * expandBoxHeight : expandBoxHeight, backgroundColor: '#D9D9D9BF', width: '95%', paddingHorizontal: '5%', paddingVertical: '5%', borderRadius: 20, alignItems: 'center',
-              }}
+              style={[{
+                height: expanded ? 2 * expandBoxHeight : expandBoxHeight,
+              }, styles.innerCard]}
             >
-              <Text style={{ fontSize: 25, fontWeight: 600 }}>
+              <Text style={styles.topicText}>
                 { flipTopic }
               </Text>
             </Animated.View>
@@ -151,6 +184,11 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
   );
 }
 TripleFlipHistoryCard.propTypes = {
-  flipId: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
+  flipId: PropTypes.string,
+  date: PropTypes.string,
+};
+
+TripleFlipHistoryCard.defaultProps = {
+  date: 'today',
+  flipId: 'null',
 };
