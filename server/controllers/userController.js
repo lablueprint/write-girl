@@ -112,47 +112,6 @@ const getTripleFlipHistory = async (req, res) => {
   }
 };
 
-const addTripleFlipHistory = async (req, res) => {
-  const history = await User.findOne(
-    { _id: req.params.userId },
-    {
-      _id: 0,
-      tripleFlipHistory: 1,
-    },
-  );
-  let data = null;
-  try {
-    if (history.tripleFlipHistory.length >= 5) {
-      await User.updateOne(
-        { _id: req.params.userId },
-        { $pop: { tripleFlipHistory: -1 } },
-      );
-
-      data = await User.updateOne(
-        { _id: req.params.userId },
-        { $push: { tripleFlipHistory: req.body } },
-      );
-    } else {
-      data = await User.updateOne(
-        { _id: req.params.userId },
-        { $push: { tripleFlipHistory: req.body } },
-      );
-    }
-    res.send(data);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getTripleFlipHistory = async (req, res) => {
-  try {
-    const data = await User.findOne({ _id: req.params.userId }, 'tripleFlipHistory -_id');
-    res.json(data);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 // Send [traitsID]
 const addSavedTraits = async (req, res) => {
   try {
