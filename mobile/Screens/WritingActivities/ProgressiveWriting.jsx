@@ -3,6 +3,7 @@ import {
   StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, ImageBackground, Image, Pressable,
 } from 'react-native';
 import axios from 'axios';
+import * as Progress from 'react-native-progress';
 import colorsImage from '../../assets/doors/colors.png';
 import soundsImage from '../../assets/doors/sounds.png';
 import texturesImage from '../../assets/doors/textures.png';
@@ -14,6 +15,7 @@ const window = Dimensions.get('window');
 const activityDim = window.width * 0.5;
 const bannerDim = window.width - 40;
 const buttonDim = window.height * 0.05;
+const windowWidth = window.width;
 
 const date = new Date();
 const month = date.getMonth();
@@ -127,6 +129,10 @@ const styles = StyleSheet.create({
     gap: 20,
   },
 
+  bar: {
+    marginTop: 20,
+  },
+
   doorText: {
     padding: 16,
     fontWeight: 'bold',
@@ -145,7 +151,7 @@ const styles = StyleSheet.create({
   activityHeading: {
     fontSize: 36,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: 'white',
   },
 
   activityText: {
@@ -153,6 +159,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 64,
     marginBottom: 20,
+    color: 'white',
+  },
+
+  activityBodyText: {
+    fontSize: 20,
+    marginTop: 20,
+    marginRight: 20,
+    marginLeft: 20,
+    color: 'white',
   },
 
   monthDoorText: {
@@ -198,7 +213,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: 'black',
     width: '100%',
-    marginBottom: 64,
   },
 
   doorButtonText: {
@@ -331,7 +345,7 @@ export default function ProgressiveWritingScreen() {
               <TouchableOpacity
                 key={activity.activity[0]}
                 style={[styles.banner, { borderRadius: 10 }]}
-                onPress={() => [setSelectedActivity(idx), setStep(1)]}
+                onPress={() => [setSelectedActivity(idx), setStep(2)]}
               >
                 <Text>
                   {activity.activity[0]}
@@ -344,50 +358,61 @@ export default function ProgressiveWritingScreen() {
       }
         </ScrollView>
       );
-    } if (step === 1) {
+    }
+    // if (step === 1) {
+    //   const content = [];
+    //   content.push(
+    //     <View key="graphic" style={[styles.banner, { height: window.height * 0.25, borderRadius: 10 }]}>
+    //       <Text>Graphic holder</Text>
+    //     </View>,
+    //     <View key="activity" style={[styles.banner, { height: window.height * 0.35 }]}>
+    //       <Text>
+    //         {genreFilter[selectedActivity].activity[step]}
+    //       </Text>
+    //     </View>,
+    //     <TouchableOpacity
+    //       key="button"
+    //       style={styles.buttonBanner}
+    //       onPress={() => { setStep(step + 1); }}
+    //     >
+    //       <Text>
+    //         Start
+    //       </Text>
+    //     </TouchableOpacity>,
+    //   );
+    //   return (
+    //     content.map((elem) => elem)
+    //   );
+    // }
+    if (step === genreFilter[selectedActivity].activity.length) {
       const content = [];
       content.push(
-        <View key="graphic" style={[styles.banner, { height: window.height * 0.25, borderRadius: 10 }]}>
-          <Text>Graphic holder</Text>
-        </View>,
-        <View key="activity" style={[styles.banner, { height: window.height * 0.35 }]}>
-          <Text>
-            {genreFilter[selectedActivity].activity[step]}
-          </Text>
-        </View>,
-        <TouchableOpacity
-          key="button"
-          style={styles.buttonBanner}
-          onPress={() => { setStep(step + 1); }}
-        >
-          <Text>
-            Start
-          </Text>
-        </TouchableOpacity>,
-      );
-      return (
-        content.map((elem) => elem)
-      );
-    } if (step === genreFilter[selectedActivity].activity.length) {
-      const content = [];
-      content.push(
-        <View key="message" style={[styles.banner, { height: window.height * 0.2, borderRadius: 10 }]}>
-          <Text>Complete!</Text>
-        </View>,
+        <Text style={styles.activityHeading}>Great work!</Text>,
         <View key="graphic" style={[styles.banner, { height: window.height * 0.3 }]}>
           <Text>Graphic holder</Text>
         </View>,
+        <Text style={styles.activityBodyText}>
+          You've completed
+          {' '}
+          {genreFilter[selectedActivity].activity[0]}
+          {' '}
+          from the
+          {' '}
+          {genreInfo[0].label}
+          {' '}
+          door!
+        </Text>,
         <View key="exit" style={styles.finishActivityInteractives}>
-          <TouchableOpacity title="Save" onPress={() => { console.log('save placeholder'); }} style={[styles.buttonBanner, { width: bannerDim * 0.4 - 10, marginRight: 10 }]}>
+          {/* <TouchableOpacity title="Save" onPress={() => { console.log('save placeholder'); }} style={[styles.buttonBanner, { width: bannerDim * 0.4 - 10, marginRight: 10 }]}>
             <Text>
               Save
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => { setStep(0); }}
-            style={[styles.buttonBanner, { width: bannerDim * 0.6 - 10 }]}
+            style={[styles.doorButton, { width: bannerDim, marginTop: 20 }]}
           >
-            <Text>Back to Activity List</Text>
+            <Text style={styles.doorButtonText}>Back to activities</Text>
           </TouchableOpacity>
         </View>,
       );
@@ -395,9 +420,9 @@ export default function ProgressiveWritingScreen() {
         content.map((elem) => elem)
       );
     }
-
     const content = [];
     content.push(
+      <Text style={styles.activityHeading}>Part</Text>,
       <View key="graphic" style={[styles.banner, { height: window.height * 0.2 }]}>
         <Text>Graphic holder</Text>
       </View>,
@@ -406,9 +431,14 @@ export default function ProgressiveWritingScreen() {
           {genreFilter[selectedActivity].activity[step]}
         </Text>
       </View>,
-      <TouchableOpacity key="next" title="Next" onPress={() => { setStep(step + 1); }} style={styles.buttonBanner}>
+      <TouchableOpacity key="next" title="Next" onPress={() => { setStep(step + 1); }}>
         <Text>
           Next
+        </Text>
+      </TouchableOpacity>,
+      <TouchableOpacity key="back" title="Back" onPress={() => { setStep(step - 1); }}>
+        <Text>
+          Back
         </Text>
       </TouchableOpacity>,
     );
@@ -435,14 +465,14 @@ export default function ProgressiveWritingScreen() {
                 </Text>
                 <Image source={genreLabels[monthActivityNum].image} style={styles.monthDoorImage} />
                 <View style={styles.buttonContainer}>
-                  <Pressable
-                    style={styles.doorButton}
+                  <TouchableOpacity
+                    style={[styles.doorButton, { marginBottom: 64 }]}
                     onPress={() => { selectActivityGenre(genreLabels[monthActivityNum].label); }}
                   >
                     <Text style={styles.doorButtonText}>
                       {genreLabels[monthActivityNum].label}
                     </Text>
-                  </Pressable>
+                  </TouchableOpacity>
                 </View>
               </View>
               <View style={styles.container}>
@@ -490,26 +520,27 @@ export default function ProgressiveWritingScreen() {
               <View style={styles.activityDisplay}>
                 {displayPage()}
                 {
-                  step >= 2
+                  step >= 2 && step !== genreFilter[selectedActivity].activity.length
                     ? (
-                      <View style={styles.progressBar}>
-                        {
-                          Array.from(
-                            { length: genreFilter[selectedActivity].activity.length - 2 },
-                            (_, i) => {
-                              let style = styles.unchecked;
-                              if (i < step - 2) {
-                                style = styles.checked;
-                              }
-                              return (
-                                <View key={i} style={style}>
-                                  <Text>{i}</Text>
-                                </View>
-                              );
-                            },
-                          )
-                        }
-                      </View>
+                      // <View style={styles.progressBar}>
+                      //   {
+                      //     Array.from(
+                      //       { length: genreFilter[selectedActivity].activity.length - 2 },
+                      //       (_, i) => {
+                      //         let style = styles.unchecked;
+                      //         if (i < step - 2) {
+                      //           style = styles.checked;
+                      //         }
+                      //         return (
+                      //           <View key={i} style={style}>
+                      //             <Text>{i}</Text>
+                      //           </View>
+                      //         );
+                      //       },
+                      //     )
+                      //   }
+                      // </View>
+                      <Progress.Bar progress={(step - 1) / (genreFilter[selectedActivity].activity.length - 2)} width={windowWidth - 40} height={10} borderRadius={50} borderWidth={0} unfilledColor="#333333" color="white" style={styles.bar} />
                     ) : <View key={-1} />
                 }
               </View>
