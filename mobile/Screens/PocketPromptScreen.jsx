@@ -3,7 +3,6 @@ import {
   StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { RadialGradient } from 'react-native-radial-gradient';
 import axios from 'axios';
 
 const styles = StyleSheet.create({
