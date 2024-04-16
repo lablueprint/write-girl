@@ -3,6 +3,7 @@ import {
   StyleSheet, Text, View, Button, Dimensions, ScrollView,
 } from 'react-native';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import HomeScreenCard from '../Components/HomeScreenCard';
 import TabBar from '../Components/HomeScreenTab';
 

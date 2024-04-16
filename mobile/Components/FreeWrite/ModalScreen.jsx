@@ -4,24 +4,28 @@ import React, {
 import {
   View, Text, StyleSheet, Pressable, Dimensions, useWindowDimensions,
 } from 'react-native';
-import {
+import BottomSheet, {
   BottomSheetModal,
   BottomSheetView,
   BottomSheetScrollView,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView, NativeViewGestureHandler, ScrollView } from 'react-native-gesture-handler';
+import {
+  GestureHandlerRootView, NativeViewGestureHandler, ScrollView, FlatList,
+} from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 import PropTypes from 'prop-types';
 import ScrollList from './ScrollList';
+import VerticalList from './VerticalList';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-const playIcon = `<svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M2.31032 22C1.92653 21.9993 1.54954 21.9031 1.21642 21.7208C0.466315 21.3143 0 20.5252 0 19.6685V2.33162C0 1.47254 0.466315 0.685809 1.21642 0.279289C1.55747 0.0918332 1.94491 -0.00456619 2.33824 0.000166217C2.73157 0.00489863 3.11635 0.110589 3.45236 0.306191L18.9451 9.1755C19.268 9.36912 19.5342 9.63801 19.7187 9.95693C19.9032 10.2759 20 10.6344 20 10.9989C20 11.3633 19.9032 11.7219 19.7187 12.0408C19.5342 12.3597 19.268 12.6286 18.9451 12.8222L3.44986 21.6939C3.10599 21.8927 2.71214 21.9985 2.31032 22Z" fill="url(#paint0_linear_3073_17125)"/>
+const playIcon = `<svg width="142" height="36" viewBox="0 0 142 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="142" height="36" rx="14" fill="url(#paint0_linear_3635_5130)"/>
+<path d="M65.3103 29C64.9265 28.9993 64.5495 28.9031 64.2164 28.7208C63.4663 28.3143 63 27.5252 63 26.6685V9.33162C63 8.47254 63.4663 7.68581 64.2164 7.27929C64.5575 7.09183 64.9449 6.99543 65.3382 7.00017C65.7316 7.0049 66.1163 7.11059 66.4524 7.30619L81.9451 16.1755C82.268 16.3691 82.5342 16.638 82.7187 16.9569C82.9032 17.2759 83 17.6344 83 17.9989C83 18.3633 82.9032 18.7219 82.7187 19.0408C82.5342 19.3597 82.268 19.6286 81.9451 19.8222L66.4499 28.6939C66.106 28.8927 65.7121 28.9985 65.3103 29Z" fill="#2A2A2A"/>
 <defs>
-<linearGradient id="paint0_linear_3073_17125" x1="0" y1="11" x2="20" y2="11" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_3635_5130" x1="0" y1="18" x2="142" y2="18" gradientUnits="userSpaceOnUse">
 <stop stop-color="#84C2C9"/>
 <stop offset="1" stop-color="#BFD25A"/>
 </linearGradient>
@@ -30,28 +34,35 @@ const playIcon = `<svg width="20" height="22" viewBox="0 0 20 22" fill="none" xm
 
 const styles = StyleSheet.create({
   container: {
+
     // borderColor: 'purple',
     // borderWidth: 2,
     // borderStyle: 'dotted',
   },
   musicModal: {
+    display: 'flex',
     position: 'absolute',
     width: windowWidth,
     left: '50%',
     transform: [{ translateX: -windowWidth * 0.5 }],
-    height: 'auto',
-    bottom: '0%',
-    overflow: 'auto',
+    zIndex: 4,
+    // height: 'auto',
+    // bottom: '0%',
+    // overflow: 'auto',
+    // flex: 1,
 
     borderColor: 'red',
     borderWidth: 2,
     borderStyle: 'dotted',
   },
   imageModal: {
+    display: 'flex',
+
     position: 'absolute',
     width: windowWidth,
-    left: '100%',
-    transform: [{ translateX: -windowWidth * 0.886 }],
+    left: '50%',
+    transform: [{ translateX: -windowWidth * 0.91 }],
+    zIndex: 4,
 
     borderColor: 'green',
     borderWidth: 2,
@@ -59,8 +70,10 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    margin: 24,
-    fontSize: 50,
+    margin: 10,
+    fontSize: 30,
+    alignSelf: 'center',
+    fontWeight: 'bold',
   },
   rectangle: {
     width: '80%',
@@ -68,6 +81,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#2A2A2A',
     alignSelf: 'center',
     borderRadius: 14,
+  },
+  scrollable: {
+    height: '30%',
   },
   square: {
     width: '20%',
@@ -78,6 +94,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
     borderRadius: 14,
     justifyContent: 'center',
+  },
+  modalIcon: {
+    // height: '90%',
+    // left: '5%',
+    alignSelf: 'center',
   },
   playIcon: {
     position: 'absolute',
@@ -105,10 +126,10 @@ export default function ModalScreen({
 }) {
   // const [isOpen, setIsOpen] = useState(false);
   const modalizeRef = useRef(null);
-  const snapPoints = useMemo(() => ['100%'], []);
+  const snapPoints = useMemo(() => ['65%', '100%'], []);
   const { height } = useWindowDimensions();
-  const musicHeight = isMusicOpen ? height : height * 0.5;
-  const imageHeight = isImageOpen ? height : height * 0.5;
+  const musicHeight = isMusicOpen ? height : 0;
+  const imageHeight = isImageOpen ? height : 0;
   const top = -height * 0.55;
 
   const handlePresentModalPress = useCallback(() => {
@@ -133,6 +154,44 @@ export default function ModalScreen({
     }
   }, []);
 
+  const data = useMemo(
+    () => Array(1)
+      .fill(0)
+      .map((_, index) => `index-${index}`),
+    [],
+  );
+
+  const content = () => (
+    <View style={styles.rectangle}>
+      {name === 'Music' && (
+      <>
+        <View style={styles.square}>
+          <SvgXml xml={modalIcon} style={styles.modalIcon} />
+        </View>
+        <SvgXml xml={playIcon} style={styles.playIcon} />
+      </>
+      )}
+      <Text style={name === 'Music' ? styles.text : { ...styles.text, left: '5%', top: '10%' }}>{mediaTitle}</Text>
+      <Text style={name === 'Music' ? styles.subtext : { ...styles.subtext, left: '5%', top: '20%' }}>{mediaName}</Text>
+    </View>
+
+  );
+
+  const list = () => (
+    <View style={styles.scrollable}>
+      <VerticalList title="Nature Sounds" />
+    </View>
+  );
+
+  const renderItem = useCallback(
+    (item) => (
+      <View key={item}>
+        {content()}
+      </View>
+    ),
+    [],
+  );
+
   const displayModal = () => (
     <GestureHandlerRootView style={{ ...(name === 'Music' ? { ...styles.musicModal, height: musicHeight, top } : { ...styles.imageModal, height: imageHeight, top }) }}>
       <BottomSheetModalProvider>
@@ -146,20 +205,19 @@ export default function ModalScreen({
           <BottomSheetView>
             <Text style={styles.title}>
               {name}
-              <SvgXml xml={modalIcon} style={styles.modalIcon} />
             </Text>
           </BottomSheetView>
-          <View style={styles.rectangle}>
-            <View style={styles.square} />
-            <Text style={styles.text}>
-              {mediaTitle}
-            </Text>
-            <Text style={styles.subtext}>
-              {mediaName}
-            </Text>
-            <SvgXml xml={playIcon} style={styles.playIcon} />
-            <ScrollList title="Navigate" />
-          </View>
+          {content()}
+          {list()}
+          {/* <FlatList
+            data={data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={() => (
+              // <View>
+              content()
+              // </View>
+            )}
+          /> */}
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
