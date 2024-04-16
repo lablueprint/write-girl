@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Dimensions,
+  StyleSheet, Text, View, Button, Dimensions, ScrollView,
 } from 'react-native';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import HomeScreenCard from '../Components/HomeScreenCard';
 import TabBar from '../Components/HomeScreenTab';
 
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     paddingRight: 15, // Padding for the right (if needed)
   },
 
-  bottomHalfContainer: {  
+  bottomHalfContainer: {
     alignItems: 'center',
   },
 
@@ -101,18 +102,23 @@ export default function HomeScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      {
+    <ScrollView>
+      <View style={styles.container}>
+        {
         welcomeBanner
       }
-      <View style={styles.bottomHalfContainer}>
-        <TabBar selectedTab={page} setPage={setPage} getText={getCardText} />
-      </View>
-      <View style={styles.cardContainer}>
-        {
+        <View style={styles.bottomHalfContainer}>
+          <TabBar selectedTab={page} setPage={setPage} getText={getCardText} />
+        </View>
+        <View style={styles.cardContainer}>
+          {
           displayPage()
         }
+        </View>
       </View>
-    </View>
+      <View style={styles.container}>
+        <Text>Home Screen</Text>
+      </View>
+    </ScrollView>
   );
 }
