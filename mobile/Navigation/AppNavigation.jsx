@@ -45,6 +45,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const createtabOptions = (icon) => ({
+  headerShown: false,
   tabBarIcon: () => (
     <Image
       source={icon}
