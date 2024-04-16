@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, ImageBackground, Image, Pressable,
+  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, Image,
 } from 'react-native';
 import axios from 'axios';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as Progress from 'react-native-progress';
 import colorsImage from '../../assets/doors/colors.png';
 import soundsImage from '../../assets/doors/sounds.png';
@@ -10,11 +11,12 @@ import texturesImage from '../../assets/doors/textures.png';
 import weatherImage from '../../assets/doors/weather.png';
 import natureImage from '../../assets/doors/nature.png';
 import relationshipsImage from '../../assets/doors/relationships.png';
+import stepGraphic from '../../assets/doors/step-graphic.png';
+import completeGraphic from '../../assets/doors/complete-graphic.png';
 
 const window = Dimensions.get('window');
 const activityDim = window.width * 0.5;
 const bannerDim = window.width - 40;
-const buttonDim = window.height * 0.05;
 const windowWidth = window.width;
 
 const date = new Date();
@@ -53,21 +55,10 @@ const styles = StyleSheet.create({
   banner: {
     width: bannerDim,
     height: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#EBEBEB',
-    padding: 10,
+    alignItems: 'left',
+    padding: 20,
     marginTop: 20,
-  },
-
-  buttonBanner: {
-    width: bannerDim,
-    height: buttonDim,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#EBEBEB',
-    padding: 10,
-    marginTop: 20,
+    borderRadius: 10,
   },
 
   unchecked: {
@@ -122,14 +113,19 @@ const styles = StyleSheet.create({
     padding: 0,
   },
 
-  progressBar: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-    gap: 20,
+  barButtonContainer: {
+    width: 40,
   },
 
   bar: {
+    marginTop: 4,
+  },
+
+  barContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start', // if you want to fill rows left to right
     marginTop: 20,
   },
 
@@ -142,10 +138,11 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 48,
     fontWeight: 'bold',
+    color: 'white',
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 20,
-    marginTop: 64,
+    marginTop: 60,
   },
 
   activityHeading: {
@@ -157,7 +154,7 @@ const styles = StyleSheet.create({
   activityText: {
     fontWeight: 'bold',
     fontSize: 20,
-    marginTop: 64,
+    marginTop: 60,
     marginBottom: 20,
     color: 'white',
   },
@@ -172,6 +169,7 @@ const styles = StyleSheet.create({
 
   monthDoorText: {
     fontWeight: 'bold',
+    color: 'white',
     fontSize: 20,
     marginLeft: 20,
     marginRight: 20,
@@ -180,14 +178,33 @@ const styles = StyleSheet.create({
   monthDoorImage: {
     flex: 1,
     width: '100%',
-    height: 360,
-    resizeMode: 'cover',
+    height: 300,
+    resizeMode: 'contain',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+
+  activityGraphic: {
+    width: '100%',
+    marginTop: 30,
+    marginBottom: 30,
+  },
+
+  completeGraphic: {
+    width: '100%',
+    marginTop: 60,
+    marginBottom: 60,
   },
 
   monthDoorImageSmall: {
     width: '200%',
     height: 220,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
+  },
+  gridDoorImage: {
+    width: '100%',
+    height: 160,
+    resizeMode: 'contain',
   },
 
   welcomeBannerTextContainer: {
@@ -208,9 +225,9 @@ const styles = StyleSheet.create({
   doorButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 10,
     backgroundColor: 'black',
     width: '100%',
   },
@@ -218,8 +235,6 @@ const styles = StyleSheet.create({
   doorButtonText: {
     fontWeight: 'bold',
     fontSize: 20,
-    marginLeft: 16,
-    marginRight: 16,
     color: 'white',
   },
 
@@ -230,36 +245,42 @@ const genreLabels = [
   {
     label: 'Colors',
     color: '#76A785',
+    color2: '#1b4d2f',
     image: colorsImage,
     id: 1,
   },
   {
     label: 'Sounds',
     color: '#63A1AF',
+    color2: '#1a5261',
     image: soundsImage,
     id: 2,
   },
   {
     label: 'Textures',
     color: '#E97A54',
+    color2: '#803911',
     image: texturesImage,
     id: 3,
   },
   {
     label: 'Weather',
-    color: '#9FE7FF',
+    color: '#b184bf',
+    color2: '#845791',
     image: weatherImage,
     id: 4,
   },
   {
     label: 'Nature',
     color: '#BFD25A',
+    color2: '#648a22',
     image: natureImage,
     id: 5,
   },
   {
     label: 'Relationships',
     color: '#F0A2B8',
+    color2: '#b87496',
     image: relationshipsImage,
     id: 6,
   },
@@ -280,22 +301,6 @@ export default function ProgressiveWritingScreen() {
   const getAllActivities = async () => {
     const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/getAllActivities`);
     setActivities(res.data);
-  };
-
-  /*
-    addNewActivity
-    Creates POST request at the createActivity endpoint to store a new activity.
-
-    @params
-    newActivity : Object{genre: genreName, activity: activityName}
-  */
-  const addNewActivity = async (newActivity) => {
-    await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/createActivity`, newActivity);
-
-    /*
-      Add additional logic to update the current list of activities for the given genre without
-      sending a database request.
-    */
   };
 
   /*
@@ -344,11 +349,16 @@ export default function ProgressiveWritingScreen() {
             return (
               <TouchableOpacity
                 key={activity.activity[0]}
-                style={[styles.banner, { borderRadius: 10 }]}
+                style={[styles.banner, { backgroundColor: genreInfo[0].color2 }]}
                 onPress={() => [setSelectedActivity(idx), setStep(2)]}
               >
-                <Text>
+                <Text style={styles.doorButtonText}>
                   {activity.activity[0]}
+                </Text>
+                <Text style={{ color: 'white', marginTop: 20 }}>
+                  {activity.activity.length - 2}
+                  {' '}
+                  {activity.activity.length - 2 === 1 ? 'step' : 'steps'}
                 </Text>
               </TouchableOpacity>
             );
@@ -359,40 +369,13 @@ export default function ProgressiveWritingScreen() {
         </ScrollView>
       );
     }
-    // if (step === 1) {
-    //   const content = [];
-    //   content.push(
-    //     <View key="graphic" style={[styles.banner, { height: window.height * 0.25, borderRadius: 10 }]}>
-    //       <Text>Graphic holder</Text>
-    //     </View>,
-    //     <View key="activity" style={[styles.banner, { height: window.height * 0.35 }]}>
-    //       <Text>
-    //         {genreFilter[selectedActivity].activity[step]}
-    //       </Text>
-    //     </View>,
-    //     <TouchableOpacity
-    //       key="button"
-    //       style={styles.buttonBanner}
-    //       onPress={() => { setStep(step + 1); }}
-    //     >
-    //       <Text>
-    //         Start
-    //       </Text>
-    //     </TouchableOpacity>,
-    //   );
-    //   return (
-    //     content.map((elem) => elem)
-    //   );
-    // }
     if (step === genreFilter[selectedActivity].activity.length) {
       const content = [];
       content.push(
-        <Text style={styles.activityHeading}>Great work!</Text>,
-        <View key="graphic" style={[styles.banner, { height: window.height * 0.3 }]}>
-          <Text>Graphic holder</Text>
-        </View>,
-        <Text style={styles.activityBodyText}>
-          You've completed
+        <Text key="heading" style={styles.activityHeading}>Great work!</Text>,
+        <Image key="graphic" source={completeGraphic} style={styles.completeGraphic} />,
+        <Text key="message" style={[styles.activityBodyText, { textAlign: 'center' }]}>
+          You&apos;ve completed
           {' '}
           {genreFilter[selectedActivity].activity[0]}
           {' '}
@@ -403,14 +386,12 @@ export default function ProgressiveWritingScreen() {
           door!
         </Text>,
         <View key="exit" style={styles.finishActivityInteractives}>
-          {/* <TouchableOpacity title="Save" onPress={() => { console.log('save placeholder'); }} style={[styles.buttonBanner, { width: bannerDim * 0.4 - 10, marginRight: 10 }]}>
-            <Text>
-              Save
-            </Text>
-          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => { setStep(0); }}
-            style={[styles.doorButton, { width: bannerDim, marginTop: 20 }]}
+            style={[
+              styles.doorButton,
+              { width: bannerDim, marginTop: 20, backgroundColor: genreInfo[0].color2 },
+            ]}
           >
             <Text style={styles.doorButtonText}>Back to activities</Text>
           </TouchableOpacity>
@@ -422,25 +403,15 @@ export default function ProgressiveWritingScreen() {
     }
     const content = [];
     content.push(
-      <Text style={styles.activityHeading}>Part</Text>,
-      <View key="graphic" style={[styles.banner, { height: window.height * 0.2 }]}>
-        <Text>Graphic holder</Text>
-      </View>,
-      <View key="instructions" style={[styles.banner, { height: window.height * 0.3 }]}>
-        <Text>
-          {genreFilter[selectedActivity].activity[step]}
-        </Text>
-      </View>,
-      <TouchableOpacity key="next" title="Next" onPress={() => { setStep(step + 1); }}>
-        <Text>
-          Next
-        </Text>
-      </TouchableOpacity>,
-      <TouchableOpacity key="back" title="Back" onPress={() => { setStep(step - 1); }}>
-        <Text>
-          Back
-        </Text>
-      </TouchableOpacity>,
+      <Text key="part" style={styles.activityHeading}>
+        Part
+        {' '}
+        {step - 1}
+      </Text>,
+      <Image key="graphic" source={stepGraphic} style={styles.activityGraphic} />,
+      <Text key="instructions" style={styles.activityBodyText}>
+        {genreFilter[selectedActivity].activity[step]}
+      </Text>,
     );
     return (
       content.map((elem) => elem)
@@ -466,7 +437,12 @@ export default function ProgressiveWritingScreen() {
                 <Image source={genreLabels[monthActivityNum].image} style={styles.monthDoorImage} />
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
-                    style={[styles.doorButton, { marginBottom: 64 }]}
+                    style={
+                      [
+                        styles.doorButton,
+                        { marginBottom: 60, backgroundColor: genreLabels[monthActivityNum].color2 },
+                      ]
+                    }
                     onPress={() => { selectActivityGenre(genreLabels[monthActivityNum].label); }}
                   >
                     <Text style={styles.doorButtonText}>
@@ -479,28 +455,20 @@ export default function ProgressiveWritingScreen() {
                 {
               genreLabels.map((category) => (
                 // 10 Doors Screen
-                <ImageBackground
-                  source={category.image}
-                  style={{
+                <TouchableOpacity
+                  key={category.label}
+                  style={[styles.activity, {
                     backgroundColor: category.color,
-                  }}
-                  resizeMode="contain"
+                  }]}
+                  onPress={() => { selectActivityGenre(category.label); }}
                 >
-                  <TouchableOpacity
-                    key={category.label}
-                    style={styles.activity}
-                    onPress={() => { selectActivityGenre(category.label); }}
+                  <Image source={category.image} style={styles.gridDoorImage} />
+                  <Text
+                    style={styles.doorText}
                   >
-
-                    <Text
-                      style={styles.doorText}
-                    >
-
-                      {category.label}
-
-                    </Text>
-                  </TouchableOpacity>
-                </ImageBackground>
+                    {category.label}
+                  </Text>
+                </TouchableOpacity>
               ))
             }
               </View>
@@ -514,7 +482,7 @@ export default function ProgressiveWritingScreen() {
             }}
             >
               <View style={styles.backButton}>
-                <Button title="< back" onPress={() => { if (step === 0) { setGenreFilter(null); setGenreInfo(null); } else { setStep(0); } }} />
+                <Button title="< Back" onPress={() => { if (step === 0) { setGenreFilter(null); setGenreInfo(null); } else { setStep(0); } }} />
               </View>
               {/* Filtered Activity Screen */}
               <View style={styles.activityDisplay}>
@@ -522,25 +490,30 @@ export default function ProgressiveWritingScreen() {
                 {
                   step >= 2 && step !== genreFilter[selectedActivity].activity.length
                     ? (
-                      // <View style={styles.progressBar}>
-                      //   {
-                      //     Array.from(
-                      //       { length: genreFilter[selectedActivity].activity.length - 2 },
-                      //       (_, i) => {
-                      //         let style = styles.unchecked;
-                      //         if (i < step - 2) {
-                      //           style = styles.checked;
-                      //         }
-                      //         return (
-                      //           <View key={i} style={style}>
-                      //             <Text>{i}</Text>
-                      //           </View>
-                      //         );
-                      //       },
-                      //     )
-                      //   }
-                      // </View>
-                      <Progress.Bar progress={(step - 1) / (genreFilter[selectedActivity].activity.length - 2)} width={windowWidth - 40} height={10} borderRadius={50} borderWidth={0} unfilledColor="#333333" color="white" style={styles.bar} />
+                      <View style={styles.barContainer}>
+                        <TouchableOpacity style={styles.barButtonContainer} key="back" title="Back" onPress={() => { setStep(step === 2 ? 0 : step - 1); }}>
+                          <Text style={{ color: 'white' }}>
+                            Back
+                          </Text>
+                        </TouchableOpacity>
+                        <Progress.Bar
+                          style={styles.bar}
+                          progress={
+                            (step - 1) / (genreFilter[selectedActivity].activity.length - 2)
+                          }
+                          width={windowWidth - 120}
+                          height={10}
+                          borderRadius={50}
+                          borderWidth={0}
+                          unfilledColor="#333333"
+                          color="white"
+                        />
+                        <TouchableOpacity style={styles.barButtonContainer} key="next" title="Next" onPress={() => { setStep(step + 1); }}>
+                          <Text style={{ color: 'white', textAlign: 'right' }}>
+                            Next
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     ) : <View key={-1} />
                 }
               </View>
