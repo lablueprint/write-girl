@@ -60,16 +60,39 @@ const styles = StyleSheet.create({
 export default function PlotPointsScreen() {
   const [plotPoint, setPlotPoint] = useState('Get a random plot point for your story');
   const [resultShown, setResultShown] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const getPlotPoint = async () => {
     try {
       const randomPlotPoint = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/plotPoint/get`, { timeout: 20000 });
       setPlotPoint(randomPlotPoint.data);
       setResultShown(true);
+      setSaved(false);
     } catch (err) {
       console.log(err);
     }
     return true;
+  };
+
+  const savePlot = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const date = new Date();
+    const plotJSON = {
+      date: date.toDateString(),
+      plotStr: plotPoint,
+    };
+
+    try {
+      if (!saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addPlots/${userId}`, plotJSON);
+        setSaved(true);
+        return response;
+      }
+      console.log('User ID is null or already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
   };
 
   return (
@@ -91,7 +114,7 @@ export default function PlotPointsScreen() {
       </Pressable>
       <View style={styles.container}>
         {resultShown ? (
-          <Pressable style={styles.saveResultButton}>
+          <Pressable style={styles.saveResultButton} onPress={savePlot}>
             <Text style={styles.saveResultButtonBody}>Save Result</Text>
           </Pressable>
         ) : <View />}

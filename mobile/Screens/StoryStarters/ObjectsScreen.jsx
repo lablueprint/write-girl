@@ -60,17 +60,40 @@ const styles = StyleSheet.create({
 export default function ObjectsScreen() {
   const [object, setObject] = useState('Get a random object for your story');
   const [resultShown, setResultShown] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const getObject = async () => {
     try {
       const randomItem = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/item/get`, { timeout: 20000 });
       setObject(randomItem.data);
       setResultShown(true);
+      setSaved(false);
       return randomItem.data;
     } catch (err) {
       console.log(err);
     }
     return true;
+  };
+
+  const saveItem = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const date = new Date();
+    const objectJSON = {
+      date: date.toDateString(),
+      objectStr: object,
+    };
+
+    try {
+      if (!saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addItems/${userId}`, objectJSON);
+        setSaved(true);
+        return response;
+      }
+      console.log('User ID is null or already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
   };
 
   return (
@@ -92,7 +115,7 @@ export default function ObjectsScreen() {
       </Pressable>
       <View style={styles.container}>
         {resultShown ? (
-          <Pressable style={styles.saveResultButton}>
+          <Pressable style={styles.saveResultButton} onPress={saveItem}>
             <Text style={styles.saveResultButtonBody}>Save Result</Text>
           </Pressable>
         ) : <View />}

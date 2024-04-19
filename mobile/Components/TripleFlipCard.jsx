@@ -98,7 +98,7 @@ export default function TripleFlipCard({ image, color, sideShown }) {
 }
 
 TripleFlipCard.propTypes = {
-  image: PropTypes.string.isRequired,
+  image: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   sideShown: PropTypes.number.isRequired,
 };

@@ -12,7 +12,8 @@ export default function SavedScreen() {
   const [tripleFlips, setTripleFlips] = useState('');
 
   async function getId() {
-    const userId = await Storage({ key: 'userId', value: '', saveKey: false });
+    // const userId = await Storage({ key: 'userId', value: '', saveKey: false });
+    const userId = '65bd4fce479f4d7759aa4bc6';
 
     try {
       if (!userId) {
@@ -80,10 +81,10 @@ export default function SavedScreen() {
 
   const getWritingTips = async () => {
     const userId = await getId();
-
     try {
       const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getWritingTips/${userId}`, { timeout: 20000 });
       setWritingTips(saved.data);
+      console.log('success');
       return saved.data;
     } catch (err) {
       console.log(err);

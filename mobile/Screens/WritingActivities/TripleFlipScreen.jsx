@@ -168,7 +168,7 @@ export default function TripleFlipScreen({ navigation }) {
   };
 
   const addTripleFlipToHistory = async () => {
-    const userId = '65bc75ca64a9510aeb9c5cc0';
+    const userId = '65bd4fce479f4d7759aa4bc6';
     const date = new Date();
     const tripleFlip = {
       date: date.toDateString(),
@@ -177,7 +177,7 @@ export default function TripleFlipScreen({ navigation }) {
 
     try {
       if (userId) {
-        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlipHistory/65bc75ca64a9510aeb9c5cc0`, tripleFlip);
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlipHistory/${userId}`, tripleFlip);
         return response;
       }
       console.log('User ID is null.');

@@ -60,16 +60,39 @@ const styles = StyleSheet.create({
 export default function SettingsScreen() {
   const [setting, setSetting] = useState('Get a random setting for your story');
   const [resultShown, setResultShown] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const getSetting = async () => {
     try {
       const randomSetting = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/setting/get`, { timeout: 20000 });
       setSetting(randomSetting.data);
       setResultShown(true);
+      setSaved(false);
     } catch (err) {
       console.log(err);
     }
     return true;
+  };
+
+  const saveSetting = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const date = new Date();
+    const settingJSON = {
+      date: date.toDateString(),
+      settingStr: setting,
+    };
+
+    try {
+      if (!saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addSettings/${userId}`, settingJSON);
+        setSaved(true);
+        return response;
+      }
+      console.log('User ID is null or already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
   };
 
   return (
@@ -91,7 +114,7 @@ export default function SettingsScreen() {
       </Pressable>
       <View style={styles.container}>
         {resultShown ? (
-          <Pressable style={styles.saveResultButton}>
+          <Pressable style={styles.saveResultButton} onPress={saveSetting}>
             <Text style={styles.saveResultButtonBody}>Save Result</Text>
           </Pressable>
         ) : <View />}

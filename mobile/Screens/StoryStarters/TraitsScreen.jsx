@@ -60,16 +60,39 @@ const styles = StyleSheet.create({
 export default function TraitsScreen() {
   const [trait, setTrait] = useState('Get a random character trait for your story');
   const [resultShown, setResultShown] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const getTrait = async () => {
     try {
       const randomTrait = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/characterTrait/get`, { timeout: 20000 });
       setTrait(randomTrait.data);
       setResultShown(true);
+      setSaved(false);
     } catch (err) {
       console.log(err);
     }
     return true;
+  };
+
+  const saveTrait = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const date = new Date();
+    const traitJSON = {
+      date: date.toDateString(),
+      traitStr: trait,
+    };
+
+    try {
+      if (!saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTraits/${userId}`, traitJSON);
+        setSaved(true);
+        return response;
+      }
+      console.log('User ID is null or already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
   };
 
   return (
@@ -91,7 +114,7 @@ export default function TraitsScreen() {
       </Pressable>
       <View style={styles.container}>
         {resultShown ? (
-          <Pressable style={styles.saveResultButton}>
+          <Pressable style={styles.saveResultButton} onPress={saveTrait}>
             <Text style={styles.saveResultButtonBody}>Save Result</Text>
           </Pressable>
         ) : <View />}

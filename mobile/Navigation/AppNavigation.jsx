@@ -21,7 +21,8 @@ import whiteCircle from '../assets/white-circle.png';
 import SignUpScreen from '../Screens/SignUpScreen';
 import LogInScreen from '../Screens/LogInScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
-// import SavedScreen from '../Screens/SavedScreen';
+import BookmarksScreen from '../Screens/BookmarksScreen';
+import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 import HistoryScreen from '../Screens/HistoryScreen';
 
@@ -54,6 +55,8 @@ function HomeScreenStack() {
         options={{ title: 'HomeScreen' }}
       />
       <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Bookmarks" component={BookmarksScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="All Saved" component={SavedScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
     </HomeStack.Navigator>
   );
@@ -61,52 +64,6 @@ function HomeScreenStack() {
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-const createtabOptions = (icon) => ({
-  tabBarIcon: () => (
-    <Image
-      source={icon}
-    />
-  ),
-});
-
-const middleTabOptions = {
-  tabBarLabel: '',
-  headerShown: false,
-  tabBarIcon: () => (
-    <View
-      style={{
-        bottom: Dimensions.get('window').height / 34,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: Dimensions.get('window').height / 11,
-        height: Dimensions.get('window').height / 11,
-      }}
-    >
-      <ImageBackground
-        source={whiteCircle}
-        style={{ width: '100%', height: '100%' }}
-      >
-        <View style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf: 'center',
-          borderWidth: 5,
-          borderColor: 'transparent',
-          width: '100%',
-          height: '100%',
-        }}
-        >
-          <Image
-            source={homeIcon}
-          />
-        </View>
-      </ImageBackground>
-    </View>
-  ),
-
-};
 
 const createtabOptions = (icon) => ({
   tabBarIcon: () => (
@@ -173,7 +130,7 @@ function MainAppScreen() {
       <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
       <Tab.Screen
         name="Center"
-        component={HomeScreen}
+        component={HomeScreenStack}
         options={middleTabOptions}
       />
       <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
@@ -188,7 +145,7 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="Home" component={MainAppScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Forgot Password" component={PasswordResetScreen} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </NavigationContainer>
