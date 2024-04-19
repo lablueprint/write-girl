@@ -1,19 +1,26 @@
 import React from 'react';
 import {
-  View,
+  View, StyleSheet,
 } from 'react-native';
 import ActivityNavigationCard from '../../Components/ActivityNavigationCard';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+});
 
 const activityData = [
   {
     activity: 'Pocket Prompts',
     description: 'hello fejfiejfiejfiejf',
-    backgroundColor: '#3498db',
+    backgroundColor: '#F3A749',
   },
   {
     activity: 'Story Starters',
     description: 'hello fejfiejfiejfiejf',
-    backgroundColor: '#e74c3c',
+    backgroundColor: '#53116A',
   },
   {
     activity: 'Door Activity',
@@ -29,7 +36,7 @@ const activityData = [
 
 export default function ActivityHomeScreen() {
   return (
-    <View>
+    <View style={styles.container}>
       {activityData.map((activity, index) => (
         <ActivityNavigationCard
           key={index}
