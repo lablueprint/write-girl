@@ -12,29 +12,59 @@ const styles = StyleSheet.create({
   settingsContainer: {
     position: 'absolute',
     flex: 1,
-    top: 240,
-    left: 200,
+    top: '50%',
+    right: '15%',
+    width: '35%',
+    height: '25%',
+    // borderWidth: 2,*-
+    // borderColor: 'red',
   },
   plotPointsContainer: {
     position: 'absolute',
     flex: 1,
-    top: 100,
-    right: 130,
+    top: '35%',
+    right: '50%',
+    width: '40%',
+    height: '25%',
+    // borderWidth: 2,
+    // borderColor: 'red',
   },
   characterTraitsContainer: {
     position: 'absolute',
     flex: 1,
-    bottom: -120,
-    left: 160,
+    bottom: '0%',
+    left: '40%',
+    width: 200,
+    // borderWidth: 2,
+    // borderColor: 'red',
+    aspectRatio: 1, // Maintain the aspect ratio (1:1)
   },
   objectsContainer: {
     position: 'absolute',
     flex: 1,
-    bottom: 20,
-    right: 210,
+    bottom: '10%',
+    left: '-5%',
+    height: '32%',
+    // borderWidth: 2,
+    // borderColor: 'red',
   },
   image: {
     resizeMode: 'contain',
+    flex: 1,
+    width: '120%',
+    height: undefined,
+  },
+  imagePlotPoints: {
+    resizeMode: 'contain',
+    flex: 1,
+    width: undefined,
+    height: undefined,
+  },
+  imageCharacterTrait: {
+    resizeMode: 'contain',
+    flex: 1,
+    width: '120%',
+    height: undefined,
   },
   imageText: {
     color: 'white',
@@ -43,6 +73,33 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 'auto',
     marginBottom: 'auto',
+  },
+  textCharacterTrait: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    paddingLeft: '30%',
+  },
+  textObjects: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    paddingRight: '15%',
+  },
+  textSettings: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    paddingLeft: '20%',
   },
   button: {
     height: 340,
@@ -53,11 +110,25 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 45, // Optional: Set the font size
     fontWeight: 'bold', // Optional: Set the font weight
+    // borderWidth: 2,
+    // borderColor: 'red',
+  },
+  titleText1: {
+    color: 'white',
+    fontSize: 45, // Optional: Set the font size
+    fontWeight: 'bold', // Optional: Set the font weight
+    // borderWidth: 2,
+    // borderColor: 'red',
+    paddingTop: '20%',
   },
   bodyText: {
     color: 'white',
     fontSize: 14, // Optional: Set the font size
     fontWeight: 'bold', // Optional: Set the font weight
+    // borderWidth: 2,
+    // borderColor: 'red',
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   textContainer: {
     margin: 5,
@@ -93,28 +164,28 @@ export default function StoryStarterScreen({ navigation }) {
     <View>
       <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
         <View style={styles.textContainer}>
-          <Text style={styles.titleText}> Story </Text>
+          <Text style={styles.titleText1}> Story </Text>
           <Text style={styles.titleText}> Starters </Text>
-          <Text style={styles.bodyText}> Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing. </Text>
+          <Text style={styles.bodyText}>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing. </Text>
         </View>
         <Pressable onPress={navigateToSettingsScreen} title="Get random setting" style={styles.settingsContainer}>
           <ImageBackground source={settingsImage} style={styles.button} imageStyle={styles.image}>
-            <Text style={styles.imageText}>Settings</Text>
+            <Text style={styles.textSettings}>Settings</Text>
           </ImageBackground>
         </Pressable>
         <Pressable onPress={navigateToTraitsScreen} title="Get random character trait" style={styles.characterTraitsContainer}>
-          <ImageBackground source={traitsImage} style={styles.button} imageStyle={styles.image}>
-            <Text style={styles.imageText}>Character Traits</Text>
+          <ImageBackground source={traitsImage} style={styles.button} imageStyle={styles.imageCharacterTrait}>
+            <Text style={styles.textCharacterTrait}>Character Traits</Text>
           </ImageBackground>
         </Pressable>
         <Pressable onPress={navigateToPlotPointsScreen} title="Get random plot point" style={styles.plotPointsContainer}>
-          <ImageBackground source={plotPointsImage} style={styles.button} imageStyle={styles.image}>
+          <ImageBackground source={plotPointsImage} style={styles.button} imageStyle={styles.imagePlotPoints}>
             <Text style={styles.imageText}>Plot Points</Text>
           </ImageBackground>
         </Pressable>
         <Pressable onPress={navigateToObjectsScreen} title="Get random object" style={styles.objectsContainer}>
           <ImageBackground source={objectsImage} style={styles.button} imageStyle={styles.image}>
-            <Text style={styles.imageText}>Objects</Text>
+            <Text style={styles.textObjects}>Objects</Text>
           </ImageBackground>
         </Pressable>
       </ImageBackground>
