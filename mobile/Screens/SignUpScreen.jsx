@@ -122,19 +122,19 @@ export default function SignUp({ navigation }) {
         email,
         password,
       };
-      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/post`, userData);
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/user-sign-up`, userData);
       if (res.data.error) {
         console.error(res.data.error);
       } else {
         const userId = res.data._id;
-        await Storage({ key: 'userId', value: userId, saveKey: true });
-        navigation.navigate('Home');
+        Storage({ key: 'hello', value: userId, saveKey: true });
+        navigation.navigate('Log In');
       }
     } catch (err) {
       console.log(err.message);
     }
     onChangePassword('');
-    navigation.navigate('Home');
+    // navigation.navigate('Home');
   };
 
   const redirectLogIn = () => {
