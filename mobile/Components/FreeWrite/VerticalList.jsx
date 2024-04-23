@@ -1,31 +1,17 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, Pressable,
+  View, Text, StyleSheet, ScrollView,
 } from 'react-native';
-import { SvgXml } from 'react-native-svg';
 import PropTypes from 'prop-types';
+import Card from './Card';
 
 const styles = StyleSheet.create({
   listContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    // top: '50%',
-    // flex: 1,
-    // position: 'absolute',
-    // top: '110%',
     width: '80%',
     backgroundColor: 'white',
     alignSelf: 'center',
-    borderRadius: 14,
-  },
-  card: {
-    backgroundColor: 'dodgerblue',
-    height: 100,
-    flex: 1,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 5,
     borderRadius: 14,
   },
   allCards: {
@@ -89,21 +75,7 @@ const data = [
   },
 ];
 
-const handlePress = () => {
-  console.log('Pressed!');
-};
-function Card({ name }) {
-  return (
-    <Pressable style={styles.card} onPress={handlePress}>
-      <View>
-        <Text>{name}</Text>
-      </View>
-    </Pressable>
-
-  );
-}
-
-export default function VerticalList({ title }) {
+export default function VerticalList({ title, play, setTitle }) {
   return (
     <View>
       <View style={styles.line} />
@@ -113,7 +85,7 @@ export default function VerticalList({ title }) {
       >
         {data.map((item) => (
           <View style={styles.allCards}>
-            <Card name={item.name} />
+            <Card name={item.name} play={play} setTitle={setTitle} />
           </View>
         ))}
       </ScrollView>
@@ -121,10 +93,8 @@ export default function VerticalList({ title }) {
   );
 }
 
-Card.propTypes = {
-  name: PropTypes.string.isRequired,
-};
-
 VerticalList.propTypes = {
   title: PropTypes.string.isRequired,
+  play: PropTypes.bool.isRequired,
+  setTitle: PropTypes.func.isRequired,
 };

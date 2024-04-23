@@ -48,6 +48,11 @@ const musicModalIcon = `<svg width="32" height="32" viewBox="0 0 32 32" fill="no
 <path d="M28.3 0.0124543L10.7 2.40749C9.1 2.56965 8 4.00418 8 5.60087V22.0168C7.2625 21.8859 6.4625 21.8859 5.6 22.0667C2.5625 22.8651 0 25.5408 0 28.2539C0 30.967 2.5625 32.5949 5.6 31.7966C8.6375 30.9982 11.2 28.2726 11.2 25.5595V11.8379L28.8 9.4928V20.3204C28.0625 20.1894 27.2625 20.2455 26.4 20.47C23.3625 21.2684 20.8 23.9441 20.8 26.6572C20.8 29.3703 23.3625 30.9982 26.4 30.1999C29.4375 29.4015 32 26.6759 32 23.9628V3.20583C32 1.29105 30.2188 -0.149709 28.3 0.0124543Z" fill="white"/>
 </svg>`;
 
+const selectedTimerIcon = `<svg width="46" height="40" viewBox="0 0 46 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.75" y="0.75" width="44.5" height="39.25" rx="14" fill="white"/>
+<path d="M25.75 10.75H20.25V12.5833H25.75V10.75ZM22.0833 22.6667H23.9167V17.1667H22.0833V22.6667ZM29.4442 16.6075L30.7458 15.3058C30.3517 14.8383 29.9208 14.3983 29.4533 14.0133L28.1517 15.315C26.7308 14.1783 24.9433 13.5 23 13.5C18.4442 13.5 14.75 17.1942 14.75 21.75C14.75 26.3058 18.435 30 23 30C27.565 30 31.25 26.3058 31.25 21.75C31.25 19.8067 30.5717 18.0192 29.4442 16.6075ZM23 28.1667C19.4525 28.1667 16.5833 25.2975 16.5833 21.75C16.5833 18.2025 19.4525 15.3333 23 15.3333C26.5475 15.3333 29.4167 18.2025 29.4167 21.75C29.4167 25.2975 26.5475 28.1667 23 28.1667Z" fill="#404040"/>
+</svg>`;
+
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
@@ -98,7 +103,7 @@ export default function FreeWriteScreen() {
   // const [isOpen, setIsOpen] = useState(false);
   const [isMusicOpen, setIsMusicOpen] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
-  const songTitle = 'Gentle River Stream';
+  // const songTitle = 'Gentle River Stream';
   const artist = 'Joji';
   const songName = 'Water Sounds';
   const photoTitle = 'Icy River';
@@ -120,12 +125,12 @@ export default function FreeWriteScreen() {
       </Text>
 
       <View style={styles.icons}>
-        <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} mediaTitle={songTitle} creator={artist} mediaName={songName} />
+        <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} creator={artist} mediaName={songName} />
         {!isMusicOpen ? (
           <>
             <Pressable onPress={handlePress}>
-              <SvgXml xml={timerIcon} />
-              {timerPressed && <Timer />}
+              {timerPressed ? <SvgXml xml={selectedTimerIcon} /> : <SvgXml xml={timerIcon} />}
+              {timerPressed && <Timer /> }
             </Pressable>
             <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} mediaTitle={photoTitle} creator={photographer} mediaName={photoName} />
           </>
