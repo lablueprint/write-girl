@@ -75,6 +75,7 @@ export default function LogIn({ navigation }) {
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
 
+  // Make the display of the password hidden
   const handleChangePassword = (newText) => {
     const lastLetter = newText.slice(-1);
     if (newText.length > password.length) {
@@ -104,6 +105,10 @@ export default function LogIn({ navigation }) {
 
   const redirectSignUp = () => {
     navigation.navigate('Sign Up');
+  };
+
+  const redirectPasswordReset = () => {
+    navigation.navigate('Forgot Password');
   };
 
   return (
@@ -141,7 +146,7 @@ export default function LogIn({ navigation }) {
 
       <Text style={styles.smallSubtitle}>
         Forgot your passwords?
-        <Pressable>
+        <Pressable onPress={redirectPasswordReset}>
           <Text style={styles.resetButton}> Reset Here.</Text>
         </Pressable>
       </Text>

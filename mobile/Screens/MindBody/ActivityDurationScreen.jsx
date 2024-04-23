@@ -33,13 +33,12 @@ const styles = StyleSheet.create({
   },
   optionHeading: {
     color: '#fff',
-    margin: 8,
     fontSize: 24,
     textAlign: 'left',
+    marginBottom: 16,
   },
   optionBody: {
     color: '#fff',
-    margin: 8,
     fontSize: 16,
     textAlign: 'left',
   },
