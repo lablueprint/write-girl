@@ -48,9 +48,9 @@ function MindBodyStackScreen() {
         component={MindBodyScreen}
         options={{ title: 'Mind and Body' }}
       />
-      <MindBodyStack.Screen name="Activity Type" component={ActivityTypeScreen} />
-      <MindBodyStack.Screen name="Activity Duration" component={ActivityDurationScreen} />
-      <MindBodyStack.Screen name="Mind and Body Deck" component={MindBodyDeckScreen} />
+      <MindBodyStack.Screen name="Activity Type" component={ActivityTypeScreen} options={{ headerBackTitleVisible: false }} />
+      <MindBodyStack.Screen name="Activity Duration" component={ActivityDurationScreen} options={{ headerBackTitleVisible: false }} />
+      <MindBodyStack.Screen name="Mind and Body Deck" component={MindBodyDeckScreen} options={{ headerBackTitleVisible: false }} />
     </MindBodyStack.Navigator>
   );
 }

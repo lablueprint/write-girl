@@ -110,15 +110,15 @@ export default function MindBodyScreen({ navigation }) {
       <Text style={styles.heading}>How much time would you like to allocate to this break?</Text>
       <Pressable style={[option === 'brisk' ? styles.selectedOption : styles.unselectedOption]} onPress={selectBrisk}>
         <Text style={styles.optionHeading}>Brisk</Text>
-        <Text style={styles.optionBody}>Give your mind a break</Text>
+        <Text style={styles.optionBody}>Rejuvenate with a brief break</Text>
       </Pressable>
       <Pressable style={[option === 'casual' ? styles.selectedOption : styles.unselectedOption]} onPress={selectCasual}>
         <Text style={styles.optionHeading}>Casual</Text>
-        <Text style={styles.optionBody}>Give your mind a break</Text>
+        <Text style={styles.optionBody}>Relax with a 5-10-minute-long break</Text>
       </Pressable>
       <Pressable style={[option === 'vacation' ? styles.selectedOption : styles.unselectedOption]} onPress={selectVacation}>
         <Text style={styles.optionHeading}>Vacation</Text>
-        <Text style={styles.optionBody}>Give your mind a break</Text>
+        <Text style={styles.optionBody}>Take a break for 10 minutes or more to unwind</Text>
       </Pressable>
       <Pressable style={styles.button} onPress={navigateToMindBodyDeckScreen}>
         <Text style={styles.buttonBody}>Next</Text>

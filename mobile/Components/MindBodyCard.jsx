@@ -29,9 +29,6 @@ export default function MindBodyCard({ activity }) {
       <Text style={styles.cardText}>
         {activity}
       </Text>
-      {/* <Text style={styles.cardText}>
-        {duration}
-      </Text> */}
     </View>
   );
 }

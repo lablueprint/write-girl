@@ -54,41 +54,24 @@ function Card() {
   const boxDistance = scrollViewWidth - boxWidth;
   const halfBoxDistance = boxDistance / 2;
   const pan = React.useRef(new Animated.ValueXY()).current;
-  const [mindBodyDeck, setMindBodyDeck] = useState([
-    {
-      activity: '',
-      duration: null,
-    },
-    {
-      activity: '',
-      duration: null,
-    },
-    {
-      activity: '',
-      duration: null,
-    },
-    {
-      activity: '',
-      duration: null,
-    },
-    {
-      activity: '',
-      duration: null,
-    }]);
+  const [mindBodyDeck, setMindBodyDeck] = useState(null);
 
   const route = useRoute();
   const type = route.params?.type;
   let high = '';
   let low = '';
   if (route.params?.duration === 'brisk') {
-    high = String(3);
+    // 0-4 minutes
+    high = String(5);
     low = String(0);
   } else if (route.params?.duration === 'casual') {
-    high = String(4);
-    low = String(1);
+    // 5-10 minutes
+    high = String(11);
+    low = String(4);
   } else {
-    high = String(20);
-    low = String(2);
+    // 11+ minutes
+    high = String(60);
+    low = String(10);
   }
 
   const getRandomMindBody = async () => {

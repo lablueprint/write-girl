@@ -111,11 +111,11 @@ export default function ActivityTypeScreen({ navigation }) {
       </Pressable>
       <Pressable style={[option === 'physical' ? styles.selectedOption : styles.unselectedOption]} onPress={selectPhysical}>
         <Text style={styles.optionHeading}>Physical</Text>
-        <Text style={styles.optionBody}>Give your mind a break</Text>
+        <Text style={styles.optionBody}>Adjust your posture, stretch, and hydrate</Text>
       </Pressable>
       <Pressable style={[option === 'both' ? styles.selectedOption : styles.unselectedOption]} onPress={selectBoth}>
         <Text style={styles.optionHeading}>Both</Text>
-        <Text style={styles.optionBody}>Give your mind a break</Text>
+        <Text style={styles.optionBody}>Take a moment to stretch and clear your mind</Text>
       </Pressable>
       <Pressable style={styles.button} onPress={navigateToActivityDurationScreen}>
         <Text style={styles.buttonBody}>Next</Text>
