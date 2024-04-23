@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
+import StoryStarterComponent from '../Screens/StoryStarters/StoryStarterComponent';
 import ObjectsScreen from '../Screens/StoryStarters/ObjectsScreen';
 import SettingsScreen from '../Screens/StoryStarters/SettingsScreen';
 import TraitsScreen from '../Screens/StoryStarters/TraitsScreen';
@@ -27,13 +28,18 @@ const StoryStarterStack = createNativeStackNavigator();
 
 function StoryStarterStackScreen() {
   return (
-    <StoryStarterStack.Navigator initialRouteName="Story Starters">
+    <StoryStarterStack.Navigator
+      initialRouteName="Story Starters"
+      screenOptions={{ headerTransparent: true, headerTitle: '' }}
+      // Currently back button appears blue instead of white
+      // Can configure back button and header, more info: https://reactnavigation.org/docs/headers/
+    >
       <StoryStarterStack.Screen
         name="Story Starter Stack"
         component={StoryStarterScreen}
         options={{ headerShown: false, title: 'Story Starters' }}
       />
-      <StoryStarterStack.Screen name="Objects" component={ObjectsScreen} />
+      <StoryStarterStack.Screen name="Objects" children={() => (<StoryStarterComponent title="Object" route="item" />)} />
       <StoryStarterStack.Screen name="Settings" component={SettingsScreen} />
       <StoryStarterStack.Screen name="Character Traits" component={TraitsScreen} />
       <StoryStarterStack.Screen name="Plot Points" component={PlotPointsScreen} />
