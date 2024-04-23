@@ -100,13 +100,15 @@ export default function LogIn({ navigation }) {
     onChangeHiddenPassword(newTextWithDots);
   };
 
-  const storeToken = async () => {
-    try {
-      await SecureStore.setItemAsync('email', email);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  // const storeToken = async (user) => {
+  //   try {
+  //     console.log('user: ', user);
+  //     console.log('string user: ', JSON.stringify(user));
+  //     await SecureStore.setItemAsync('user', JSON.stringify(user));
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
 
   const handleLogIn = async () => {
     try {
@@ -121,10 +123,10 @@ export default function LogIn({ navigation }) {
         console.log('couldnt find?');
       } else {
         // Create tokens for persistent data
-        console.log(res.data);
-        console.log('hi');
+        // console.log(res.data);
+        // console.log('hi');
         await dispatch(login(res.data));
-        await storeToken();
+        // await storeToken(res.data);
       }
     } catch (err) {
       console.error(err.message);

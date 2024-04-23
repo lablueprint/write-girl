@@ -4,15 +4,12 @@ import * as SecureStore from 'expo-secure-store';
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
 
-const user = SecureStore.getItemAsync('email');
-console.log(user);
+// const user = SecureStore.getItemAsync('user');
+console.log('Slice auth ran');
 
-const initialState = user.token ? {
-  refresh: 0, id: user.id, token: user.token, authHeader: 'user.authHeader',
-}
-  : {
-    refresh: 0, id: null, token: null, authHeader: null,
-  };
+const initialState = {
+  refresh: 0, id: null, token: null,
+};
 
 const authSlice = createSlice({
   name: 'auth',
@@ -22,7 +19,7 @@ const authSlice = createSlice({
       state.refresh = 0;
       state.id = action.payload.id;
       state.token = action.payload.token;
-      state.authHeader = 'authhhh';
+      SecureStore.setItemAsync('user', JSON.stringify(action.payload));
     //   state.authHeader = {
     //     Authorization: `Bearer ${action.payload.token}`,
     //   };
@@ -38,7 +35,7 @@ const authSlice = createSlice({
       state.id = null;
       state.token = null;
       state.authHeader = null;
-      SecureStore.deleteItemAsync('email');
+      // SecureStore.deleteItemAsync('user');
     },
     refresh: (state) => {
       state.refresh += 1;

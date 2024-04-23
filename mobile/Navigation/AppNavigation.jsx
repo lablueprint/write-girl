@@ -1,9 +1,13 @@
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   Image, View, ImageBackground, Dimensions,
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useDispatch, useSelector } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
+import PropTypes from 'prop-types';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
@@ -20,8 +24,7 @@ import howToIcon from '../assets/how-to-icon.png';
 import whiteCircle from '../assets/white-circle.png';
 import SignUpScreen from '../Screens/SignUpScreen';
 import LogInScreen from '../Screens/LogInScreen';
-import PasswordResetScreen from '../Screens/PasswordResetScreen';
-// import SavedScreen from '../Screens/SavedScreen';
+import { isTokenExpired, login } from '../redux/sliceAuth';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -90,43 +93,65 @@ const middleTabOptions = {
 
 };
 
-function HomeStackScreen() {
+export default function AppNavigation({ user, setUser }) {
+  const { id, token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  console.log('nav user: ', SecureStore.getItemAsync('user'));
+  console.log('nav token: ', token);
+  console.log('nav id: ', id);
+
+  console.log('Retrieving the user object from props', JSON.parse(user));
+
+  const populateRedux = async (userObj) => {
+    if (userObj === null) {
+      return;
+    }
+    await dispatch(login(JSON.parse(userObj)));
+  };
+
+  populateRedux(user);
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: {
-          backgroundColor: 'black',
-          height: Dimensions.get('window').height / 10,
-        },
-      }}
-      initialRouteName="Center"
-    >
-      <Tab.Screen
-        name="Writing Activities"
-        component={ActivityHomeScreen}
-        options={createtabOptions(writingActivitiesIcon)}
-      />
-      <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
-      <Tab.Screen
-        name="Center"
-        component={HomeScreen}
-        options={middleTabOptions}
-      />
-      <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
-      <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
-    </Tab.Navigator>
+    (token && !isTokenExpired(token) && id) ? (
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarStyle: {
+              backgroundColor: 'black',
+              height: Dimensions.get('window').height / 10,
+            },
+          }}
+          initialRouteName="Center"
+        >
+          <Tab.Screen
+            name="Writing Activities"
+            component={ActivityHomeScreen}
+            options={createtabOptions(writingActivitiesIcon)}
+          />
+          <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
+          <Tab.Screen
+            name="Center"
+            // component={HomeScreen}
+            // eslint-disable-next-line react/no-children-prop
+            children={() => <HomeScreen setUser={setUser} />}
+            options={middleTabOptions}
+          />
+          <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
+          <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    ) : (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
   );
 }
 
-export default function AppNavigation() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Forgot Password" component={PasswordResetScreen} options={{ headerShown: false, gestureEnabled: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+AppNavigation.propTypes = {
+  user: PropTypes.string.isRequired,
+  setUser: PropTypes.func.isRequired,
+};

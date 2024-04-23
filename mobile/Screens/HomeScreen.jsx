@@ -4,8 +4,11 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import * as SecureStore from 'expo-secure-store';
+import { useDispatch } from 'react-redux';
 import HomeScreenCard from '../Components/HomeScreenCard';
 import TabBar from '../Components/HomeScreenTab';
+import { logout } from '../redux/sliceAuth';
 
 const window = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -47,9 +50,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function HomeScreen() {
+export default function HomeScreen({ setUser }) {
   const [page, setPage] = React.useState('pep_talk');
   const [cardData, setCardData] = React.useState('default_text');
+  const dispatch = useDispatch();
 
   // Retrieves and sets cardText to a PepTalk json object from database
   const getCardText = async (route) => {
@@ -61,6 +65,16 @@ export default function HomeScreen() {
     } catch (err) {
       console.log(err);
       return err;
+    }
+  };
+
+  const onPressLogOut = async () => {
+    try {
+      await SecureStore.deleteItemAsync('user');
+      await dispatch(logout());
+      setUser(null);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -119,6 +133,11 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <Text>Home Screen</Text>
       </View>
+      <Button onPress={onPressLogOut} title="Log out" color="#841584" />
     </ScrollView>
   );
 }
+
+HomeScreen.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};
