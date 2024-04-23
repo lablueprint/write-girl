@@ -7,11 +7,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
+import MindBodyScreen from '../Screens/MindBody/MindBodyScreen';
+import ActivityTypeScreen from '../Screens/MindBody/ActivityTypeScreen';
+import ActivityDurationScreen from '../Screens/MindBody/ActivityDurationScreen';
+import MindBodyDeckScreen from '../Screens/MindBody/MindBodyDeckScreen';
 import ObjectsScreen from '../Screens/StoryStarters/ObjectsScreen';
 import SettingsScreen from '../Screens/StoryStarters/SettingsScreen';
 import TraitsScreen from '../Screens/StoryStarters/TraitsScreen';
 import PlotPointsScreen from '../Screens/StoryStarters/PlotPointsScreen';
-import MindBodyScreen from '../Screens/MindBodyScreen';
 import homeIcon from '../assets/home-icon.png';
 import writingActivitiesIcon from '../assets/writing-activities-icon.png';
 import storyStarterIcon from '../assets/story-starters-icon.png';
@@ -44,12 +47,30 @@ function StoryStarterStackScreen() {
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+const MindBodyStack = createNativeStackNavigator();
+
+function MindBodyStackScreen() {
+  return (
+    <MindBodyStack.Navigator initialRouteName="Mind and Body">
+      <MindBodyStack.Screen
+        name="Mind and Body Stack"
+        component={MindBodyScreen}
+        options={{ title: 'Mind and Body' }}
+      />
+      <MindBodyStack.Screen name="Activity Type" component={ActivityTypeScreen} options={{ headerBackTitleVisible: false }} />
+      <MindBodyStack.Screen name="Activity Duration" component={ActivityDurationScreen} options={{ headerBackTitleVisible: false }} />
+      <MindBodyStack.Screen name="Mind and Body Deck" component={MindBodyDeckScreen} options={{ headerBackTitleVisible: false }} />
+    </MindBodyStack.Navigator>
+  );
+}
+
 const createtabOptions = (icon) => ({
   tabBarIcon: () => (
     <Image
       source={icon}
     />
   ),
+  headerShown: false,
 });
 
 const middleTabOptions = {
@@ -112,7 +133,7 @@ function HomeStackScreen() {
         component={HomeScreen}
         options={middleTabOptions}
       />
-      <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
+      <Tab.Screen name="Mind & Body" component={MindBodyStackScreen} options={createtabOptions(mindBodyIcon)} />
       <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
     </Tab.Navigator>
   );
