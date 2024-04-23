@@ -1,28 +1,19 @@
 import { React, useState } from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity, Button,
+  View, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Modal from "react-native-modal";
+import Modal from 'react-native-modal';
+import LinearGradient from 'expo-linear-gradient';
 
 const styles = StyleSheet.create({
-  /*container: {
-    alignItems: 'center',
-  },
-  card: {
-    height: 300,
-    width: 400,
-    borderRadius: 24,
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    padding: 20,
-  }, */
   container: {
     position: 'relative',
     alignItems: 'center',
     perspective: 1000, // Add perspective to create a 3D effect
   },
   card: {
-    height: 180,
+    height: 248,
     width: 350,
     borderRadius: 10,
     padding: 20,
@@ -36,14 +27,24 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 6,
     zIndex: 1, // Ensure it's above other elements
-    marginBottom: -20, // Adjust the overlap
+    marginBottom: -90, // Adjust the overlap
     transform: [
       { perspective: 1000 }, // Add perspective to create a 3D effect
-      { rotateX: '-10deg' }, // Tilt the card upwards
+      { rotateX: '-6deg' }, // Tilt the card upwards
     ],
   },
   popUpCard: {
+    marginVertical: 310,
     borderRadius: 10,
+    padding: 20,
+    justifyContent: 'flex-start',
+  },
+  activityTitle: {
+    fontSize: 32,
+  },
+  activityDescript: {
+    marginTop: 10,
+    fontSize: 14,
   },
 });
 
@@ -56,16 +57,19 @@ export default function ActivityNavigationCard({ activity, description, backgrou
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={[styles.card, { backgroundColor }]} onPress={toggleModal}>
-        <Text>{activity}</Text>
-        <Text>{description}</Text>
-      </TouchableOpacity>
-      <Modal style={[styles.popUpCard, { backgroundColor }]} isVisible={isModalVisible}>
-        <Text>{activity}</Text>
-        <Text>{description}</Text>
-        <TouchableOpacity title="Hide modal" onPress={toggleModal}>
-          <Text>Hello</Text>
+      {/* <LinearGradient colors={backgroundColor}> fix errorsss*/}
+        <TouchableOpacity style={styles.card} onPress={toggleModal}>
+          <Text style={styles.activityTitle}>{activity}</Text>
+          <Text style={styles.activityDescript}>{description}</Text>
         </TouchableOpacity>
+      </LinearGradient>
+      <Modal
+        style={styles.popUpCard}
+        isVisible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+      >
+        <Text style={styles.activityTitle}>{activity}</Text>
+        <Text style={styles.activityDescript}>{description}</Text>
       </Modal>
     </View>
   );
@@ -74,5 +78,5 @@ export default function ActivityNavigationCard({ activity, description, backgrou
 ActivityNavigationCard.propTypes = {
   activity: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  backgroundColor: PropTypes.string.isRequired,
+  backgroundColor: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 };

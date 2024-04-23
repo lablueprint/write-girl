@@ -6,31 +6,31 @@ import ActivityNavigationCard from '../../Components/ActivityNavigationCard';
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 10,
     flex: 1,
-    justifyContent: 'center',
   },
 });
 
 const activityData = [
   {
     activity: 'Pocket Prompts',
-    description: 'hello fejfiejfiejfiejf',
-    backgroundColor: '#F3A749',
+    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    backgroundColor: ['#EA7806', '#F3A749', '#FFE09D'],
   },
   {
     activity: 'Story Starters',
-    description: 'hello fejfiejfiejfiejf',
-    backgroundColor: '#53116A',
+    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    backgroundColor: ['#EA7806', '#F3A749', '#FFE09D'],
   },
   {
     activity: 'Door Activity',
-    description: 'hello fejfiejfiejfiejf',
-    backgroundColor: '#3498db',
+    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    backgroundColor: ['#EA7806', '#F3A749', '#FFE09D'],
   },
   {
     activity: 'Triple Flip',
-    description: 'hello fejfiejfiejfiejf',
-    backgroundColor: '#e74c3c',
+    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    backgroundColor: ['#EA7806', '#F3A749', '#FFE09D'],
   },
 ];
 
