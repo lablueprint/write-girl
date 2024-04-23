@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
-  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, Image,
+  StyleSheet, Text, TouchableOpacity, ScrollView,
 } from 'react-native';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,10 +22,9 @@ const styles = StyleSheet.create({
   },
   collection: {
     backgroundColor: 'white',
+    height: 100,
   },
 });
-
-const collections = ['All Saved', 'Sample 1', 'Sample 2'];
 
 export default function BookmarksScreen({ navigation }) {
   const goToAllSaved = () => {
@@ -45,3 +44,9 @@ export default function BookmarksScreen({ navigation }) {
     </ScrollView>
   );
 }
+
+BookmarksScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
