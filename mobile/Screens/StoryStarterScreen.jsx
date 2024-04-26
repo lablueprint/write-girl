@@ -12,39 +12,45 @@ const styles = StyleSheet.create({
   settingsContainer: {
     position: 'absolute',
     flex: 1,
+    zIndex: 3,
     top: '50%',
-    right: '15%',
-    width: '35%',
+    right: '25s%',
+    width: '40%',
     height: '25%',
-    // borderWidth: 2,*-
+    borderRadius: 70,
+    // borderWidth: 2,
     // borderColor: 'red',
   },
   plotPointsContainer: {
     position: 'absolute',
     flex: 1,
-    top: '35%',
+    top: '45%',
     right: '50%',
-    width: '40%',
+    width: '50%',
     height: '25%',
+    zIndex: 4,
+    borderRadius: '70%',
     // borderWidth: 2,
     // borderColor: 'red',
   },
   characterTraitsContainer: {
     position: 'absolute',
     flex: 1,
-    bottom: '0%',
-    left: '40%',
+    bottom: '5%',
+    right: '45%',
     width: 200,
     // borderWidth: 2,
     // borderColor: 'red',
+    borderRadius: 70,
     aspectRatio: 1, // Maintain the aspect ratio (1:1)
   },
   objectsContainer: {
     position: 'absolute',
     flex: 1,
-    bottom: '10%',
-    left: '-5%',
-    height: '32%',
+    bottom: '47%',
+    left: '35%',
+    height: '25%',
+    zIndex: 2,
     // borderWidth: 2,
     // borderColor: 'red',
   },
@@ -53,26 +59,26 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '120%',
     height: undefined,
+    borderRadius: 35,
+    // borderWidth: 2,
+    // borderColor: 'green',
   },
   imagePlotPoints: {
     resizeMode: 'contain',
     flex: 1,
     width: undefined,
     height: undefined,
+    margin: -5,
+    borderRadius: 80,
+    // borderWidth: 2,
+    // borderColor: 'green',
+    borderBottomRightRadius: 100,
   },
   imageCharacterTrait: {
     resizeMode: 'contain',
     flex: 1,
     width: '120%',
     height: undefined,
-  },
-  imageText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 'auto',
-    marginBottom: 'auto',
   },
   textCharacterTrait: {
     color: 'white',
@@ -112,13 +118,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold', // Optional: Set the font weight
     // borderWidth: 2,
     // borderColor: 'red',
-  },
-  titleText1: {
-    color: 'white',
-    fontSize: 45, // Optional: Set the font size
-    fontWeight: 'bold', // Optional: Set the font weight
-    // borderWidth: 2,
-    // borderColor: 'red',
     paddingTop: '20%',
   },
   bodyText: {
@@ -137,11 +136,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const traitsImage = require('../assets/story-starter-icons/character-traits-blob.png');
-const objectsImage = require('../assets/story-starter-icons/objects-blob.png');
-const plotPointsImage = require('../assets/story-starter-icons/plot-points-blob.png');
-const settingsImage = require('../assets/story-starter-icons/setting-blob.png');
-const backgroundImage = require('../assets/story-starter-icons/story-starters-background.png');
+const traitsImage = require('../assets/story-starter-icons/CharacterTraits.png');
+const objectsImage = require('../assets/story-starter-icons/Objects.png');
+const plotPointsImage = require('../assets/story-starter-icons/Plotpoints.png');
+const settingsImage = require('../assets/story-starter-icons/Settings.png');
+const backgroundImage = require('../assets/story-starter-icons/background.png');
 
 export default function StoryStarterScreen({ navigation }) {
   const navigateToSettingsScreen = () => {
@@ -164,29 +163,20 @@ export default function StoryStarterScreen({ navigation }) {
     <View>
       <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
         <View style={styles.textContainer}>
-          <Text style={styles.titleText1}> Story </Text>
-          <Text style={styles.titleText}> Starters </Text>
+          <Text style={styles.titleText}> Story Starters</Text>
           <Text style={styles.bodyText}>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing. </Text>
         </View>
         <Pressable onPress={navigateToSettingsScreen} title="Get random setting" style={styles.settingsContainer}>
-          <ImageBackground source={settingsImage} style={styles.button} imageStyle={styles.image}>
-            <Text style={styles.textSettings}>Settings</Text>
-          </ImageBackground>
+          <ImageBackground source={settingsImage} style={styles.button} imageStyle={styles.image} />
         </Pressable>
         <Pressable onPress={navigateToTraitsScreen} title="Get random character trait" style={styles.characterTraitsContainer}>
-          <ImageBackground source={traitsImage} style={styles.button} imageStyle={styles.imageCharacterTrait}>
-            <Text style={styles.textCharacterTrait}>Character Traits</Text>
-          </ImageBackground>
+          <ImageBackground source={traitsImage} style={styles.button} imageStyle={styles.imageCharacterTrait} />
         </Pressable>
         <Pressable onPress={navigateToPlotPointsScreen} title="Get random plot point" style={styles.plotPointsContainer}>
-          <ImageBackground source={plotPointsImage} style={styles.button} imageStyle={styles.imagePlotPoints}>
-            <Text style={styles.imageText}>Plot Points</Text>
-          </ImageBackground>
+          <ImageBackground source={plotPointsImage} style={styles.button} imageStyle={styles.imagePlotPoints} />
         </Pressable>
         <Pressable onPress={navigateToObjectsScreen} title="Get random object" style={styles.objectsContainer}>
-          <ImageBackground source={objectsImage} style={styles.button} imageStyle={styles.image}>
-            <Text style={styles.textObjects}>Objects</Text>
-          </ImageBackground>
+          <ImageBackground source={objectsImage} style={styles.button} imageStyle={styles.image} />
         </Pressable>
       </ImageBackground>
     </View>
