@@ -6,12 +6,14 @@ import { SvgXml } from 'react-native-svg';
 import ModalScreen from '../Components/FreeWrite/ModalScreen';
 import Timer from '../Components/FreeWrite/Timer';
 
-const background = `<svg width="430" height="932" viewBox="0 0 430 932" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M267.155 -143.966C385.938 -131.561 452.721 -8.86192 544.445 65.5968C635.342 139.384 768.148 181.614 803.594 291.497C839.021 401.32 752.84 509.211 723.518 620.724C693.859 733.516 711.687 865.351 630.263 950.678C547.469 1037.44 415.566 1059.27 294.41 1070.4C179.386 1080.97 65.2469 1058.88 -39.8734 1012.25C-143.081 966.463 -236.728 900.046 -298.381 807.422C-359.24 715.992 -378.911 606.721 -382.278 497.846C-385.656 388.629 -379.249 274.289 -317.695 182.891C-257.004 92.7749 -145.429 57.2454 -49.4015 3.57809C54.15 -54.294 148.413 -156.367 267.155 -143.966Z" fill="url(#paint0_radial_1747_12815)"/>
+const windowHeight = Dimensions.get('window').height;
+
+const background = `<svg width="430" height="700" viewBox="0 0 430 932" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M259.155 -151.966C377.938 -139.561 444.721 -16.8619 536.445 57.5968C627.342 131.384 760.148 173.614 795.594 283.497C831.021 393.32 744.84 501.211 715.518 612.724C685.859 725.516 703.687 857.351 622.263 942.678C539.469 1029.44 407.566 1051.27 286.41 1062.4C171.386 1072.97 57.2469 1050.88 -47.8734 1004.25C-151.081 958.463 -244.728 892.046 -306.381 799.422C-367.24 707.992 -386.911 598.721 -390.278 489.846C-393.656 380.629 -387.249 266.289 -325.695 174.891C-265.004 84.7749 -153.429 49.2454 -57.4015 -4.42191C46.15 -62.294 140.413 -164.367 259.155 -151.966Z" fill="url(#paint0_radial_4205_4347)"/>
 <defs>
-<radialGradient id="paint0_radial_1747_12815" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(214.5 464) rotate(90) scale(609 597.5)">
-<stop stop-color="#1872B2"/>
-<stop offset="1" stop-color="#CEFF9E" stop-opacity="0.75"/>
+<radialGradient id="paint0_radial_4205_4347" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(206.5 456) rotate(90) scale(609 597.5)">
+<stop stop-color="#CEFF9E" stop-opacity="0.75"/>
+<stop offset="0.805629" stop-color="#1872B2"/>
 </radialGradient>
 </defs>
 </svg>`;
@@ -53,8 +55,6 @@ const selectedTimerIcon = `<svg width="46" height="40" viewBox="0 0 46 40" fill=
 <path d="M25.75 10.75H20.25V12.5833H25.75V10.75ZM22.0833 22.6667H23.9167V17.1667H22.0833V22.6667ZM29.4442 16.6075L30.7458 15.3058C30.3517 14.8383 29.9208 14.3983 29.4533 14.0133L28.1517 15.315C26.7308 14.1783 24.9433 13.5 23 13.5C18.4442 13.5 14.75 17.1942 14.75 21.75C14.75 26.3058 18.435 30 23 30C27.565 30 31.25 26.3058 31.25 21.75C31.25 19.8067 30.5717 18.0192 29.4442 16.6075ZM23 28.1667C19.4525 28.1667 16.5833 25.2975 16.5833 21.75C16.5833 18.2025 19.4525 15.3333 23 15.3333C26.5475 15.3333 29.4167 18.2025 29.4167 21.75C29.4167 25.2975 26.5475 28.1667 23 28.1667Z" fill="#404040"/>
 </svg>`;
 
-const windowHeight = Dimensions.get('window').height;
-
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     borderStyle: 'dotted',
   },
   svg: {
-    position: 'absolute',
+    // position: 'absolute',
     ...StyleSheet.absoluteFill,
     zIndex: -1,
   },

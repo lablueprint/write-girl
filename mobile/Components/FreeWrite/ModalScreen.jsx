@@ -219,6 +219,7 @@ export default function ModalScreen({
 
   const handlePlay = () => {
     setPlay(!play);
+    console.log('play button pressed');
   };
 
   const handleTitle = (message) => {

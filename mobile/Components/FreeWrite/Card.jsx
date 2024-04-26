@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
 
 export default function Card({ name, play, setTitle }) {
   const [sounds, setSound] = useState();
+  const [isPlaying, setIsPlaying] = useState(false);
 
   /// /// THIS VERSION SOUND PLAYS AT ONCE
   // async function playSound() {
@@ -71,34 +72,65 @@ export default function Card({ name, play, setTitle }) {
   /// /////////////////////////////////////////
 
   // THIS VERSION TOO EXCEPT WITHOUT ERROR
+  // useEffect(() => {
+  //   async function playSound() {
+  //     console.log('Loading Sound');
+  //     const { sound } = await Audio.Sound.createAsync(
+  //       require('../../assets/sample.mp3'),
+  //     );
+  //     setSound(sound);
+  //     console.log('Playing Sound');
+  //     await sound.playAsync();
+  //   }
+
+  //   if (play) {
+  //     playSound();
+  //   }
+
+  //   return () => {
+  //     if (sounds) {
+  //       console.log('Unloading Sound');
+  //       sounds.stopAsync(); // Stop the sound if it's playing
+  //       sounds.unloadAsync();
+  //     }
+  //   };
+  // }, [play]);
+  /// ////////////////////////////////////////////
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(require('../../assets/sample.mp3'));
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  async function stopSound() {
+    if (sounds) {
+      await sounds.stopAsync();
+    }
+  }
+
+  useEffect(() => (sounds ? () => {
+    sounds.unloadAsync();
+  } : undefined), [sounds]);
+
   useEffect(() => {
-    async function playSound() {
-      console.log('Loading Sound');
-      const { sound } = await Audio.Sound.createAsync(
-        require('../../assets/sample.mp3'),
-      );
-      setSound(sound);
-      console.log('Playing Sound');
-      await sound.playAsync();
-    }
-
-    if (play) {
+    setIsPlaying(play);
+    console.log('play in useEffect: ', play);
+    if (isPlaying) {
       playSound();
+    } else {
+      stopSound();
     }
-
-    return () => {
-      if (sounds) {
-        console.log('Unloading Sound');
-        sounds.stopAsync(); // Stop the sound if it's playing
-        sounds.unloadAsync();
-      }
-    };
   }, [play]);
 
   const handlePress = () => {
     console.log('Pressed');
     console.log('play: ', play);
     setTitle(name);
+    // if (isPlaying) {
+    //   playSound();
+    // } else {
+    //   stopSound();
+    // }
   };
 
   return (
