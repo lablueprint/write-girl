@@ -6,16 +6,12 @@ import store from './redux/store';
 
 export default function App() {
   const [user, setUser] = useState(null);
-  // const user = SecureStore.getItemAsync('user');
-  console.log('App user', user);
 
-  async function getUser() {
+  const getUser = async () => {
     setUser(await SecureStore.getItemAsync('user'));
-    console.log('finished running in app');
-  }
+  };
 
   const updateUser = (value) => {
-    console.log('updated with null');
     setUser(value);
   };
 

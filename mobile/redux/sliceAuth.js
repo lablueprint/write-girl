@@ -4,9 +4,6 @@ import * as SecureStore from 'expo-secure-store';
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
 
-// const user = SecureStore.getItemAsync('user');
-console.log('Slice auth ran');
-
 const initialState = {
   refresh: 0, id: null, token: null,
 };

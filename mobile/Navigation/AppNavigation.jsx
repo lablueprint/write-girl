@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   Image, View, ImageBackground, Dimensions,
@@ -25,6 +25,7 @@ import whiteCircle from '../assets/white-circle.png';
 import SignUpScreen from '../Screens/SignUpScreen';
 import LogInScreen from '../Screens/LogInScreen';
 import { isTokenExpired, login } from '../redux/sliceAuth';
+import LoadingScreen from './Loading';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -94,14 +95,9 @@ const middleTabOptions = {
 };
 
 export default function AppNavigation({ user, setUser }) {
+  const [isLoading, setIsLoading] = useState(true);
   const { id, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  console.log('nav user: ', SecureStore.getItemAsync('user'));
-  console.log('nav token: ', token);
-  console.log('nav id: ', id);
-
-  console.log('Retrieving the user object from props', JSON.parse(user));
 
   const populateRedux = async (userObj) => {
     if (userObj === null) {
@@ -110,7 +106,23 @@ export default function AppNavigation({ user, setUser }) {
     await dispatch(login(JSON.parse(userObj)));
   };
 
-  populateRedux(user);
+  useEffect(() => {
+    // Simulate an API call
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    populateRedux(user);
+  }, [user]);
+
+  if (isLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     (token && !isTokenExpired(token) && id) ? (
       <NavigationContainer>
@@ -152,6 +164,10 @@ export default function AppNavigation({ user, setUser }) {
 }
 
 AppNavigation.propTypes = {
-  user: PropTypes.string.isRequired,
+  user: PropTypes.string,
   setUser: PropTypes.func.isRequired,
+};
+
+AppNavigation.defaultProps = {
+  user: null,
 };
