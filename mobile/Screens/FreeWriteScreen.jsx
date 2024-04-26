@@ -105,10 +105,10 @@ export default function FreeWriteScreen() {
   const [isImageOpen, setIsImageOpen] = useState(false);
   // const songTitle = 'Gentle River Stream';
   const artist = 'Joji';
-  const songName = 'Water Sounds';
-  const photoTitle = 'Icy River';
+  const songName = '----';
+  const photoTitle = 'No Scene';
   const photographer = 'Bob';
-  const photoName = 'Still Image';
+  const photoName = '----';
   const [timerPressed, setTimerPressed] = useState(false);
 
   const handlePress = () => {

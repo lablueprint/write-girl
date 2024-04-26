@@ -22,56 +22,7 @@ export default function Card({ name, play, setTitle }) {
   const [sounds, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
 
-  /// /// THIS VERSION SOUND PLAYS AT ONCE
-  // async function playSound() {
-  //   console.log('Loading Sound');
-  //   const { sound } = await Audio.Sound.createAsync(
-  //     require('../../assets/sample.mp3'),
-  //   );
-  //   setSound(sound);
-  //   console.log('Playing Sound');
-  //   await sound.playAsync();
-  // }
-
-  // // async function stopRecording() {
-  // //   console.log('Stopping recording..');
-  // //   setRecording(undefined);
-  // //   await recording.stopAndUnloadAsync();
-  // //   await Audio.setAudioModeAsync(
-  // //     {
-  // //       allowsRecordingIOS: false,
-  // //     },
-  // //   );
-  // //   const uri = recording.getURI();
-  // //   console.log('Recording stopped and stored at', uri);
-  // // }
-
-  // const handlePress = () => {
-  //   console.log('Pressed');
-  //   console.log('play: ', play);
-  //   setTitle(name);
-  // };
-
-  // useEffect(() => (sounds
-  //   ? () => {
-  //     console.log('Unloading Sound');
-  //     sounds.unloadAsync();
-  //   }
-  //   : undefined), [sounds]);
-
-  // return (
-  //   <>
-  //     {play ? playSound() : null}
-  //     <Pressable style={styles.card} onPress={handlePress}>
-  //       <View>
-  //         <Text>{name}</Text>
-  //       </View>
-  //     </Pressable>
-  //   </>
-  // );
-  /// /////////////////////////////////////////
-
-  // THIS VERSION TOO EXCEPT WITHOUT ERROR
+  // THIS VERSION PLAYS ALL AT ONCE
   // useEffect(() => {
   //   async function playSound() {
   //     console.log('Loading Sound');
@@ -96,30 +47,72 @@ export default function Card({ name, play, setTitle }) {
   //   };
   // }, [play]);
   /// ////////////////////////////////////////////
-  async function playSound() {
-    const { sound } = await Audio.Sound.createAsync(require('../../assets/sample.mp3'));
-    setSound(sound);
-    await sound.playAsync();
-  }
 
-  async function stopSound() {
-    if (sounds) {
-      await sounds.stopAsync();
-    }
-  }
+  // THIS STOPS/PLAYS WITH SOME FAULINESS
+  // async function playSound() {
+  //   const { sound } = await Audio.Sound.createAsync(require('../../assets/sample.mp3'));
+  //   setSound(sound);
+  //   await sound.playAsync();
+  // }
 
-  useEffect(() => (sounds ? () => {
-    sounds.unloadAsync();
-  } : undefined), [sounds]);
+  // async function stopSound() {
+  //   if (sounds) {
+  //     await sounds.stopAsync();
+  //   }
+  // }
+
+  // useEffect(() => (sounds ? () => {
+  //   sounds.unloadAsync();
+  // } : undefined), [sounds]);
+
+  // useEffect(() => {
+  //   setIsPlaying(play);
+  //   console.log('play in useEffect: ', play);
+  //   if (isPlaying) {
+  //     playSound();
+  //   } else {
+  //     stopSound();
+  //   }
+  // }, [play]);
+
+  // const handlePress = () => {
+  //   console.log('Pressed');
+  //   console.log('play: ', play);
+  //   setTitle(name);
+  //   // if (isPlaying) {
+  //   //   playSound();
+  //   // } else {
+  //   //   stopSound();
+  //   // }
+  // };
+
+  /// /////////////////////////////////////////
 
   useEffect(() => {
-    setIsPlaying(play);
-    console.log('play in useEffect: ', play);
-    if (isPlaying) {
+    async function playSound() {
+      const { sound } = await Audio.Sound.createAsync(require('../../assets/sample.mp3'));
+      setSound(sound);
+      await sound.playAsync();
+    }
+
+    async function stopSound() {
+      if (sounds) {
+        await sounds.stopAsync();
+        await sounds.unloadAsync();
+      }
+    }
+
+    if (play) {
       playSound();
     } else {
       stopSound();
     }
+
+    return () => {
+      if (sounds) {
+        stopSound();
+      }
+    };
   }, [play]);
 
   const handlePress = () => {

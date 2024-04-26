@@ -62,6 +62,41 @@ const like = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns=
 </defs>
 </svg>`;
 
+const imageShuffle = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="18" cy="18" r="18" fill="black" fill-opacity="0.5"/>
+<path d="M25.2083 20.8333L27.6667 23.2917L25.2083 25.75M25.2083 11L27.6667 13.4583L25.2083 15.9167M8 23.2917H12.363C13.0375 23.2917 13.7015 23.1251 14.2962 22.8069C14.8909 22.4887 15.3978 22.0285 15.7719 21.4674L17.8333 18.375" stroke="url(#paint0_linear_4238_4036)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 13.458H12.363C13.0375 13.458 13.7015 13.6245 14.2962 13.9428C14.8909 14.261 15.3978 14.7211 15.7719 15.2823L19.8947 21.4671C20.2689 22.0282 20.7758 22.4883 21.3705 22.8066C21.9651 23.1248 22.6292 23.2913 23.3036 23.2913H26.0278M26.0278 13.458H23.3036C22.6292 13.458 21.9651 13.6245 21.3705 13.9428C20.7758 14.261 20.2689 14.7211 19.8947 15.2823L19.4722 15.9163" stroke="url(#paint1_linear_4238_4036)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<linearGradient id="paint0_linear_4238_4036" x1="8" y1="18.375" x2="27.6667" y2="18.375" gradientUnits="userSpaceOnUse">
+<stop stop-color="#84C2C9"/>
+<stop offset="1" stop-color="#BFD25A"/>
+</linearGradient>
+<linearGradient id="paint1_linear_4238_4036" x1="8" y1="18.3747" x2="26.0278" y2="18.3747" gradientUnits="userSpaceOnUse">
+<stop stop-color="#84C2C9"/>
+<stop offset="1" stop-color="#BFD25A"/>
+</linearGradient>
+</defs>
+</svg>`;
+
+const imageBack = `<svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.485352 2C0.485352 0.895431 1.38078 0 2.48535 0C3.58992 0 4.48535 0.895431 4.48535 2V5.88697L14.4039 0.20878C14.633 0.0754154 14.8954 0.00335344 15.1636 0.0001268C15.4317 -0.00309984 15.6959 0.0626271 15.9284 0.190438C16.4399 0.46761 16.7578 1.00402 16.7578 1.58975V13.4104C16.7578 13.9945 16.4399 14.5325 15.9284 14.8097C15.7013 14.934 15.4443 14.9996 15.1826 15C14.9086 14.999 14.6401 14.9269 14.4056 14.7913L4.48535 9.11155V13C4.48535 14.1046 3.58992 15 2.48535 15C1.38078 15 0.485352 14.1046 0.485352 13V2Z" fill="white" fill-opacity="0.5"/>
+</svg>`;
+
+const imageForward = `<svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5146 2C16.5146 0.895431 15.6192 0 14.5146 0C13.4101 0 12.5146 0.895431 12.5146 2V5.88697L2.59607 0.20878C2.36697 0.0754154 2.10462 0.00335344 1.83644 0.0001268C1.56826 -0.00309984 1.3041 0.0626271 1.07156 0.190438C0.56013 0.46761 0.242188 1.00402 0.242188 1.58975V13.4104C0.242188 13.9945 0.56013 14.5325 1.07156 14.8097C1.29869 14.934 1.55573 14.9996 1.81741 15C2.09137 14.999 2.35991 14.9269 2.59436 14.7913L12.5146 9.11155V13C12.5146 14.1046 13.4101 15 14.5146 15C15.6192 15 16.5146 14.1046 16.5146 13V2Z" fill="white" fill-opacity="0.5"/>
+</svg>`;
+
+const imageLike = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="18" cy="18" r="18" fill="black" fill-opacity="0.5"/>
+<path d="M18 28C17.7667 28 17.5293 27.9599 17.288 27.8798C17.0467 27.7996 16.834 27.6714 16.65 27.495L14.925 25.9802C13.1583 24.4253 11.5623 22.8825 10.137 21.352C8.71167 19.8214 7.99933 18.1341 8 16.29C8 14.7831 8.525 13.5248 9.575 12.5149C10.625 11.505 11.9333 11 13.5 11C14.3833 11 15.2167 11.1802 16 11.5405C16.7833 11.9009 17.45 12.394 18 13.0198C18.55 12.3946 19.2167 11.9019 20 11.5415C20.7833 11.1811 21.6167 11.0006 22.5 11C24.0667 11 25.375 11.505 26.425 12.5149C27.475 13.5248 28 14.7831 28 16.29C28 18.1334 27.2917 19.8246 25.875 21.3635C24.4583 22.9024 22.85 24.4493 21.05 26.0042L19.35 27.495C19.1667 27.6714 18.9543 27.7996 18.713 27.8798C18.4717 27.9599 18.234 28 18 28ZM17.05 14.9434C16.5667 14.2862 16.05 13.7851 15.5 13.4401C14.95 13.0951 14.2833 12.923 13.5 12.9236C12.5 12.9236 11.6667 13.2442 11 13.8854C10.3333 14.5266 10 15.3281 10 16.29C10 17.1235 10.3083 18.0094 10.925 18.9474C11.5417 19.8855 12.2793 20.7951 13.138 21.6761C13.996 22.5578 14.8793 23.3833 15.788 24.1528C16.6967 24.9222 17.434 25.5554 18 26.0523C18.5667 25.5554 19.3043 24.9222 20.213 24.1528C21.1217 23.3833 22.005 22.5578 22.863 21.6761C23.721 20.7944 24.4583 19.8849 25.075 18.9474C25.6917 18.01 26 17.1242 26 16.29C26 15.3281 25.6667 14.5266 25 13.8854C24.3333 13.2442 23.5 12.9236 22.5 12.9236C21.7167 12.9236 21.05 13.0961 20.5 13.4411C19.95 13.786 19.4333 14.2868 18.95 14.9434C18.8333 15.1037 18.6917 15.224 18.525 15.3041C18.3583 15.3843 18.1833 15.4243 18 15.4243C17.8167 15.4243 17.6417 15.3843 17.475 15.3041C17.3083 15.224 17.1667 15.1037 17.05 14.9434Z" fill="url(#paint0_linear_4238_4049)"/>
+<defs>
+<linearGradient id="paint0_linear_4238_4049" x1="8" y1="19.5" x2="28" y2="19.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#84C2C9"/>
+<stop offset="1" stop-color="#BFD25A"/>
+</linearGradient>
+</defs>
+</svg>`;
+
 const styles = StyleSheet.create({
   container: {
 
@@ -143,6 +178,12 @@ const styles = StyleSheet.create({
   shuffle: {
     top: '70%',
     left: '5%',
+  },
+  group: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    top: '0%',
+    flex: 1,
   },
   back: {
     position: 'absolute',
@@ -228,21 +269,31 @@ export default function ModalScreen({
 
   const content = () => (
     <View style={styles.rectangle}>
-      {name === 'Music' && (
-      <>
-        <View style={styles.square}>
-          <SvgXml xml={modalIcon} style={styles.modalIcon} />
-        </View>
-        <SvgXml xml={shuffle} style={styles.shuffle} />
-        <SvgXml xml={back} style={styles.back} />
-        <Pressable onPress={handlePlay}>
-          <SvgXml xml={playIcon} style={styles.playIcon} />
-        </Pressable>
-        <SvgXml xml={forwards} style={styles.forwards} />
-        <SvgXml xml={like} style={styles.like} />
-      </>
-      )}
-      <Text style={name === 'Music' ? styles.text : { ...styles.text, left: '5%', top: '10%' }}>{songTitle}</Text>
+      {name === 'Music' ? (
+        <>
+          <View style={styles.square}>
+            <SvgXml xml={modalIcon} style={styles.modalIcon} />
+          </View>
+          <SvgXml xml={shuffle} style={styles.shuffle} />
+          <SvgXml xml={back} style={styles.back} />
+          <Pressable onPress={handlePlay}>
+            <SvgXml xml={playIcon} style={styles.playIcon} />
+          </Pressable>
+          <SvgXml xml={forwards} style={styles.forwards} />
+          <SvgXml xml={like} style={styles.like} />
+        </>
+      )
+        : (
+          <>
+            <SvgXml xml={imageShuffle} style={styles.shuffle} />
+            <View style={styles.group}>
+              <SvgXml xml={imageBack} style={{ ...styles.back, left: '30%' }} />
+              <SvgXml xml={imageForward} style={{ ...styles.forwards, right: '30%' }} />
+            </View>
+            <SvgXml xml={imageLike} style={styles.like} />
+          </>
+        )}
+      <Text style={name === 'Music' ? styles.text : { ...styles.text, left: '5%', top: '10%' }}>{name === 'Music' ? songTitle : mediaTitle}</Text>
       <Text style={name === 'Music' ? styles.subtext : { ...styles.subtext, left: '5%', top: '20%' }}>{mediaName}</Text>
     </View>
 
