@@ -13,7 +13,7 @@ export default function SavedScreen() {
 
   async function getId() {
     // const userId = await Storage({ key: 'userId', value: '', saveKey: false });
-    const userId = '65bd4fce479f4d7759aa4bc6';
+    const userId = '65bc75ca64a9510aeb9c5cc0';
 
     try {
       if (!userId) {
@@ -84,7 +84,6 @@ export default function SavedScreen() {
     try {
       const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getWritingTips/${userId}`, { timeout: 20000 });
       setWritingTips(saved.data);
-      console.log('success');
       return saved.data;
     } catch (err) {
       console.log(err);
@@ -128,7 +127,7 @@ export default function SavedScreen() {
               {key}
               :
               {' '}
-              {JSON.stringify(activities[key])}
+              {JSON.stringify(activities[key].at(0))}
             </Text>
           )}
         </View>
@@ -141,12 +140,12 @@ export default function SavedScreen() {
               {key}
               :
               {' '}
-              {JSON.stringify(storyStarters[key])}
+              {JSON.stringify(storyStarters[key].slice(0, 3))}
             </Text>
           )}
         </View>
       ))}
-      <Button onPress={getPepTalks} title="Pep Talks" />
+      {/* <Button onPress={getPepTalks} title="Pep Talks" />
       {Object.keys(pepTalks).map((key) => (
         <View key={key}>
           {pepTalks[key] && pepTalks[key].length > 0 && (
@@ -158,8 +157,8 @@ export default function SavedScreen() {
             </Text>
           )}
         </View>
-      ))}
-      <Button onPress={getWritingTips} title="Writing Tips" />
+      ))} */}
+      {/* <Button onPress={getWritingTips} title="Writing Tips" />
       {Object.keys(writingTips).map((key) => (
         <View key={key}>
           {writingTips[key] && writingTips[key].length > 0 && (
@@ -171,7 +170,7 @@ export default function SavedScreen() {
             </Text>
           )}
         </View>
-      ))}
+      ))} */}
       <Button onPress={getTripleFlips} title="Triple Flips" />
       {Object.keys(tripleFlips).map((key) => (
         <View key={key}>
@@ -180,7 +179,7 @@ export default function SavedScreen() {
               {key}
               :
               {' '}
-              {JSON.stringify(tripleFlips[key])}
+              {JSON.stringify(tripleFlips[key].at(0))}
             </Text>
           )}
         </View>

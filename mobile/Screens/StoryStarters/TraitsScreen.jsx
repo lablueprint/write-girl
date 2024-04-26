@@ -79,7 +79,7 @@ export default function TraitsScreen() {
     const date = new Date();
     const traitJSON = {
       date: date.toDateString(),
-      traitStr: trait,
+      traitID: trait._id,
     };
 
     try {
@@ -108,7 +108,7 @@ export default function TraitsScreen() {
           <Text style={styles.heading}>Character Trait Result</Text>
         ) : <Text style={styles.heading}>Character Trait!</Text>}
       </View>
-      <Text style={styles.body}>{trait}</Text>
+      <Text style={styles.body}>{trait.trait}</Text>
       <Pressable style={styles.randomButton} onPress={getTrait}>
         <Text style={styles.body}>Randomize</Text>
       </Pressable>

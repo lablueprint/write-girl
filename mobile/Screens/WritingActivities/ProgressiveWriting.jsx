@@ -292,6 +292,7 @@ export default function ProgressiveWritingScreen() {
   const [genreInfo, setGenreInfo] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [step, setStep] = useState(0);
+  const [saved, setSaved] = useState(false);
 
   /*
     getAllActivities
@@ -324,6 +325,28 @@ export default function ProgressiveWritingScreen() {
     getAllActivities();
   }, [activities]);
 
+  const saveActivity = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const activityJSON = {
+      date: date.toDateString(),
+      activityID: genreFilter[selectedActivity]._id,
+    };
+
+    console.log(activityJSON);
+
+    try {
+      if (!saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addActivities/${userId}`, activityJSON);
+        setSaved(true);
+        return response;
+      }
+      console.log('User ID is null or already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
+
   // Note: there are ridiculous issues when returning a styled element (i.e. styling disappears :( )
   // Solution: Add adjacent components into a vector and finally map them to the output.
   const displayPage = () => {
@@ -350,7 +373,7 @@ export default function ProgressiveWritingScreen() {
               <TouchableOpacity
                 key={activity.activity[0]}
                 style={[styles.banner, { backgroundColor: genreInfo[0].color2 }]}
-                onPress={() => [setSelectedActivity(idx), setStep(2)]}
+                onPress={() => [setSelectedActivity(idx), setSaved(false), setStep(2)]}
               >
                 <Text style={styles.doorButtonText}>
                   {activity.activity[0]}
@@ -483,6 +506,8 @@ export default function ProgressiveWritingScreen() {
             >
               <View style={styles.backButton}>
                 <Button title="< Back" onPress={() => { if (step === 0) { setGenreFilter(null); setGenreInfo(null); } else { setStep(0); } }} />
+                {step === genreFilter[selectedActivity].activity.length
+                && <Button title="Save" onPress={() => { saveActivity(); }} />}
               </View>
               {/* Filtered Activity Screen */}
               <View style={styles.activityDisplay}>

@@ -79,7 +79,7 @@ export default function SettingsScreen() {
     const date = new Date();
     const settingJSON = {
       date: date.toDateString(),
-      settingStr: setting,
+      settingID: setting._id,
     };
 
     try {
@@ -108,7 +108,7 @@ export default function SettingsScreen() {
           <Text style={styles.heading}>Setting Result</Text>
         ) : <Text style={styles.heading}>Setting!</Text>}
       </View>
-      <Text style={styles.body}>{setting}</Text>
+      <Text style={styles.body}>{setting.setting}</Text>
       <Pressable style={styles.randomButton} onPress={getSetting}>
         <Text style={styles.body}>Randomize</Text>
       </Pressable>

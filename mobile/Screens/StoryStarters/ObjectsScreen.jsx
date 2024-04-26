@@ -80,7 +80,7 @@ export default function ObjectsScreen() {
     const date = new Date();
     const objectJSON = {
       date: date.toDateString(),
-      objectStr: object,
+      objectID: object._id,
     };
 
     try {
@@ -109,7 +109,7 @@ export default function ObjectsScreen() {
           <Text style={styles.heading}>Object Result</Text>
         ) : <Text style={styles.heading}>Object!</Text>}
       </View>
-      <Text style={styles.body}>{object}</Text>
+      <Text style={styles.body}>{object.item}</Text>
       <Pressable style={styles.randomButton} onPress={getObject}>
         <Text style={styles.body}>Randomize</Text>
       </Pressable>

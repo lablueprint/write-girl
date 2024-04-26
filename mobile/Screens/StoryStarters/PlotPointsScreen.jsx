@@ -79,7 +79,7 @@ export default function PlotPointsScreen() {
     const date = new Date();
     const plotJSON = {
       date: date.toDateString(),
-      plotStr: plotPoint,
+      plotID: plotPoint._id,
     };
 
     try {
@@ -108,7 +108,7 @@ export default function PlotPointsScreen() {
           <Text style={styles.heading}>Plot Point Result</Text>
         ) : <Text style={styles.heading}>Plot Point!</Text>}
       </View>
-      <Text style={styles.body}>{plotPoint}</Text>
+      <Text style={styles.body}>{plotPoint.plotPoint}</Text>
       <Pressable style={styles.randomButton} onPress={getPlotPoint}>
         <Text style={styles.body}>Randomize</Text>
       </Pressable>

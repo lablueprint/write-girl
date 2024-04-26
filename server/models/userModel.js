@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   },
   savedActivities: {
     required: false,
-    type: [String],
+    type: [Object],
   },
   savedPepTalks: {
     required: false,

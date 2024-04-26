@@ -19,7 +19,7 @@ const getRandomItem = async () => {
       { $sample: { size: 1 } }, // $sample stage to get a random document
     ]);
       // Extract the talk string from the random document
-    const extractedRandomItem = randomItem.length > 0 ? randomItem[0].item : null;
+    const extractedRandomItem = randomItem.length > 0 ? randomItem[0] : null;
     if (extractedRandomItem === null) {
       console.log('No valid item found');
       return 'No items here!';

@@ -210,7 +210,7 @@ export default function TripleFlipScreen({ navigation }) {
   }
 
   const saveTripleFlip = async () => {
-    const userId = '65bc75ca64a9510aeb9c5cc0';
+    const userId = '65bd4fce479f4d7759aa4bc6';
     const date = new Date();
     const tripleFlip = {
       date: date.toDateString(),
