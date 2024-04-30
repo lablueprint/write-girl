@@ -1,10 +1,11 @@
 import { React, useState } from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity,
+  View, Text, StyleSheet, TouchableOpacity, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-import LinearGradient from 'expo-linear-gradient';
+import Arrow from '../assets/activityhomeicon.png';
+// import LinearGradient from 'expo-linear-gradient';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
     width: 350,
     borderRadius: 10,
     padding: 20,
+    backgroundColor: '#73c2fb', //delete later
     color: '#fff',
     shadowColor: '#000',
     shadowOffset: {
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     justifyContent: 'flex-start',
+    backgroundColor: '#73c2fb', //delete later
   },
   activityTitle: {
     fontSize: 32,
@@ -46,23 +49,43 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 14,
   },
+  navigateButton: {
+    backgroundColor: '#fff',
+    height: 60,
+    width: 60,
+    borderRadius: 30,
+    position: 'absolute',
+    bottom: 40, // Adjust as needed
+    left: 20, // Adjust as needed
+  },
+  arrow: {
+    marginRight: 5,
+    width: 12,
+    height: 15,
+    position: 'absolute',
+    bottom: 22, // Adjust as needed
+    left: 25, // Adjust as needed
+  },
 });
 
-export default function ActivityNavigationCard({ activity, description, backgroundColor }) {
+export default function ActivityNavigationCard({ activity, description, backgroundColor, pageDirect, navigation}) {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
+  const navigatePage = () => {
+    setModalVisible(!isModalVisible);
+    navigation.navigate(pageDirect);
+  };
+
   return (
     <View style={styles.container}>
-      {/* <LinearGradient colors={backgroundColor}> fix errorsss*/}
-        <TouchableOpacity style={styles.card} onPress={toggleModal}>
-          <Text style={styles.activityTitle}>{activity}</Text>
-          <Text style={styles.activityDescript}>{description}</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+      <TouchableOpacity style={styles.card} onPress={toggleModal}>
+        <Text style={styles.activityTitle}>{activity}</Text>
+        <Text style={styles.activityDescript}>{description}</Text>
+      </TouchableOpacity>
       <Modal
         style={styles.popUpCard}
         isVisible={isModalVisible}
@@ -70,6 +93,9 @@ export default function ActivityNavigationCard({ activity, description, backgrou
       >
         <Text style={styles.activityTitle}>{activity}</Text>
         <Text style={styles.activityDescript}>{description}</Text>
+        <TouchableOpacity style={styles.navigateButton} onPress={navigatePage}>
+          <Image source={Arrow} style={styles.arrow} />
+        </TouchableOpacity>
       </Modal>
     </View>
   );
@@ -78,5 +104,9 @@ export default function ActivityNavigationCard({ activity, description, backgrou
 ActivityNavigationCard.propTypes = {
   activity: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  backgroundColor: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  backgroundColor: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pageDirect: PropTypes.string.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
 };
