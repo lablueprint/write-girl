@@ -126,7 +126,7 @@ export default function SignUp({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
-        const userId = res.data._id;
+        const userId = res.data.id;
         Storage({ key: 'hello', value: userId, saveKey: true });
         navigation.navigate('Log In');
       }

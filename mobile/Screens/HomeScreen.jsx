@@ -70,7 +70,6 @@ export default function HomeScreen({ setUser }) {
 
   const onPressLogOut = async () => {
     try {
-      await SecureStore.deleteItemAsync('user');
       await dispatch(logout());
       setUser(null);
     } catch (e) {

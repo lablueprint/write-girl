@@ -5,7 +5,6 @@ import {
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import * as SecureStore from 'expo-secure-store';
 import welcomeIcon from '../assets/welcomeIcon.png';
 import { login } from '../redux/sliceAuth';
 
@@ -123,10 +122,7 @@ export default function LogIn({ navigation }) {
         console.log('couldnt find?');
       } else {
         // Create tokens for persistent data
-        // console.log(res.data);
-        // console.log('hi');
         await dispatch(login(res.data));
-        // await storeToken(res.data);
       }
     } catch (err) {
       console.error(err.message);
