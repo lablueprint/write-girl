@@ -30,8 +30,9 @@ const styles = StyleSheet.create({
     height: '25%',
     zIndex: 4,
     borderRadius: '70%',
-    // borderWidth: 2,
-    // borderColor: 'red',
+    borderBottomRightRadius: '100%',
+    borderWidth: 2,
+    borderColor: 'red',
   },
   characterTraitsContainer: {
     position: 'absolute',
@@ -70,8 +71,8 @@ const styles = StyleSheet.create({
     height: undefined,
     margin: -5,
     borderRadius: 80,
-    // borderWidth: 2,
-    // borderColor: 'green',
+    borderWidth: 2,
+    borderColor: 'green',
     borderBottomRightRadius: 100,
   },
   imageCharacterTrait: {

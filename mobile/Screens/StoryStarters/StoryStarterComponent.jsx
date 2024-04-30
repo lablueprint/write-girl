@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, Pressable, Image,
+  ImageBackground,
 } from 'react-native';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
+const handwrittenQuote = require('../../assets/story-starter-icons/inspiring-handwriting.png');
+const background = require('../../assets/story-starter-icons/object-background.png');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#43456f',
     alignItems: 'center',
-    borderColor: 'red',
-    borderWidth: '5 px',
+    paddingTop: '15%',
+    paddingBottom: '15%',
   },
   heading: {
     color: '#fff',
@@ -22,18 +25,21 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   body: {
-    color: '#fff',
+    color: 'black',
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  textBody: {
+    fontSize: 24,
+    color: 'green',
+    fontWeight: 'bold',
   },
   randomButton: {
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
     borderRadius: 50,
     backgroundColor: 'transparent',
-    marginTop: 64,
     width: '80%',
   },
   saveResultButton: {
@@ -48,25 +54,17 @@ const styles = StyleSheet.create({
     width: '80%',
     position: 'absolute',
   },
-  imageContainer: {
-    overflow: 'hidden',
-    alignItems: 'center',
-    backgroundColor: '#ccc',
+  bodyContainer: {
     position: 'relative',
-    height: '30%',
-    width: '65%',
-    margin: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
   saveResultButtonBody: {
     color: 'black',
     fontSize: 16,
   },
   gradientButton: {
-    // padding: 10,
-    // borderRadius: 5,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
@@ -76,6 +74,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginTop: 64,
     width: '80%',
+  },
+  item1: {
+    marginBottom: 'auto',
+  },
+  imageContainer: {
+    width: '100%',
+    height: '20%',
+    paddingLeft: '5%',
+  },
+  quoteImage: {
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'contain',
+    // aspectRatio: 1,
   },
 });
 
@@ -96,48 +109,38 @@ export default function StoryStarterComponent({ title, route }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Where is the title</Text>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-        />
-      </View>
-      <View>
-        {resultShown ? (
-          <Text style={styles.heading}>
-            {title}
-            {' '}
-            Result
-          </Text>
-        ) : (
-          <Text style={styles.heading}>
-            {title}
-            !
-          </Text>
-        )}
-      </View>
-      <Text style={styles.body}>{object}</Text>
-      <LinearGradient
-        colors={['green', 'blue']}
-        style={styles.gradientButton}
-        start={{ x: 0, y: 0 }} // Optional: Set gradient start
-        end={{ x: 1, y: 0 }}
-      >
-        <Pressable style={styles.randomButton} onPress={getObject}>
-          <Ionicons name="shuffle" size={24} color="white" />
-          <Text style={styles.body}>  Randomize</Text>
-        </Pressable>
-      </LinearGradient>
-
+    <ImageBackground source={background} style={{ width: '100%', height: '100%' }}>
       <View style={styles.container}>
-        {resultShown ? (
-          <Pressable style={styles.saveResultButton}>
-            <Text style={styles.saveResultButtonBody}>Save Result</Text>
+
+        <Text style={[styles.heading, styles.item1]}>{title}</Text>
+        <View style={styles.imageContainer}>
+          <Image style={styles.quoteImage} source={handwrittenQuote} />
+        </View>
+        <View>
+          {resultShown ? (
+            <Text style={styles.heading}>
+              {object}
+            </Text>
+          ) : (
+            <Text style={styles.heading}>
+              {title}
+              !
+            </Text>
+          )}
+        </View>
+        <LinearGradient
+          colors={['#84C2C9', '#BFD25A']}
+          style={styles.gradientButton}
+          start={{ x: 0, y: 0 }} // Optional: Set gradient start
+          end={{ x: 1, y: 0 }}
+        >
+          <Pressable style={styles.randomButton} onPress={getObject}>
+            <Ionicons name="shuffle" size={24} color="black" />
+            <Text style={styles.body}>  Randomize</Text>
           </Pressable>
-        ) : <View />}
+        </LinearGradient>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
 
