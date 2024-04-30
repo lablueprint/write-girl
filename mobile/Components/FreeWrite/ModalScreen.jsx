@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   scrollable: {
-    height: '30%',
+    height: '20%',
   },
   square: {
     width: '20%',
@@ -301,7 +301,7 @@ export default function ModalScreen({
 
   const list = () => (
     <View style={styles.scrollable}>
-      <VerticalList title="Nature Sounds" play={play} setTitle={handleTitle} />
+      <VerticalList title={name === 'Music' ? 'Nature Sounds' : 'All Scenes'} play={play} setTitle={handleTitle} />
     </View>
   );
 

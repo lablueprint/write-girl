@@ -9,20 +9,20 @@ const styles = StyleSheet.create({
   listContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    width: '80%',
-    backgroundColor: 'white',
+    width: '100%',
+    // backgroundColor: 'white',
     alignSelf: 'center',
     borderRadius: 14,
   },
   allCards: {
-    width: '50%',
+    width: '100%',
     flexDirection: 'row',
   },
   title: {
     color: 'white',
     fontWeight: 'bold',
     alignSelf: 'center',
-    padding: 10,
+    padding: '10%',
   },
   line: {
     borderBottomWidth: 1,
@@ -32,46 +32,68 @@ const styles = StyleSheet.create({
   },
 });
 
-const data = [
+const musicData = [
   {
     id: 1,
-    name: 'Rainy Ambience',
+    name: 'Rain Sounds',
   },
   {
     id: 2,
-    name: 'Italian Coffee Shop',
+    name: 'Forest Sounds',
   },
   {
     id: 3,
-    name: 'Beethoven',
+    name: 'Ocean Sounds',
   },
   {
     id: 4,
-    name: 'Rainy Ambience',
+    name: 'Wind Sounds',
   },
   {
     id: 5,
-    name: 'Italian Coffee Shop',
+    name: 'Insect Sounds',
   },
   {
     id: 6,
-    name: 'Beethoven',
+    name: 'Fire Sounds',
+  },
+];
+
+const imageData = [
+  {
+    id: 1,
+    name: 'Icy River',
+    image: require('../../assets/free-write-icons/icyRiver.jpg'),
+  },
+  {
+    id: 2,
+    name: 'Cliffs',
+    image: require('../../assets/free-write-icons/cliffs.jpg'),
+  },
+  {
+    id: 3,
+    name: 'Metropolitan',
+    image: require('../../assets/free-write-icons/metropolitan.jpg'),
+  },
+  {
+    id: 4,
+    name: 'Snow Forest',
+    image: require('../../assets/free-write-icons/snowForest.jpg'),
+  },
+  {
+    id: 5,
+    name: 'Holiday Fireplace',
+    image: require('../../assets/free-write-icons/holidayFireplace.jpg'),
+  },
+  {
+    id: 6,
+    name: 'Sunny Field',
+    image: require('../../assets/free-write-icons/sunnyField.jpg'),
   },
   {
     id: 7,
-    name: 'Beethoven',
-  },
-  {
-    id: 8,
-    name: 'Rainy Ambience',
-  },
-  {
-    id: 9,
-    name: 'Italian Coffee Shop',
-  },
-  {
-    id: 10,
-    name: 'Beethoven',
+    name: 'Campfire',
+    image: require('../../assets/free-write-icons/fire.jpg'),
   },
 ];
 
@@ -83,11 +105,16 @@ export default function VerticalList({ title, play, setTitle }) {
       <ScrollView
         contentContainerStyle={styles.listContainer}
       >
-        {data.map((item) => (
+        {title === 'Nature Sounds' ? musicData.map((item) => (
           <View style={styles.allCards}>
             <Card name={item.name} play={play} setTitle={setTitle} />
           </View>
-        ))}
+        ))
+          : imageData.map((item) => (
+            <View style={styles.allCards}>
+              <Card name={item.name} play={play} setTitle={setTitle} image={item.image} />
+            </View>
+          ))}
       </ScrollView>
     </View>
   );
