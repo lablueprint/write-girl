@@ -7,6 +7,7 @@ export default function SavedScreen() {
   const [allSaved, setAllSaved] = useState('');
   const [activities, setActivities] = useState('');
   const [storyStarters, setStoryStarters] = useState('');
+  const [plotPoints, setPlotPoints] = useState([]);
   const [pepTalks, setPepTalks] = useState('');
   const [writingTips, setWritingTips] = useState('');
   const [tripleFlips, setTripleFlips] = useState('');
@@ -65,6 +66,50 @@ export default function SavedScreen() {
     }
     return 'True';
   };
+
+  const getPlotPointByID = async (id) => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/plotPoint/getByID/${id}`, { timeout: 20000 });
+      console.log(res.data);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
+  const getPlotPoints = async (n) => {
+    const userId = await getId();
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/${userId}`, { timeout: 20000 });
+      setPlotPoints(
+        await Promise.all(
+          saved.data.savedPlots.reverse().slice(0, n).map(
+            async (starter) => getPlotPointByID(starter.plotID),
+          ),
+        ),
+      );
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  // {Object.keys(storyStarters).map((key) => (
+  //   <View key={key}>
+  //     {storyStarters[key] && storyStarters[key].length > 0 && (
+  //       <Text key={key}>
+  //         {key}
+  //         :
+  //         {' '}
+  //         {storyStarters[key].slice(0, 3).reverse().map((starter) => (
+  //           JSON.stringify(getPlotPointByID())
+  //         ))}
+  //       </Text>
+  //     )}
+  //   </View>
+  // ))}
 
   const getPepTalks = async () => {
     const userId = await getId();
@@ -141,11 +186,17 @@ export default function SavedScreen() {
               :
               {' '}
               {storyStarters[key].slice(0, 3).reverse().map((starter) => (
-                starter.traitID
+                starter.plotID
               ))}
             </Text>
           )}
         </View>
+      ))}
+      <Button onPress={() => getPlotPoints(3)} title="Plot Points" />
+      {plotPoints.map((point) => (
+        <Text key={point.plotPoint}>
+          {point.plotPoint}
+        </Text>
       ))}
       {/* <Button onPress={getPepTalks} title="Pep Talks" />
       {Object.keys(pepTalks).map((key) => (

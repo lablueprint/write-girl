@@ -44,4 +44,5 @@ const getPlotPointByID = async (req, res) => {
 module.exports = {
   getRandomPlotPoint,
   createPlotPoint,
+  getPlotPointByID,
 };

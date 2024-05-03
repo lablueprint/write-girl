@@ -16,15 +16,6 @@ plotPointRouter.get('/get', async (req, res) => {
   }
 });
 
-plotPointRouter.get('/getByID', async (req, res) => {
-  try {
-    const point = await plotpointController.getPlotPointByID();
-    res.send(point);
-  } catch (err) {
-    console.error(err);
-    // Handle the error appropriately
-    res.status(500).send('Internal Server Error');
-  }
-});
+plotPointRouter.get('/getByID/:id', plotpointController.getPlotPointByID);
 
 module.exports = plotPointRouter;
