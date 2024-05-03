@@ -32,6 +32,15 @@ const getRandomPlotPoint = async () => {
   }
 };
 
+const getPlotPointByID = async (req, res) => {
+  try {
+    const data = await PlotPoint.findOne({ _id: req.params.id });
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   getRandomPlotPoint,
   createPlotPoint,

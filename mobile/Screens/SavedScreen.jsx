@@ -13,7 +13,7 @@ export default function SavedScreen() {
 
   async function getId() {
     // const userId = await Storage({ key: 'userId', value: '', saveKey: false });
-    const userId = '65bc75ca64a9510aeb9c5cc0';
+    const userId = '65bd4fce479f4d7759aa4bc6';
 
     try {
       if (!userId) {
@@ -140,7 +140,9 @@ export default function SavedScreen() {
               {key}
               :
               {' '}
-              {JSON.stringify(storyStarters[key].slice(0, 3))}
+              {storyStarters[key].slice(0, 3).reverse().map((starter) => (
+                starter.traitID
+              ))}
             </Text>
           )}
         </View>
