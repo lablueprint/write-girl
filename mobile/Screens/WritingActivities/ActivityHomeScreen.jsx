@@ -3,8 +3,11 @@ import {
   View, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import PocketPromptsImage from '../../assets/pocketprompts.png';
+import StoryStartersImage from '../../assets/storystarters.png';
+import DoorActivityImage from '../../assets/dooractivity.png';
+import TripleFlipsImage from '../../assets/tripleflips.png';
 import ActivityNavigationCard from '../../Components/ActivityNavigationCard';
-
 
 const styles = StyleSheet.create({
   container: {
@@ -17,25 +20,25 @@ const activityData = [
   {
     activity: 'Pocket Prompts',
     description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
-    backgroundColor: ['#EA7806', '#F3A749', '#FFE09D'],
+    image: PocketPromptsImage,
     pageDirect: 'Home',
   },
   {
     activity: 'Story Starters',
     description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
-    backgroundColor: ['#EA7806', '#F3A749', '#FFE09D'],
+    image: StoryStartersImage,
     pageDirect: 'Story Starters',
   },
   {
     activity: 'Door Activity',
     description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
-    backgroundColor: ['#EA7806', '#F3A749', '#FFE09D'],
+    image: DoorActivityImage,
     pageDirect: 'Home',
   },
   {
-    activity: 'Triple Flip',
+    activity: 'Triple Flips',
     description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
-    backgroundColor: ['#EA7806', '#F3A749', '#FFE09D'],
+    image: TripleFlipsImage,
     pageDirect: 'Home',
   },
 ];
@@ -48,7 +51,7 @@ export default function ActivityHomeScreen({ navigation }) {
           key={index}
           activity={activity.activity}
           description={activity.description}
-          backgroundColor={activity.backgroundColor}
+          image={activity.image}
           pageDirect={activity.pageDirect}
           navigation={navigation}
         />
@@ -62,4 +65,3 @@ ActivityHomeScreen.propTypes = {
     navigate: PropTypes.func,
   }).isRequired,
 };
-
