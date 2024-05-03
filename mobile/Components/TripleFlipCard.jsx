@@ -1,5 +1,5 @@
 import {
-  View, StyleSheet, Text, Image,
+  StyleSheet, Text, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Animated, {
@@ -98,7 +98,7 @@ export default function TripleFlipCard({ image, color, sideShown }) {
 }
 
 TripleFlipCard.propTypes = {
-  image: PropTypes.string.isRequired,
+  image: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   sideShown: PropTypes.number.isRequired,
 };
