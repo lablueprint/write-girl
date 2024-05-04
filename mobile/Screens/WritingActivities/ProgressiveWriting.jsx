@@ -506,7 +506,7 @@ export default function ProgressiveWritingScreen() {
             >
               <View style={styles.backButton}>
                 <Button title="< Back" onPress={() => { if (step === 0) { setGenreFilter(null); setGenreInfo(null); } else { setStep(0); } }} />
-                {step === genreFilter[selectedActivity].activity.length
+                {step >= 2 && step === genreFilter[selectedActivity].activity.length
                 && <Button title="Save" onPress={() => { saveActivity(); }} />}
               </View>
               {/* Filtered Activity Screen */}
