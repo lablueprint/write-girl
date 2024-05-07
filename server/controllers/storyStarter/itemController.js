@@ -32,7 +32,17 @@ const getRandomItem = async () => {
   }
 };
 
+const getItemByID = async (req, res) => {
+  try {
+    const data = await Item.findOne({ _id: req.params.id });
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   createItem,
   getRandomItem,
+  getItemByID,
 };
