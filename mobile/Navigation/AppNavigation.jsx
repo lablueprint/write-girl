@@ -29,6 +29,8 @@ import SignUpScreen from '../Screens/SignUpScreen';
 import LogInScreen from '../Screens/LogInScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
 // import SavedScreen from '../Screens/SavedScreen';
+import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
+import HistoryScreen from '../Screens/HistoryScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -62,6 +64,22 @@ function SettingsStackScreen() {
       <SettingsStack.Screen name="Edit First Name" component={EditFirstNameScreen} options={{ headerShown: false }} />
       <SettingsStack.Screen name="Edit Password" component={EditPasswordScreen} options={{ headerShown: false }} />
     </SettingsStack.Navigator>
+  );
+}
+
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator initialRouteName="App Home">
+      <HomeStack.Screen
+        name="Home Screen"
+        component={HomeScreen}
+        options={{ title: 'HomeScreen' }}
+      />
+      <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
+    </HomeStack.Navigator>
   );
 }
 
@@ -132,7 +150,7 @@ const middleTabOptions = {
 
 };
 
-function HomeStackScreen() {
+function MainAppScreen() {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -151,7 +169,7 @@ function HomeStackScreen() {
       <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
       <Tab.Screen
         name="Center"
-        component={HomeScreen}
+        component={HomeStackScreen}
         options={middleTabOptions}
       />
       <Tab.Screen name="Mind & Body" component={MindBodyStackScreen} options={createtabOptions(mindBodyIcon)} />
@@ -166,7 +184,7 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="Home" component={MainAppScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Forgot Password" component={PasswordResetScreen} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </NavigationContainer>
