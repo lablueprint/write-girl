@@ -4,6 +4,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/sliceAuth';
 import Storage from '../Components/Storage';
 import welcomeIcon from '../assets/welcomeIcon.png';
 
@@ -65,6 +67,7 @@ export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, onChangePassword] = useState('');
+  const dispatch = useDispatch();
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
@@ -126,9 +129,12 @@ export default function SignUp({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
-        const userId = res.data.id;
-        Storage({ key: 'hello', value: userId, saveKey: true });
-        navigation.navigate('Log In');
+        console.log('successfully signed up');
+        // const userId = res.data.id;
+        // Storage({ key: 'hello', value: userId, saveKey: true });
+        // navigation.navigate('Log In');
+        console.log('resdata', res.data.id, res.data.token);
+        await dispatch(login(res.data));
       }
     } catch (err) {
       console.log(err.message);

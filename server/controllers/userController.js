@@ -391,7 +391,7 @@ const removeSavedItems = async (req, res) => {
   }
 };
 
-const userSignUp = async (req, res) => {
+const userSignUp = async (req, res, next) => {
   const userExists = await User.findOne({ email: req.body.email });
   if (userExists) {
     return res.json({ error: 'That email already exists.' });
@@ -406,8 +406,21 @@ const userSignUp = async (req, res) => {
     // Save user in database
     const user = new User(secureUser);
     await user.save(user);
+
+    passport.authenticate('user-log-in', (err, userInfo, info) => {
+      console.log('callback');
+      if (err) { return next(err); }
+      if (!userInfo) { return res.json({ error: info.message }); }
+      console.log(userInfo.id);
+      return req.logIn(userInfo, { session: false }, (e) => {
+        if (err) return next(e);
+        const token = jwt.sign({ id: userInfo.id }, process.env.JWT_SECRET);
+        return res.json({ id: userInfo.id, token });
+      });
+    })(req, res, next);
+
     // Send success response
-    return res.send('User successfully created!');
+    // return res.send('User successfully created!');
   } catch (err) {
     return res.status(404).json({ error: 'Unable to create a user properly' });
   }
