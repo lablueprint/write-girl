@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
 
 export default function SavedScreen() {
   const [allSaved, setAllSaved] = useState('');
-  const [activities, setActivities] = useState('');
+  const [activities, setActivities] = useState([]);
   const [storyStarters, setStoryStarters] = useState('');
   const [plotPoints, setPlotPoints] = useState([]);
   const [traits, setTraits] = useState([]);
@@ -25,7 +24,7 @@ export default function SavedScreen() {
   const [settings, setSettings] = useState([]);
   const [pepTalks, setPepTalks] = useState('');
   const [writingTips, setWritingTips] = useState('');
-  const [tripleFlips, setTripleFlips] = useState('');
+  const [tripleFlips, setTripleFlips] = useState([]);
 
   async function getId() {
     // const userId = await Storage({ key: 'userId', value: '', saveKey: false });
@@ -56,19 +55,6 @@ export default function SavedScreen() {
     return 'True';
   };
 
-  const getActivities = async () => {
-    const userId = await getId();
-
-    try {
-      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getActivities/${userId}`, { timeout: 20000 });
-      setActivities(saved.data);
-      return saved.data;
-    } catch (err) {
-      console.log(err);
-    }
-    return 'True';
-  };
-
   const getStoryStarters = async () => {
     const userId = await getId();
 
@@ -80,6 +66,17 @@ export default function SavedScreen() {
       console.log(err);
     }
     return 'True';
+  };
+
+  const getActivityByID = async (id) => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/getByID/${id}`, { timeout: 20000 });
+      console.log(res.data);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
   };
 
   const getPlotPointByID = async (id) => {
@@ -198,6 +195,24 @@ export default function SavedScreen() {
     return 'True';
   };
 
+  const getActivities = async (n) => {
+    const userId = await getId();
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getActivities/${userId}`, { timeout: 20000 });
+      setActivities(
+        await Promise.all(
+          saved.data.msg.at(0).savedActivities.reverse().slice(0, n).map(
+            async (activity) => getActivityByID(activity.activityID),
+          ),
+        ),
+      );
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
   // {Object.keys(storyStarters).map((key) => (
   //   <View key={key}>
   //     {storyStarters[key] && storyStarters[key].length > 0 && (
@@ -238,12 +253,18 @@ export default function SavedScreen() {
     return 'True';
   };
 
-  const getTripleFlips = async () => {
+  const getTripleFlips = async (n) => {
     const userId = await getId();
 
     try {
       const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlips/${userId}`, { timeout: 20000 });
-      setTripleFlips(saved.data);
+      setTripleFlips(
+        await Promise.all(
+          saved.data.msg.at(0).savedTripleFlips.reverse().slice(0, n).map(
+            async (flip) => flip.flipID,
+          ),
+        ),
+      );
       return saved.data;
     } catch (err) {
       console.log(err);
@@ -283,25 +304,25 @@ export default function SavedScreen() {
       ))} */}
       <Button onPress={() => getPlotPoints(3)} title="Plot Points" />
       {plotPoints.map((starter) => (
-        <Text key={starter.plotPoint}>
+        <Text key={starter._id}>
           {starter.plotPoint}
         </Text>
       ))}
       <Button onPress={() => getTraits(3)} title="Character Traits" />
       {traits.map((starter) => (
-        <Text key={starter.trait}>
+        <Text key={starter._id}>
           {starter.trait}
         </Text>
       ))}
       <Button onPress={() => getItems(3)} title="Objects" />
       {items.map((starter) => (
-        <Text key={starter.item}>
+        <Text key={starter._id}>
           {starter.item}
         </Text>
       ))}
       <Button onPress={() => getSettings(3)} title="Settings" />
       {settings.map((starter) => (
-        <Text key={starter.setting}>
+        <Text key={starter._id}>
           {starter.setting}
         </Text>
       ))}
@@ -331,20 +352,19 @@ export default function SavedScreen() {
           )}
         </View>
       ))} */}
-      <Button onPress={getTripleFlips} title="Triple Flips" />
-      {Object.keys(tripleFlips).map((key) => (
-        <View key={key}>
-          {tripleFlips[key] && tripleFlips[key].length > 0 && (
-            <Text key={key}>
-              {key}
-              :
-              {' '}
-              {JSON.stringify(tripleFlips[key].at(0))}
-            </Text>
-          )}
-        </View>
+      <Button onPress={() => getTripleFlips(1)} title="Triple Flips" />
+      {tripleFlips.map((flip) => (
+        <Text key={flip}>
+          {flip}
+        </Text>
       ))}
-      <Button onPress={getActivities} title="Door Activities" />
+      <Button onPress={() => getActivities(1)} title="Door Activities" />
+      {activities.map((activityObj) => (
+        <Text key={activityObj._id}>
+          {activityObj.activity[0]}
+        </Text>
+      ))}
+      {/* <Button onPress={getActivities} title="Door Activities" />
       {Object.keys(activities).map((key) => (
         <View key={key}>
           {activities[key] && activities[key].length > 0 && (
@@ -356,7 +376,7 @@ export default function SavedScreen() {
             </Text>
           )}
         </View>
-      ))}
+      ))} */}
     </ScrollView>
   );
 }

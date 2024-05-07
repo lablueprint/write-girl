@@ -14,6 +14,16 @@ const getAllActivities = async (req, res) => {
   }
 };
 
+const getActivityByID = async (req, res) => {
+  try {
+    const data = await Activity.findOne({ _id: req.params.id });
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   getAllActivities,
+  getActivityByID,
 };

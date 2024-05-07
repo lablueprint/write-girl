@@ -1,8 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, Text, TouchableOpacity, ScrollView,
+  StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+
+const window = Dimensions.get('window');
+const collectionDim = window.width * 0.5 - 30;
 
 const styles = StyleSheet.create({
   container: {
@@ -16,13 +19,21 @@ const styles = StyleSheet.create({
     paddingTop: 60,
   },
   heading: {
-    fontSize: 32,
+    fontSize: 40,
     color: '#fff',
     marginBottom: 20,
+    fontWeight: 'bold',
   },
   collection: {
-    backgroundColor: 'white',
-    height: 100,
+    marginTop: 20,
+    width: collectionDim,
+  },
+  collectionImage: {
+    resizeMode: 'cover',
+  },
+  collectionText: {
+    color: '#fff',
+    marginTop: 20,
   },
 });
 
@@ -37,7 +48,9 @@ export default function BookmarksScreen({ navigation }) {
         Bookmarks
       </Text>
       <TouchableOpacity onPress={goToAllSaved} style={styles.collection}>
-        <Text styles={{ color: 'white' }}>
+        <Image source={require('../assets/all-saved.png')} style={styles.collectionImage} />
+
+        <Text style={styles.collectionText}>
           All Saved
         </Text>
       </TouchableOpacity>
