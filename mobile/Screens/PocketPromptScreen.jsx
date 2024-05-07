@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity,
+  StyleSheet, Text, View, TouchableOpacity, Dimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
@@ -9,8 +9,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#151716',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
   },
   message: {
     fontSize: 24,
@@ -20,12 +18,11 @@ const styles = StyleSheet.create({
   },
   reshuffleButton: {
     backgroundColor: '#84C2C9',
-    position: 'absolute',
-    bottom: 20,
+    marginTop: Dimensions.get('window').height / 2.2,
     alignSelf: 'center',
     borderRadius: 15,
-    paddingVertical: 15,
-    paddingHorizontal: 160,
+    paddingVertical: Dimensions.get('window').width / 25,
+    paddingHorizontal: Dimensions.get('window').width / 3,
   },
   reshuffleText: {
     borderColor: '#000',
@@ -53,16 +50,16 @@ export default function PocketPromptScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.message}>{pocketPrompt}</Text>
-      <LinearGradient
-        colors={['#84C2C9', '#BFD25A']}
-        style={styles.reshuffleButton}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-      >
-        <TouchableOpacity onPress={handleGetPocketPrompt}>
+      <TouchableOpacity onPress={handleGetPocketPrompt}>
+        <LinearGradient
+          colors={['#84C2C9', '#BFD25A']}
+          style={styles.reshuffleButton}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        >
           <Text style={styles.reshuffleText}>Reshuffle</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 }

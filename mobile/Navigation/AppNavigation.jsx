@@ -81,7 +81,20 @@ function HomeStackScreen() {
       />
       <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
-      <HomeStack.Screen name="Pocket" component={HistoryScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Pocket Prompt Home" component={PocketPromptHomeScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen
+        name="Pocket Prompts"
+        component={PocketPromptScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#151716',
+          },
+          headerTitleStyle: {
+            fontSize: 24,
+          },
+          headerTintColor: '#fff',
+        }}
+      />
     </HomeStack.Navigator>
   );
 }
