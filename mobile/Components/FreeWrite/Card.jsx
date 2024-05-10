@@ -5,6 +5,14 @@ import {
 import PropTypes from 'prop-types';
 import { Audio } from 'expo-av';
 
+const icyRiver = require('../../assets/free-write-icons/icyRiverBackground.jpg');
+const cliffs = require('../../assets/free-write-icons/cliffs.jpg');
+const metropolitan = require('../../assets/free-write-icons/metropolitan.jpg');
+const snowForest = require('../../assets/free-write-icons/snowForest.jpg');
+const holiday = require('../../assets/free-write-icons/holidayFireplace.jpg');
+const field = require('../../assets/free-write-icons/sunnyField.jpg');
+const fire = require('../../assets/free-write-icons/fire.jpg');
+
 const styles = StyleSheet.create({
   card: {
     // backgroundColor: 'dodgerblue',
@@ -15,38 +23,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 5,
     borderRadius: 14,
-    overflow: 'hidden', // Clip the image to the border radius
-    position: 'relative', // Required for absolute positioning of text
+    overflow: 'hidden',
+    position: 'relative',
   },
   image: {
-    // // flex: 1,;;
-    // alignSelf: 'center',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // // margin: 10,
-    // // top: '10%',
     borderRadius: 14,
     // borderColor: 'purple',
     // borderWidth: 2,
     // width: '100%',
-    // aspectRatio: 1, // Maintain the current aspect ratio of the image
     aspectRatio: 21 / 9,
     height: '100%',
-    resizeMode: 'cover', // or 'contain' depending on your needs
+    resizeMode: 'cover',
   },
   text: {
     position: 'absolute',
-    // top: '50%', // Position the text in the middle vertically
     left: 0,
     right: 0,
     textAlign: 'center',
     color: 'white',
-    // fontSize: 14,
   },
 });
 
 export default function Card({
-  name, play, setTitle, image,
+  name, play, setTitle, image, changeBackground,
 }) {
   const [sounds, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -145,9 +144,24 @@ export default function Card({
   }, [play]);
 
   const handlePress = () => {
-    console.log('Pressed');
+    console.log('Card: Pressed');
     console.log('play: ', play);
     setTitle(name);
+    if (name === 'Icy River') {
+      changeBackground(icyRiver);
+    } else if (name === 'Cliffs') {
+      changeBackground(cliffs);
+    } else if (name === 'Metropolitan') {
+      changeBackground(metropolitan);
+    } else if (name === 'Snow Forest') {
+      changeBackground(snowForest);
+    } else if (name === 'Holiday Fireplace') {
+      changeBackground(holiday);
+    } else if (name === 'Sunny Field') {
+      changeBackground(field);
+    } else if (name === 'Campfire') {
+      changeBackground(fire);
+    }
     // if (isPlaying) {
     //   playSound();
     // } else {
@@ -167,5 +181,10 @@ Card.propTypes = {
   name: PropTypes.string.isRequired,
   play: PropTypes.bool.isRequired,
   setTitle: PropTypes.func.isRequired,
+  changeBackground: PropTypes.func,
   image: PropTypes.string.isRequired,
+};
+
+Card.defaultProps = {
+  changeBackground: null,
 };

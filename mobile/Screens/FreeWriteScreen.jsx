@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  View, StyleSheet, Pressable, Text, Dimensions,
+  View, StyleSheet, Pressable, Text, Dimensions, Image, ImageBackground,
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import ModalScreen from '../Components/FreeWrite/ModalScreen';
@@ -84,6 +84,9 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     ...StyleSheet.absoluteFill,
     zIndex: -1,
+    borderColor: 'black',
+    borderWidth: 2,
+    borderStyle: 'dotted',
   },
   title: {
     fontSize: 50,
@@ -97,6 +100,9 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     // padding: 10,
   },
+  imageBackground: {
+    flex: 1,
+  },
 });
 
 export default function FreeWriteScreen() {
@@ -105,37 +111,50 @@ export default function FreeWriteScreen() {
   const [isImageOpen, setIsImageOpen] = useState(false);
   // const songTitle = 'Gentle River Stream';
   const artist = 'Joji';
-  const songName = '----';
-  const photoTitle = 'No Scene';
   const photographer = 'Bob';
-  const photoName = '----';
   const [timerPressed, setTimerPressed] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState(require('../assets/free-write-icons/background.jpg'));
 
   const handlePress = () => {
     setTimerPressed(!timerPressed);
   };
 
-  return (
-    <View style={styles.container}>
-      <SvgXml xml={background} style={styles.svg} />
-      <Text style={{ ...(timerPressed ? { ...styles.title, fontSize: 20, alignSelf: 'center' } : styles.title) }}>
-        FreeWrite
-        {'\n'}
-        {timerPressed ? null : <Text style={styles.text}>This is your zone, to let your creativity run free</Text>}
-      </Text>
+  const changeScene = (message) => {
+    console.log('message is: ', message);
+    setBackgroundImage(message);
+  };
 
-      <View style={styles.icons}>
-        <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} creator={artist} mediaName={songName} />
-        {!isMusicOpen ? (
-          <>
-            <Pressable onPress={handlePress}>
-              {timerPressed ? <SvgXml xml={selectedTimerIcon} /> : <SvgXml xml={timerIcon} />}
-              {timerPressed && <Timer /> }
-            </Pressable>
-            <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} mediaTitle={photoTitle} creator={photographer} mediaName={photoName} />
-          </>
-        ) : null}
+  // useEffect(() => {
+  //   // Perform any additional logic here, if needed
+  //   console.log('Background image changed:', backgroundImage);
+  // }, [backgroundImage]);
+
+  return (
+    <ImageBackground
+      source={backgroundImage}
+      style={styles.imageBackground}
+    >
+      <View style={styles.container}>
+        {/* <SvgXml xml={background} style={styles.svg} /> */}
+        <Text style={{ ...(timerPressed ? { ...styles.title, fontSize: 20, alignSelf: 'center' } : styles.title) }}>
+          FreeWrite
+          {'\n'}
+          {timerPressed ? null : <Text style={styles.text}>This is your zone, to let your creativity run free</Text>}
+        </Text>
+
+        <View style={styles.icons}>
+          <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} creator={artist} />
+          {!isMusicOpen ? (
+            <>
+              <Pressable onPress={handlePress}>
+                {timerPressed ? <SvgXml xml={selectedTimerIcon} /> : <SvgXml xml={timerIcon} />}
+                {timerPressed && <Timer /> }
+              </Pressable>
+              <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} creator={photographer} changeBackground={changeScene} />
+            </>
+          ) : null}
+        </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 }

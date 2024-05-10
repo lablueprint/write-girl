@@ -202,22 +202,21 @@ const styles = StyleSheet.create({
   },
   text: {
     position: 'absolute',
-    left: '30%',
-    top: '20%',
+    left: '5%',
+    top: '10%',
     color: 'white',
     fontWeight: 'bold',
   },
   subtext: {
     position: 'absolute',
-    left: '30%',
-    top: '30%',
+    left: '5%',
+    top: '20%',
     color: 'rgba(255, 255, 255, 0.5)',
   },
 });
 
 export default function ModalScreen({
-  icon, name, modalIcon, isMusicOpen, setIsMusicOpen, isImageOpen, setIsImageOpen,
-  mediaTitle, creator, mediaName,
+  icon, name, modalIcon, isMusicOpen, setIsMusicOpen, isImageOpen, setIsImageOpen, creator, changeBackground,
 }) {
   // const [isOpen, setIsOpen] = useState(false);
   const modalizeRef = useRef(null);
@@ -228,6 +227,9 @@ export default function ModalScreen({
   const top = -height * 0.55;
   const [play, setPlay] = useState(false);
   const [songTitle, setSongTitle] = useState('No Music');
+  const [imageTitle, setImageTitle] = useState('No Scene');
+  const [musicDetail, setMusicDetail] = useState('----');
+  const [imageDetail, setImageDetail] = useState('----');
 
   const handlePresentModalPress = useCallback(() => {
     if (modalizeRef.current) {
@@ -264,7 +266,13 @@ export default function ModalScreen({
   };
 
   const handleTitle = (message) => {
-    setSongTitle(message);
+    if (name === 'Music') {
+      setSongTitle(message);
+      setMusicDetail(message);
+    } else if (name === 'Scene') {
+      setImageTitle(message);
+      setImageDetail('Current Scene');
+    }
   };
 
   const content = () => (
@@ -293,15 +301,27 @@ export default function ModalScreen({
             <SvgXml xml={imageLike} style={styles.like} />
           </>
         )}
-      <Text style={name === 'Music' ? styles.text : { ...styles.text, left: '5%', top: '10%' }}>{name === 'Music' ? songTitle : mediaTitle}</Text>
-      <Text style={name === 'Music' ? styles.subtext : { ...styles.subtext, left: '5%', top: '20%' }}>{mediaName}</Text>
+      {name === 'Music' ? (
+        <Text style={{ ...styles.text, left: '30%', top: '20%' }}>
+          {songTitle}
+        </Text>
+      )
+        : (
+          <Text style={styles.text}>
+            {imageTitle}
+          </Text>
+        )}
+
+      {name === 'Music' ? <Text style={{ ...styles.subtext, left: '30%', top: '30%' }}>{musicDetail}</Text>
+        : <Text style={styles.subtext}>{imageDetail}</Text>}
+
     </View>
 
   );
 
   const list = () => (
     <View style={styles.scrollable}>
-      <VerticalList title={name === 'Music' ? 'Nature Sounds' : 'All Scenes'} play={play} setTitle={handleTitle} />
+      <VerticalList title={name === 'Music' ? 'Nature Sounds' : 'All Scenes'} play={play} setTitle={handleTitle} changeBackground={changeBackground} />
     </View>
   );
 
@@ -365,9 +385,10 @@ ModalScreen.propTypes = {
   setIsMusicOpen: PropTypes.func,
   isImageOpen: PropTypes.bool,
   setIsImageOpen: PropTypes.func,
-  mediaTitle: PropTypes.string,
+  changeBackground: PropTypes.func,
+  // mediaTitle: PropTypes.string,
   creator: PropTypes.string,
-  mediaName: PropTypes.string,
+  // mediaName: PropTypes.string,
 };
 
 ModalScreen.defaultProps = {
@@ -376,6 +397,7 @@ ModalScreen.defaultProps = {
   isImageOpen: false,
   setIsImageOpen: null,
   creator: '',
-  mediaName: '',
-  mediaTitle: '',
+  changeBackground: null,
+  // mediaName: '----',
+  // mediaTitle: '',
 };

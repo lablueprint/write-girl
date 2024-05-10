@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     alignSelf: 'center',
-    padding: '10%',
+    padding: '5%',
   },
   line: {
     borderBottomWidth: 1,
@@ -36,26 +36,32 @@ const musicData = [
   {
     id: 1,
     name: 'Rain Sounds',
+    image: require('../../assets/free-write-icons/rain.jpg'),
   },
   {
     id: 2,
     name: 'Forest Sounds',
+    image: require('../../assets/free-write-icons/forest.jpg'),
   },
   {
     id: 3,
     name: 'Ocean Sounds',
+    image: require('../../assets/free-write-icons/ocean.jpg'),
   },
   {
     id: 4,
     name: 'Wind Sounds',
+    image: require('../../assets/free-write-icons/wind.jpg'),
   },
   {
     id: 5,
     name: 'Insect Sounds',
+    image: require('../../assets/free-write-icons/insects.jpg'),
   },
   {
     id: 6,
     name: 'Fire Sounds',
+    image: require('../../assets/free-write-icons/fire.jpg'),
   },
 ];
 
@@ -97,7 +103,9 @@ const imageData = [
   },
 ];
 
-export default function VerticalList({ title, play, setTitle }) {
+export default function VerticalList({
+  title, play, setTitle, changeBackground,
+}) {
   return (
     <View>
       <View style={styles.line} />
@@ -107,12 +115,12 @@ export default function VerticalList({ title, play, setTitle }) {
       >
         {title === 'Nature Sounds' ? musicData.map((item) => (
           <View style={styles.allCards}>
-            <Card name={item.name} play={play} setTitle={setTitle} />
+            <Card name={item.name} play={play} setTitle={setTitle} image={item.image} />
           </View>
         ))
           : imageData.map((item) => (
             <View style={styles.allCards}>
-              <Card name={item.name} play={play} setTitle={setTitle} image={item.image} />
+              <Card name={item.name} play={play} setTitle={setTitle} image={item.image} changeBackground={changeBackground} />
             </View>
           ))}
       </ScrollView>
@@ -124,4 +132,9 @@ VerticalList.propTypes = {
   title: PropTypes.string.isRequired,
   play: PropTypes.bool.isRequired,
   setTitle: PropTypes.func.isRequired,
+  changeBackground: PropTypes.func,
+};
+
+VerticalList.defaultProps = {
+  changeBackground: null,
 };
