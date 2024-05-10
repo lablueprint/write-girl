@@ -39,10 +39,10 @@ function StoryStarterStackScreen() {
         component={StoryStarterScreen}
         options={{ headerShown: false, title: 'Story Starters' }}
       />
-      <StoryStarterStack.Screen name="Objects" children={() => (<StoryStarterComponent title="Object" route="item" />)} />
-      <StoryStarterStack.Screen name="Settings" component={SettingsScreen} />
-      <StoryStarterStack.Screen name="Character Traits" component={TraitsScreen} />
-      <StoryStarterStack.Screen name="Plot Points" component={PlotPointsScreen} />
+      <StoryStarterStack.Screen name="Objects" children={() => (<StoryStarterComponent title="Objects" route="item" textColor="#7BAC8A" />)} />
+      <StoryStarterStack.Screen name="Settings" children={() => (<StoryStarterComponent title="Settings" route="setting" textColor="#BFD25A" />)} />
+      <StoryStarterStack.Screen name="Character Traits" children={() => (<StoryStarterComponent title="Character Traits" route="characterTrait" textColor="#DC5F41" />)} />
+      <StoryStarterStack.Screen name="Plot Points" children={() => (<StoryStarterComponent title="Plot Points" route="plotPoint" textColor="#5BB2CF" />)} />
     </StoryStarterStack.Navigator>
   );
 }

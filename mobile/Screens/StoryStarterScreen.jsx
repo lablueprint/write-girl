@@ -31,8 +31,6 @@ const styles = StyleSheet.create({
     zIndex: 4,
     borderRadius: '70%',
     borderBottomRightRadius: '100%',
-    borderWidth: 2,
-    borderColor: 'red',
   },
   characterTraitsContainer: {
     position: 'absolute',
@@ -52,8 +50,6 @@ const styles = StyleSheet.create({
     left: '35%',
     height: '25%',
     zIndex: 2,
-    // borderWidth: 2,
-    // borderColor: 'red',
   },
   image: {
     resizeMode: 'contain',
@@ -61,8 +57,6 @@ const styles = StyleSheet.create({
     width: '120%',
     height: undefined,
     borderRadius: 35,
-    // borderWidth: 2,
-    // borderColor: 'green',
   },
   imagePlotPoints: {
     resizeMode: 'contain',
@@ -71,8 +65,6 @@ const styles = StyleSheet.create({
     height: undefined,
     margin: -5,
     borderRadius: 80,
-    borderWidth: 2,
-    borderColor: 'green',
     borderBottomRightRadius: 100,
   },
   imageCharacterTrait: {
@@ -167,7 +159,7 @@ export default function StoryStarterScreen({ navigation }) {
           <Text style={styles.titleText}> Story Starters</Text>
           <Text style={styles.bodyText}>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing. </Text>
         </View>
-        <Pressable onPress={navigateToSettingsScreen} title="Get random setting" style={styles.settingsContainer}>
+        <Pressable onPress={navigateToSettingsScreen} title="Get random setting" textColor="#00FF00" style={styles.settingsContainer}>
           <ImageBackground source={settingsImage} style={styles.button} imageStyle={styles.image} />
         </Pressable>
         <Pressable onPress={navigateToTraitsScreen} title="Get random character trait" style={styles.characterTraitsContainer}>
