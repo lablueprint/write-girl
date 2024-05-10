@@ -37,7 +37,7 @@ const getTraitByID = async (id) => {
 export default function ViewAllSavedScreen() {
   const route = useRoute();
   const subject = route.params?.subject;
-  const [savedData, setSavedData] = useState('');
+  const [savedData, setSavedData] = useState([]);
   console.log(subject);
 
   const getTraits = async (n) => {
