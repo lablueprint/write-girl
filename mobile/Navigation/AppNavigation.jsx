@@ -158,6 +158,14 @@ function MainAppScreen() {
           backgroundColor: 'black',
           height: Dimensions.get('window').height / 10,
         },
+        headerStyle: {
+          backgroundColor: '#021921',
+        },
+        headerTitleStyle: {
+          fontSize: 24,
+        },
+        headerTintColor: '#fff',
+        headerShadowVisible: false,
       }}
       initialRouteName="Center"
     >

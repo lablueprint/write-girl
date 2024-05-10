@@ -1,35 +1,40 @@
 import { React, useState } from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground,
+  View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import Arrow from '../assets/activityhomeicon.png';
-// import LinearGradient from 'expo-linear-gradient';
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
-    alignItems: 'center',
+    marginHorizontal: Dimensions.get('window').width / 11,
   },
   card: {
     height: 255,
     width: 350,
-    shadowOpacity: 0.1,
-    marginBottom: -100, // Adjust the overlap
+    marginBottom: -100,
+    borderRadius: 10,
+    shadowColor: '#fff',
+    shadowRadius: 10,
+    shadowOpacity: 0.25,
     transform: [
-      { perspective: 1000 }, // Add perspective to create a 3D effect
-      { rotateX: '-6deg' }, // Tilt the card upwards
+      { perspective: 1000 },
+      { rotateX: '-10deg' },
+      { translateY: 8 },
     ],
   },
-  borderStyle:{
+  cardImage: {
+    height: 255,
+    width: 350,
+  },
+  borderStyle: {
     borderRadius: 10,
   },
   popUpCard: {
     marginVertical: 310,
     borderRadius: 10,
     padding: 20,
-    justifyContent: 'flex-start',
   },
   activityTitle: {
     fontSize: 32,
@@ -49,21 +54,21 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     borderRadius: 30,
-    position: 'absolute',
-    bottom: 40, // Adjust as needed
-    left: 20, // Adjust as needed
+    marginHorizontal: Dimensions.get('window').width / 20,
+    marginVertical: Dimensions.get('window').height / 20,
   },
   arrow: {
     marginRight: 5,
     width: 12,
     height: 15,
-    position: 'absolute',
-    bottom: 22, // Adjust as needed
-    left: 25, // Adjust as needed
+    marginHorizontal: Dimensions.get('window').width / 18,
+    marginVertical: Dimensions.get('window').height / 40,
   },
 });
 
-export default function ActivityNavigationCard({ activity, description, image, pageDirect, navigation}) {
+export default function ActivityNavigationCard({
+  activity, description, image, pageDirect, navigation,
+}) {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
@@ -78,7 +83,7 @@ export default function ActivityNavigationCard({ activity, description, image, p
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.card} onPress={toggleModal}>
-        <ImageBackground style={styles.card} imageStyle={styles.borderStyle} source={image}>
+        <ImageBackground style={styles.cardImage} imageStyle={styles.borderStyle} source={image}>
           <Text style={styles.activityTitle}>{activity}</Text>
           <Text style={styles.activityDescript}>{description}</Text>
         </ImageBackground>
@@ -88,7 +93,7 @@ export default function ActivityNavigationCard({ activity, description, image, p
         isVisible={isModalVisible}
         onBackdropPress={() => setModalVisible(false)}
       >
-        <ImageBackground style={styles.card} imageStyle={styles.borderStyle} source={image}>
+        <ImageBackground style={styles.cardImage} imageStyle={styles.borderStyle} source={image}>
           <Text style={styles.activityTitle}>{activity}</Text>
           <Text style={styles.activityDescript}>{description}</Text>
           <TouchableOpacity style={styles.navigateButton} onPress={navigatePage}>

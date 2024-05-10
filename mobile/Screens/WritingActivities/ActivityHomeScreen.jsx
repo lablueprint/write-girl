@@ -11,8 +11,8 @@ import ActivityNavigationCard from '../../Components/ActivityNavigationCard';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
     flex: 1,
+    backgroundColor: '#021921',
   },
 });
 
@@ -39,7 +39,7 @@ const activityData = [
     activity: 'Triple Flips',
     description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
     image: TripleFlipsImage,
-    pageDirect: 'Home',
+    pageDirect: 'Triple Flip',
   },
 ];
 
