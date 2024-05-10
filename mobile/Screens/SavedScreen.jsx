@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, View, Button, Text,
-  ScrollView,
+  ScrollView, Pressable,
 } from 'react-native';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#151716',
+    alignItems: 'left',
+    padding: '5%',
+  },
+  title: {
+    color: '#FFF',
+    fontSize: 32,
+    fontWeight: 'bold',
+  },
+  titleContainer: {
+    width: '75%',
+    height: 40,
+  },
+  buttonContainer: {
+    width: '25%',
+  },
+  headingContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start', // if you want to fill rows left to right
   },
 });
 
-export default function SavedScreen() {
+export default function SavedScreen({ navigation }) {
   const [allSaved, setAllSaved] = useState('');
   const [activities, setActivities] = useState([]);
   const [storyStarters, setStoryStarters] = useState('');
@@ -25,6 +45,14 @@ export default function SavedScreen() {
   const [pepTalks, setPepTalks] = useState('');
   const [writingTips, setWritingTips] = useState('');
   const [tripleFlips, setTripleFlips] = useState([]);
+
+  const navigateToViewAllSavedScreen = (option) => {
+    if (option !== '') {
+      navigation.navigate('View All Saved', {
+        subject: option,
+      });
+    }
+  };
 
   async function getId() {
     // const userId = await Storage({ key: 'userId', value: '', saveKey: false });
@@ -261,7 +289,7 @@ export default function SavedScreen() {
       setTripleFlips(
         await Promise.all(
           saved.data.msg.at(0).savedTripleFlips.reverse().slice(0, n).map(
-            async (flip) => flip.flipID,
+            async (flip) => [flip.flipID, flip.date],
           ),
         ),
       );
@@ -271,6 +299,15 @@ export default function SavedScreen() {
     }
     return 'True';
   };
+
+  useEffect(() => {
+    getPlotPoints(3);
+    getTraits(3);
+    getItems(3);
+    getSettings(3);
+    getTripleFlips(1);
+    getActivities(1);
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -302,25 +339,25 @@ export default function SavedScreen() {
           )}
         </View>
       ))} */}
-      <Button onPress={() => getPlotPoints(3)} title="Plot Points" />
+      <Button title="View all" onPress={() => navigateToViewAllSavedScreen('plotPoint')} />
       {plotPoints.map((starter) => (
         <Text key={starter._id}>
           {starter.plotPoint}
         </Text>
       ))}
-      <Button onPress={() => getTraits(3)} title="Character Traits" />
+      <Button title="View all" onPress={() => navigateToViewAllSavedScreen('trait')} />
       {traits.map((starter) => (
         <Text key={starter._id}>
           {starter.trait}
         </Text>
       ))}
-      <Button onPress={() => getItems(3)} title="Objects" />
+      <Button title="View all" onPress={() => navigateToViewAllSavedScreen('item')} />
       {items.map((starter) => (
         <Text key={starter._id}>
           {starter.item}
         </Text>
       ))}
-      <Button onPress={() => getSettings(3)} title="Settings" />
+      <Button title="View all" onPress={() => navigateToViewAllSavedScreen('setting')} />
       {settings.map((starter) => (
         <Text key={starter._id}>
           {starter.setting}
@@ -352,13 +389,24 @@ export default function SavedScreen() {
           )}
         </View>
       ))} */}
-      <Button onPress={() => getTripleFlips(1)} title="Triple Flips" />
+      <View style={styles.headingContainer}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Triple Flips</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.viewAllButton}>
+            <Text>View all</Text>
+          </Pressable>
+        </View>
+      </View>
       {tripleFlips.map((flip) => (
-        <Text key={flip}>
-          {flip}
-        </Text>
+        <TripleFlipHistoryCard
+          key={flip[0]}
+          flipId={flip[0]}
+          date={flip[1]}
+        />
       ))}
-      <Button onPress={() => getActivities(1)} title="Door Activities" />
+      <Button title="View all" />
       {activities.map((activityObj) => (
         <Text key={activityObj._id}>
           {activityObj.activity[0]}
@@ -380,3 +428,9 @@ export default function SavedScreen() {
     </ScrollView>
   );
 }
+
+SavedScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

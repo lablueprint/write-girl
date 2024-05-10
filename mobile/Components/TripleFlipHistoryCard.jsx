@@ -113,9 +113,15 @@ function CustomLayoutTransition(values) {
 export default function TripleFlipHistoryCard({ flipId, date }) {
   const [expanded, setExpanded] = useState(false);
   const current = new Date(date);
-  const dateInfo = current.toLocaleDateString('en-US', { weekday: 'long' }).split(', ');
+  const dateInfo = current.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: '2-digit', // 2-digit month (01 - 12)
+    day: '2-digit', // 2-digit day (01 - 31)
+    year: 'numeric', // 4-digit year
+  }).split(', ');
   // Query for the flip id here!
   const tripleFlip = ['hello', 'world', 'card'];
+  console.log(current.toLocaleDateString('en-US', { weekday: 'long' }));
   return (
     <Animated.View
       layout={CustomLayoutTransition}

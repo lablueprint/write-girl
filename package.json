@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "expo": "^51.0.2",
     "react-native-progress": "^5.0.1"
   }
 }

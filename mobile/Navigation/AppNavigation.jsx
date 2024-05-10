@@ -25,6 +25,7 @@ import BookmarksScreen from '../Screens/BookmarksScreen';
 import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 import HistoryScreen from '../Screens/HistoryScreen';
+import ViewAllSavedScreen from '../Screens/ViewAllSavedScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -56,6 +57,7 @@ function HomeScreenStack() {
       />
       <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="Bookmarks" component={BookmarksScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="View All Saved" component={ViewAllSavedScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="All Saved" component={SavedScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
     </HomeStack.Navigator>
