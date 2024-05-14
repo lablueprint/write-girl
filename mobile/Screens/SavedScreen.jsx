@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, View, Button, Text,
+  StyleSheet, View, TouchableOpacity, Text,
   ScrollView, Pressable,
 } from 'react-native';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
+
+// List of genre mappings in order
+const genreColors = {
+  Colors: '#1b4d2f',
+  Sounds: '#1a5261',
+  Textures: '#803911',
+  Weather: '#845791',
+  Nature: '#648a22',
+  Relationships: '#b87496',
+};
 
 const styles = StyleSheet.create({
   scrollViewContainer: {
@@ -15,6 +25,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#151716',
     alignItems: 'left',
     padding: '5%',
+    paddingTop: '10%',
+    paddingBottom: '15%',
   },
   title: {
     color: '#BFD25A',
@@ -56,6 +68,19 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   normalText: {
+    color: 'white',
+  },
+  banner: {
+    width: '100%',
+    height: 150,
+    alignItems: 'left',
+    padding: 20,
+    marginTop: 20,
+    borderRadius: 10,
+  },
+  doorButtonText: {
+    fontWeight: 'bold',
+    fontSize: 20,
     color: 'white',
   },
 });
@@ -125,7 +150,6 @@ export default function SavedScreen({ navigation }) {
   const getActivityByID = async (id) => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/getByID/${id}`, { timeout: 20000 });
-      console.log(res.data);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -136,7 +160,6 @@ export default function SavedScreen({ navigation }) {
   const getPlotPointByID = async (id) => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/plotPoint/getByID/${id}`, { timeout: 20000 });
-      console.log(res.data);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -147,7 +170,6 @@ export default function SavedScreen({ navigation }) {
   const getTraitByID = async (id) => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/characterTrait/getByID/${id}`, { timeout: 20000 });
-      console.log(res.data);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -158,7 +180,6 @@ export default function SavedScreen({ navigation }) {
   const getItemByID = async (id) => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/item/getByID/${id}`, { timeout: 20000 });
-      console.log(res.data);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -169,7 +190,6 @@ export default function SavedScreen({ navigation }) {
   const getSettingByID = async (id) => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/setting/getByID/${id}`, { timeout: 20000 });
-      console.log(res.data);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -421,9 +441,19 @@ export default function SavedScreen({ navigation }) {
         </View>
         <Text style={styles.normalText}>Most recent</Text>
         {activities.map((activityObj) => (
-          <Text key={activityObj._id}>
-            {activityObj.activity[0]}
-          </Text>
+          <TouchableOpacity
+            key={activityObj._id}
+            style={[styles.banner, { backgroundColor: genreColors[activityObj.genre] }]}
+          >
+            <Text style={styles.doorButtonText}>
+              {activityObj.activity[0]}
+            </Text>
+            <Text style={{ color: 'white', marginTop: 20 }}>
+              {activityObj.activity.length - 2}
+              {' '}
+              {activityObj.activity.length - 2 === 1 ? 'step' : 'steps'}
+            </Text>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>
