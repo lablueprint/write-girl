@@ -8,29 +8,55 @@ import PropTypes from 'prop-types';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
 
 const styles = StyleSheet.create({
-  container: {
+  scrollViewContainer: {
     flex: 1,
+  },
+  container: {
     backgroundColor: '#151716',
     alignItems: 'left',
     padding: '5%',
   },
   title: {
-    color: '#FFF',
+    color: '#BFD25A',
     fontSize: 32,
     fontWeight: 'bold',
   },
   titleContainer: {
     width: '75%',
-    height: 40,
   },
   buttonContainer: {
     width: '25%',
+  },
+  viewAllButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    marginTop: 4,
+    borderRadius: '50%',
+    borderColor: 'white',
+    borderWidth: 1,
+    width: '100%',
+    position: 'absolute',
   },
   headingContainer: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start', // if you want to fill rows left to right
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  storyStarterCard: {
+    backgroundColor: '#19333D',
+    width: '100%',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: '50%',
+    marginTop: 12,
+  },
+  normalText: {
+    color: 'white',
   },
 });
 
@@ -240,22 +266,6 @@ export default function SavedScreen({ navigation }) {
     }
     return 'True';
   };
-
-  // {Object.keys(storyStarters).map((key) => (
-  //   <View key={key}>
-  //     {storyStarters[key] && storyStarters[key].length > 0 && (
-  //       <Text key={key}>
-  //         {key}
-  //         :
-  //         {' '}
-  //         {storyStarters[key].slice(0, 3).reverse().map((starter) => (
-  //           JSON.stringify(getPlotPointByID())
-  //         ))}
-  //       </Text>
-  //     )}
-  //   </View>
-  // ))}
-
   const getPepTalks = async () => {
     const userId = await getId();
 
@@ -268,7 +278,6 @@ export default function SavedScreen({ navigation }) {
     }
     return 'True';
   };
-
   const getWritingTips = async () => {
     const userId = await getId();
     try {
@@ -280,10 +289,8 @@ export default function SavedScreen({ navigation }) {
     }
     return 'True';
   };
-
   const getTripleFlips = async (n) => {
     const userId = await getId();
-
     try {
       const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlips/${userId}`, { timeout: 20000 });
       setTripleFlips(
@@ -310,122 +317,116 @@ export default function SavedScreen({ navigation }) {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* <Button onPress={getAllSaved} title="Get all saved" />
-      {Object.keys(allSaved).map((key) => (
-        <View key={key}>
-          {allSaved[key] && allSaved[key].length > 0 && (
-            <Text key={key}>
-              {key}
-              :
-              {' '}
-              {JSON.stringify(allSaved[key])}
+    <View style={styles.scrollViewContainer}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.headingContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Plot Points</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('plotPoint')}>
+              <Text style={styles.normalText}>View all</Text>
+            </Pressable>
+          </View>
+        </View>
+        <Text style={styles.normalText}>Most recent</Text>
+        {plotPoints.map((starter) => (
+          <View style={styles.storyStarterCard}>
+            <Text style={styles.normalText} key={starter._id}>
+              {starter.plotPoint}
             </Text>
-          )}
+          </View>
+        ))}
+        <View style={styles.headingContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Traits</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('trait')}>
+              <Text style={styles.normalText}>View all</Text>
+            </Pressable>
+          </View>
         </View>
-      ))} */}
-      {/* <Button onPress={getStoryStarters} title="Story Starters" />
-      {Object.keys(storyStarters).map((key) => (
-        <View key={key}>
-          {storyStarters[key] && storyStarters[key].length > 0 && (
-            <Text key={key}>
-              {key}
-              :
-              {' '}
-              {storyStarters[key].slice(0, 3).reverse().map((starter) => (
-                starter.plotID
-              ))}
+        <Text style={styles.normalText}>Most recent</Text>
+        {traits.map((starter) => (
+          <View style={styles.storyStarterCard}>
+            <Text style={styles.normalText} key={starter._id}>
+              {starter.trait}
             </Text>
-          )}
+          </View>
+        ))}
+        <View style={styles.headingContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Objects</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('item')}>
+              <Text style={styles.normalText}>View all</Text>
+            </Pressable>
+          </View>
         </View>
-      ))} */}
-      <Button title="View all" onPress={() => navigateToViewAllSavedScreen('plotPoint')} />
-      {plotPoints.map((starter) => (
-        <Text key={starter._id}>
-          {starter.plotPoint}
-        </Text>
-      ))}
-      <Button title="View all" onPress={() => navigateToViewAllSavedScreen('trait')} />
-      {traits.map((starter) => (
-        <Text key={starter._id}>
-          {starter.trait}
-        </Text>
-      ))}
-      <Button title="View all" onPress={() => navigateToViewAllSavedScreen('item')} />
-      {items.map((starter) => (
-        <Text key={starter._id}>
-          {starter.item}
-        </Text>
-      ))}
-      <Button title="View all" onPress={() => navigateToViewAllSavedScreen('setting')} />
-      {settings.map((starter) => (
-        <Text key={starter._id}>
-          {starter.setting}
-        </Text>
-      ))}
-      {/* <Button onPress={getPepTalks} title="Pep Talks" />
-      {Object.keys(pepTalks).map((key) => (
-        <View key={key}>
-          {pepTalks[key] && pepTalks[key].length > 0 && (
-            <Text key={key}>
-              {key}
-              :
-              {' '}
-              {JSON.stringify(pepTalks[key])}
+        <Text style={styles.normalText}>Most recent</Text>
+        {items.map((starter) => (
+          <View style={styles.storyStarterCard}>
+            <Text style={styles.normalText} key={starter._id}>
+              {starter.item}
             </Text>
-          )}
+          </View>
+        ))}
+        <View style={styles.headingContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Settings</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('setting')}>
+              <Text style={styles.normalText}>View all</Text>
+            </Pressable>
+          </View>
         </View>
-      ))} */}
-      {/* <Button onPress={getWritingTips} title="Writing Tips" />
-      {Object.keys(writingTips).map((key) => (
-        <View key={key}>
-          {writingTips[key] && writingTips[key].length > 0 && (
-            <Text key={key}>
-              {key}
-              :
-              {' '}
-              {JSON.stringify(writingTips[key])}
+        <Text style={styles.normalText}>Most recent</Text>
+        {settings.map((starter) => (
+          <View style={styles.storyStarterCard}>
+            <Text style={styles.normalText} key={starter._id}>
+              {starter.setting}
             </Text>
-          )}
+          </View>
+        ))}
+        <View style={styles.headingContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Triple Flips</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('tripleFlip')}>
+              <Text style={styles.normalText}>View all</Text>
+            </Pressable>
+          </View>
         </View>
-      ))} */}
-      <View style={styles.headingContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Triple Flips</Text>
+        <Text style={styles.normalText}>Most recent</Text>
+        {tripleFlips.map((flip) => (
+          <TripleFlipHistoryCard
+            key={flip[0]}
+            flipId={flip[0]}
+            date={flip[1]}
+          />
+        ))}
+        <View style={styles.headingContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Door Activities</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('doorActivity')}>
+              <Text style={styles.normalText}>View all</Text>
+            </Pressable>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <Pressable style={styles.viewAllButton}>
-            <Text>View all</Text>
-          </Pressable>
-        </View>
-      </View>
-      {tripleFlips.map((flip) => (
-        <TripleFlipHistoryCard
-          key={flip[0]}
-          flipId={flip[0]}
-          date={flip[1]}
-        />
-      ))}
-      <Button title="View all" />
-      {activities.map((activityObj) => (
-        <Text key={activityObj._id}>
-          {activityObj.activity[0]}
-        </Text>
-      ))}
-      {/* <Button onPress={getActivities} title="Door Activities" />
-      {Object.keys(activities).map((key) => (
-        <View key={key}>
-          {activities[key] && activities[key].length > 0 && (
-            <Text key={key}>
-              {key}
-              :
-              {' '}
-              {JSON.stringify(activities[key].at(0))}
-            </Text>
-          )}
-        </View>
-      ))} */}
-    </ScrollView>
+        <Text style={styles.normalText}>Most recent</Text>
+        {activities.map((activityObj) => (
+          <Text key={activityObj._id}>
+            {activityObj.activity[0]}
+          </Text>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
