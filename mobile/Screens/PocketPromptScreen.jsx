@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity, Dimensions,
+  StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
+import pocketPromptBackground from '../assets/pocket-prompt.png';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#151716',
   },
   message: {
     fontSize: 24,
     paddingHorizontal: 25,
-    marginBottom: 180,
+    position: 'absolute',
+    marginTop: Dimensions.get('window').height / 4,
     color: '#FFFFFF',
   },
   reshuffleButton: {
     backgroundColor: '#84C2C9',
-    marginTop: Dimensions.get('window').height / 2.2,
+    marginTop: Dimensions.get('window').height / 1.3,
     alignSelf: 'center',
     borderRadius: 15,
     paddingVertical: Dimensions.get('window').width / 25,
@@ -48,7 +49,7 @@ export default function PocketPromptScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ImageBackground source={pocketPromptBackground} style={styles.container}>
       <Text style={styles.message}>{pocketPrompt}</Text>
       <TouchableOpacity onPress={handleGetPocketPrompt}>
         <LinearGradient
@@ -60,6 +61,6 @@ export default function PocketPromptScreen() {
           <Text style={styles.reshuffleText}>Reshuffle</Text>
         </LinearGradient>
       </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 }

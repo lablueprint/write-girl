@@ -86,9 +86,7 @@ function HomeStackScreen() {
         name="Pocket Prompts"
         component={PocketPromptScreen}
         options={{
-          headerStyle: {
-            backgroundColor: '#151716',
-          },
+          headerTransparent: true,
           headerTitleStyle: {
             fontSize: 24,
           },
