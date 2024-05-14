@@ -6,6 +6,7 @@ import {
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import * as Progress from 'react-native-progress';
+import PropTypes from 'prop-types';
 import MindBodyCard from '../../Components/MindBodyCard';
 
 const windowWidth = Dimensions.get('window').width;
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Card() {
+function MindBodyDeckScreen({ setTimer }) {
   const [scrollViewWidth, setScrollViewWidth] = React.useState(0);
   const boxWidth = scrollViewWidth * 0.8;
   const boxDistance = scrollViewWidth - boxWidth;
@@ -146,11 +147,14 @@ function Card() {
         keyExtractor={(item, index) => `${index}-${item}`}
         renderItem={renderItem}
       />
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} onPress={() => { setTimer(5); }}>
         <Text style={styles.body}>Confirm</Text>
       </Pressable>
     </View>
   );
 }
 
-export default Card;
+MindBodyDeckScreen.propTypes = {
+  setTimer: PropTypes.func.isRequired,
+};
+export default MindBodyDeckScreen;

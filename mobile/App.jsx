@@ -41,6 +41,7 @@ export default function App() {
       }, 5000);
     }, duration * 1000);
   };
+
   return (
     <View style={styles.main}>
       {notification

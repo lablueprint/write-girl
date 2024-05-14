@@ -89,7 +89,7 @@ const Stack = createNativeStackNavigator();
 
 const MindBodyStack = createNativeStackNavigator();
 
-function MindBodyStackScreen() {
+function MindBodyStackScreen({ setTimer }) {
   return (
     <MindBodyStack.Navigator initialRouteName="Mind and Body">
       <MindBodyStack.Screen
@@ -99,7 +99,12 @@ function MindBodyStackScreen() {
       />
       <MindBodyStack.Screen name="Activity Type" component={ActivityTypeScreen} options={{ headerBackTitleVisible: false }} />
       <MindBodyStack.Screen name="Activity Duration" component={ActivityDurationScreen} options={{ headerBackTitleVisible: false }} />
-      <MindBodyStack.Screen name="Mind and Body Deck" component={MindBodyDeckScreen} options={{ headerBackTitleVisible: false, headerShown: false }} />
+      <MindBodyStack.Screen
+        name="Mind and Body Deck"
+        // eslint-disable-next-line react/no-children-prop
+        children={() => <MindBodyDeckScreen setTimer={setTimer} />}
+        options={{ headerBackTitleVisible: false, headerShown: false }}
+      />
     </MindBodyStack.Navigator>
   );
 }
@@ -173,7 +178,12 @@ function MainAppScreen({ setTimer }) {
         component={HomeStackScreen}
         options={middleTabOptions}
       />
-      <Tab.Screen name="Mind & Body" component={MindBodyStackScreen} options={createtabOptions(mindBodyIcon)} />
+      <Tab.Screen
+        name="Mind & Body"
+        // eslint-disable-next-line react/no-children-prop
+        children={() => <MindBodyStackScreen setTimer={setTimer} />}
+        options={createtabOptions(mindBodyIcon)}
+      />
       <Tab.Screen name="Settings" component={SettingsStackScreen} options={createtabOptions(settingsIcon)} />
     </Tab.Navigator>
   );
@@ -185,7 +195,12 @@ export default function AppNavigation({ setTimer }) {
       <Stack.Navigator>
         <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Home" component={MainAppScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen
+          name="Home"
+          // eslint-disable-next-line react/no-children-prop
+          children={() => <MainAppScreen setTimer={setTimer} />}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
         <Stack.Screen name="Forgot Password" component={PasswordResetScreen} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </NavigationContainer>
@@ -193,5 +208,13 @@ export default function AppNavigation({ setTimer }) {
 }
 
 AppNavigation.propTypes = {
+  setTimer: PropTypes.func.isRequired,
+};
+
+MainAppScreen.propTypes = {
+  setTimer: PropTypes.func.isRequired,
+};
+
+MindBodyStackScreen.propTypes = {
   setTimer: PropTypes.func.isRequired,
 };
