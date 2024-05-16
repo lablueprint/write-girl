@@ -10,14 +10,18 @@ import { Ionicons } from '@expo/vector-icons';
 import TypeWriter from 'react-native-typewriter';
 
 const handwrittenQuote = require('../../assets/story-starter-icons/inspiring-handwriting.png');
-const background = require('../../assets/story-starter-icons/object-background.png');
+const objectBackground = require('../../assets/story-starter-icons/object-background.png');
+const settingBackground = require('../../assets/story-starter-icons/settings-background.png');
+const traitsBackground = require('../../assets/story-starter-icons/character-traits-background.png');
+const plotpointBackground = require('../../assets/story-starter-icons/plot-point-background.png');
 
 const styles = (textColor) => StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'left',
     paddingTop: '15%',
     paddingBottom: '15%',
+    paddingLeft: '10%',
   },
   heading: {
     color: '#fff',
@@ -31,8 +35,14 @@ const styles = (textColor) => StyleSheet.create({
     color: 'black',
   },
   textBody: {
-    fontSize: 30,
+    fontSize: 40,
     color: textColor,
+    fontWeight: 'bold',
+  },
+  textTitle: {
+    fontSize: 24,
+    fontFamily: 'Helvetica Neue',
+    color: '#AFAFAF',
     fontWeight: 'bold',
   },
   randomButton: {
@@ -42,28 +52,6 @@ const styles = (textColor) => StyleSheet.create({
     borderRadius: 30,
     backgroundColor: 'transparent',
     width: '80%',
-  },
-  saveResultButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 25,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginTop: 16,
-    width: '80%',
-    position: 'absolute',
-  },
-  bodyContainer: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-  },
-  saveResultButtonBody: {
-    color: 'black',
-    fontSize: 16,
   },
   gradientButton: {
     alignItems: 'center',
@@ -82,20 +70,31 @@ const styles = (textColor) => StyleSheet.create({
   imageContainer: {
     width: '100%',
     height: '20%',
-    paddingLeft: '5%',
   },
   quoteImage: {
     flex: 1,
     width: null,
     height: null,
     resizeMode: 'contain',
-    // aspectRatio: 1,
   },
 });
 
 export default function StoryStarterComponent({ title, route, textColor }) {
   const [object, setObject] = useState(`Get a random ${title} for your story`);
-
+  let background;
+  switch (title) {
+    case 'OBJECT':
+      background = objectBackground;
+      break;
+    case 'SETTING':
+      background = settingBackground;
+      break;
+    case 'PLOT POINT':
+      background = plotpointBackground;
+      break;
+    default:
+      background = traitsBackground;
+  }
   const getObject = async () => {
     try {
       const randomItem = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/${route}/get`, { timeout: 20000 });
@@ -114,17 +113,20 @@ export default function StoryStarterComponent({ title, route, textColor }) {
     <ImageBackground source={background} style={{ width: '100%', height: '100%' }}>
       <View style={styles(textColor).container}>
 
-        <Text style={[styles(textColor).heading, styles(textColor).item1]}>{title}</Text>
-        <View style={styles(textColor).imageContainer}>
+        <Text style={styles(textColor).item1} />
+        <View style={[styles(textColor).imageContainer]}>
           <Image style={styles(textColor).quoteImage} source={handwrittenQuote} />
         </View>
+        <Text style={styles(textColor).textTitle}>
+          {title}
+        </Text>
         <TypeWriter typing={1} minDelay={10} maxDelay={60} style={styles(textColor).textBody}>
           {object}
         </TypeWriter>
         <LinearGradient
           colors={['#84C2C9', '#BFD25A']}
           style={styles(textColor).gradientButton}
-          start={{ x: 0, y: 0 }} // Optional: Set gradient start
+          start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
           <Pressable style={styles(textColor).randomButton} onPress={getObject}>

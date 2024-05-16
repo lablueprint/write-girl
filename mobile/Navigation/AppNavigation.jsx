@@ -39,10 +39,22 @@ function StoryStarterStackScreen() {
         component={StoryStarterScreen}
         options={{ headerShown: false, title: 'Story Starters' }}
       />
-      <StoryStarterStack.Screen name="Objects" children={() => (<StoryStarterComponent title="Objects" route="item" textColor="#7BAC8A" />)} />
-      <StoryStarterStack.Screen name="Settings" children={() => (<StoryStarterComponent title="Settings" route="setting" textColor="#BFD25A" />)} />
-      <StoryStarterStack.Screen name="Character Traits" children={() => (<StoryStarterComponent title="Character Traits" route="characterTrait" textColor="#DC5F41" />)} />
-      <StoryStarterStack.Screen name="Plot Points" children={() => (<StoryStarterComponent title="Plot Points" route="plotPoint" textColor="#5BB2CF" />)} />
+      <StoryStarterStack.Screen
+        name="Objects"
+        children={() => (<StoryStarterComponent title="OBJECT" route="item" textColor="#7BAC8A" />)}
+      />
+      <StoryStarterStack.Screen
+        name="Settings"
+        children={() => (<StoryStarterComponent title="SETTING" route="setting" textColor="#BFD25A" />)}
+      />
+      <StoryStarterStack.Screen
+        name="Character Traits"
+        children={() => (<StoryStarterComponent title="CHARACTER TRAIT" route="characterTrait" textColor="#DC5F41" />)}
+      />
+      <StoryStarterStack.Screen
+        name="Plot Points"
+        children={() => (<StoryStarterComponent title="PLOT POINT" route="plotPoint" textColor="#5BB2CF" />)}
+      />
     </StoryStarterStack.Navigator>
   );
 }
