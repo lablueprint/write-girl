@@ -33,6 +33,8 @@ import PasswordResetScreen from '../Screens/PasswordResetScreen';
 // import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 import HistoryScreen from '../Screens/HistoryScreen';
+import PepTalkScreen from '../Screens/PepTalkScreen';
+import TimedWritingScreen from '../Screens/TimedWritingScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
