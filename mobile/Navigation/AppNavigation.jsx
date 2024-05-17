@@ -1,4 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { useState } from 'react';
 import {
   Image, View, ImageBackground, Dimensions,
 } from 'react-native';
@@ -90,13 +91,22 @@ const Stack = createNativeStackNavigator();
 const MindBodyStack = createNativeStackNavigator();
 
 function MindBodyStackScreen({ setTimer }) {
+  const [allowNotif, setNotifPermission] = useState(false);
+
   return (
     <MindBodyStack.Navigator initialRouteName="Mind and Body">
       <MindBodyStack.Screen
         name="Mind and Body Stack"
-        component={MindBodyScreen}
         options={{ title: 'Mind and Body', headerShown: false }}
-      />
+      >
+        {({ route, navigation }) => (
+          <MindBodyScreen
+            navigation={navigation}
+            currentToggle={allowNotif}
+            enableToggle={setNotifPermission}
+          />
+        )}
+      </MindBodyStack.Screen>
       <MindBodyStack.Screen name="Activity Type" component={ActivityTypeScreen} options={{ headerBackTitleVisible: false }} />
       <MindBodyStack.Screen name="Activity Duration" component={ActivityDurationScreen} options={{ headerBackTitleVisible: false }} />
       <MindBodyStack.Screen
