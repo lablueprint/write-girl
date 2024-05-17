@@ -18,8 +18,6 @@ const styles = StyleSheet.create({
     width: '40%',
     height: '25%',
     borderRadius: 70,
-    // borderWidth: 2,
-    // borderColor: 'red',
   },
   plotPointsContainer: {
     position: 'absolute',
@@ -38,10 +36,8 @@ const styles = StyleSheet.create({
     bottom: '5%',
     right: '45%',
     width: 200,
-    // borderWidth: 2,
-    // borderColor: 'red',
     borderRadius: 70,
-    aspectRatio: 1, // Maintain the aspect ratio (1:1)
+    aspectRatio: 1,
   },
   objectsContainer: {
     position: 'absolute',
@@ -109,16 +105,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 45, // Optional: Set the font size
     fontWeight: 'bold', // Optional: Set the font weight
-    // borderWidth: 2,
-    // borderColor: 'red',
     paddingTop: '20%',
   },
   bodyText: {
     color: 'white',
     fontSize: 14, // Optional: Set the font size
     fontWeight: 'bold', // Optional: Set the font weight
-    // borderWidth: 2,
-    // borderColor: 'red',
     paddingLeft: 15,
     paddingRight: 15,
   },
@@ -159,7 +151,7 @@ export default function StoryStarterScreen({ navigation }) {
           <Text style={styles.titleText}> Story Starters</Text>
           <Text style={styles.bodyText}>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing. </Text>
         </View>
-        <Pressable onPress={navigateToSettingsScreen} title="Get random setting" textColor="#00FF00" style={styles.settingsContainer}>
+        <Pressable onPress={navigateToSettingsScreen} title="Get random setting" style={styles.settingsContainer}>
           <ImageBackground source={settingsImage} style={styles.button} imageStyle={styles.image} />
         </Pressable>
         <Pressable onPress={navigateToTraitsScreen} title="Get random character trait" style={styles.characterTraitsContainer}>
