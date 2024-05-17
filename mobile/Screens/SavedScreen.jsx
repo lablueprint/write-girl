@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, View, TouchableOpacity, Text,
-  ScrollView, Pressable,
+  ScrollView, Pressable, Button,
 } from 'react-native';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -20,6 +20,7 @@ const genreColors = {
 const styles = StyleSheet.create({
   scrollViewContainer: {
     flex: 1,
+    backgroundColor: '#151716',
   },
   container: {
     backgroundColor: '#151716',
@@ -339,12 +340,13 @@ export default function SavedScreen({ navigation }) {
   return (
     <View style={styles.scrollViewContainer}>
       <ScrollView contentContainerStyle={styles.container}>
+        <Button title="Back" onPress={() => navigation.goBack()} />
         <View style={styles.headingContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Plot Points</Text>
           </View>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('plotPoint')}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('Plot Points')}>
               <Text style={styles.normalText}>View all</Text>
             </Pressable>
           </View>
@@ -362,7 +364,7 @@ export default function SavedScreen({ navigation }) {
             <Text style={styles.title}>Traits</Text>
           </View>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('trait')}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('Traits')}>
               <Text style={styles.normalText}>View all</Text>
             </Pressable>
           </View>
@@ -380,7 +382,7 @@ export default function SavedScreen({ navigation }) {
             <Text style={styles.title}>Objects</Text>
           </View>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('item')}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('Objects')}>
               <Text style={styles.normalText}>View all</Text>
             </Pressable>
           </View>
@@ -398,7 +400,7 @@ export default function SavedScreen({ navigation }) {
             <Text style={styles.title}>Settings</Text>
           </View>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('setting')}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('Settings')}>
               <Text style={styles.normalText}>View all</Text>
             </Pressable>
           </View>
@@ -416,15 +418,15 @@ export default function SavedScreen({ navigation }) {
             <Text style={styles.title}>Triple Flips</Text>
           </View>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('tripleFlip')}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('Triple Flips')}>
               <Text style={styles.normalText}>View all</Text>
             </Pressable>
           </View>
         </View>
         <Text style={styles.normalText}>Most recent</Text>
-        {tripleFlips.map((flip) => (
+        {tripleFlips.map((flip, index) => (
           <TripleFlipHistoryCard
-            key={flip[0]}
+            key={index}
             flipId={flip[0]}
             date={flip[1]}
           />
@@ -434,7 +436,7 @@ export default function SavedScreen({ navigation }) {
             <Text style={styles.title}>Door Activities</Text>
           </View>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('doorActivity')}>
+            <Pressable style={styles.viewAllButton} onPress={() => navigateToViewAllSavedScreen('Door Activities')}>
               <Text style={styles.normalText}>View all</Text>
             </Pressable>
           </View>

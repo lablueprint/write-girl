@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet, View, Button, Text,
-  ScrollView,
+  StyleSheet, View, TouchableOpacity, Text,
+  ScrollView, Button,
 } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
@@ -22,31 +22,142 @@ async function getId() {
   return userId;
 }
 
-const getTraitByID = async (id) => {
-  try {
-    const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/characterTrait/getByID/${id}`, { timeout: 20000 });
-    console.log(res.data);
-    return res.data;
-  } catch (err) {
-    console.log(err);
-    return err;
-  }
+const genreColors = {
+  Colors: '#1b4d2f',
+  Sounds: '#1a5261',
+  Textures: '#803911',
+  Weather: '#845791',
+  Nature: '#648a22',
+  Relationships: '#b87496',
 };
 
+const styles = StyleSheet.create({
+  scrollViewContainer: {
+    flex: 1,
+    backgroundColor: '#151716',
+  },
+  container: {
+    alignItems: 'left',
+    padding: '5%',
+    paddingTop: '10%',
+    paddingBottom: '15%',
+  },
+  title: {
+    color: '#BFD25A',
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  buttonContainer: {
+    width: '25%',
+  },
+  storyStarterCard: {
+    backgroundColor: '#19333D',
+    width: '100%',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: '50%',
+    marginTop: 12,
+  },
+  normalText: {
+    color: 'white',
+  },
+  banner: {
+    width: '100%',
+    height: 150,
+    alignItems: 'left',
+    padding: 20,
+    marginTop: 20,
+    borderRadius: 10,
+  },
+  doorButtonText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'white',
+  },
+});
 
-export default function ViewAllSavedScreen() {
+export default function ViewAllSavedScreen({ navigation }) {
   const route = useRoute();
   const subject = route.params?.subject;
   const [savedData, setSavedData] = useState([]);
-  console.log(subject);
 
-  const getTraits = async (n) => {
+  const getActivityByID = async (id) => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/activity/getByID/${id}`, { timeout: 20000 });
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
+  const getPlotPointByID = async (id) => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/plotPoint/getByID/${id}`, { timeout: 20000 });
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
+  const getTraitByID = async (id) => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/characterTrait/getByID/${id}`, { timeout: 20000 });
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
+  const getItemByID = async (id) => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/item/getByID/${id}`, { timeout: 20000 });
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
+  const getSettingByID = async (id) => {
+    try {
+      const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/setting/getByID/${id}`, { timeout: 20000 });
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
+  const getPlotPoints = async () => {
     const userId = await getId();
     try {
-      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTraits/${userId}`, { timeout: 20000 });
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/${userId}`, { timeout: 20000 });
       setSavedData(
         await Promise.all(
-          saved.data.reverse().map(
+          saved.data.savedPlots.reverse().map(
+            async (starter) => getPlotPointByID(starter.plotID),
+          ),
+        ),
+      );
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getTraits = async () => {
+    const userId = await getId();
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/${userId}`, { timeout: 20000 });
+      setSavedData(
+        await Promise.all(
+          saved.data.savedTraits.reverse().map(
             async (starter) => getTraitByID(starter.traitID),
           ),
         ),
@@ -58,19 +169,171 @@ export default function ViewAllSavedScreen() {
     return 'True';
   };
 
+  const getItems = async () => {
+    const userId = await getId();
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/${userId}`, { timeout: 20000 });
+      setSavedData(
+        await Promise.all(
+          saved.data.savedItems.reverse().map(
+            async (starter) => getItemByID(starter.objectID),
+          ),
+        ),
+      );
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getSettings = async () => {
+    const userId = await getId();
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/${userId}`, { timeout: 20000 });
+      setSavedData(
+        await Promise.all(
+          saved.data.savedSettings.reverse().map(
+            async (starter) => getSettingByID(starter.settingID),
+          ),
+        ),
+      );
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getActivities = async () => {
+    const userId = await getId();
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getActivities/${userId}`, { timeout: 20000 });
+      setSavedData(
+        await Promise.all(
+          saved.data.msg.at(0).savedActivities.reverse().map(
+            async (activity) => getActivityByID(activity.activityID),
+          ),
+        ),
+      );
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getTripleFlips = async () => {
+    const userId = await getId();
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlips/${userId}`, { timeout: 20000 });
+      setSavedData(
+        await Promise.all(
+          saved.data.msg.at(0).savedTripleFlips.reverse().map(
+            async (flip) => [flip.flipID, flip.date],
+          ),
+        ),
+      );
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
   useEffect(() => {
-    getTraits();
-    console.log(savedData);
+    switch (subject) {
+      case 'Plot Points':
+        getPlotPoints();
+        break;
+      case 'Traits':
+        getTraits();
+        break;
+      case 'Objects':
+        getItems();
+        break;
+      case 'Settings':
+        getSettings();
+        break;
+      case 'Triple Flips':
+        getTripleFlips();
+        break;
+      case 'Door Activities':
+        getActivities();
+        break;
+      default:
+    }
   }, []);
 
-  return (
-    <ScrollView>
-      {savedData.map((data) => (
-        <Text key={data._id}>
+  let display = null;
+  if (subject === 'Traits') {
+    display = savedData.map((data) => (
+      <View style={styles.storyStarterCard}>
+        <Text style={styles.normalText} key={data._id}>
           {data.trait}
         </Text>
-      ))}
-    </ScrollView>
+      </View>
+    ));
+  } else if (subject === 'Plot Points') {
+    display = savedData.map((data) => (
+      <View style={styles.storyStarterCard}>
+        <Text style={styles.normalText} key={data._id}>
+          {data.plotPoint}
+        </Text>
+      </View>
+    ));
+  } else if (subject === 'Settings') {
+    display = savedData.map((data) => (
+      <View style={styles.storyStarterCard}>
+        <Text style={styles.normalText} key={data._id}>
+          {data.setting}
+        </Text>
+      </View>
+    ));
+  } else if (subject === 'Objects') {
+    display = savedData.map((data) => (
+      <View style={styles.storyStarterCard}>
+        <Text style={styles.normalText} key={data._id}>
+          {data.item}
+        </Text>
+      </View>
+    ));
+  } else if (subject === 'Triple Flips') {
+    display = savedData.map((data, index) => (
+      <TripleFlipHistoryCard
+        key={index}
+        flipId={data[0]}
+        date={data[1]}
+      />
+    ));
+  } else if (subject === 'Door Activities') {
+    display = savedData.map((data) => (
+      <TouchableOpacity
+        key={data._id}
+        style={[styles.banner, { backgroundColor: genreColors[data.genre] }]}
+      >
+        <Text style={styles.doorButtonText}>
+          {data.activity[0]}
+        </Text>
+        <Text style={{ color: 'white', marginTop: 20 }}>
+          {data.activity.length - 2}
+          {' '}
+          {data.activity.length - 2 === 1 ? 'step' : 'steps'}
+        </Text>
+      </TouchableOpacity>
+    ));
+  }
+
+  return (
+    <View style={styles.scrollViewContainer}>
+      <ScrollView contentContainerStyle={styles.container}>
+
+        <Button title="Back" onPress={() => navigation.goBack()} />
+        <Text style={styles.title}>{subject}</Text>
+        <Text style={styles.normalText}>Most recent</Text>
+        { display }
+      </ScrollView>
+    </View>
   );
 }
 
