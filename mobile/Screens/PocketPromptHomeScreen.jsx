@@ -10,27 +10,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#151716',
   },
   title: {
-    marginTop: 100,
+    marginTop: Dimensions.get('window').height / 10,
     fontSize: 50,
-    paddingLeft: 40,
-    paddingRight: 60,
+    marginLeft: Dimensions.get('window').width / 11,
+    marginRight: Dimensions.get('window').width / 7,
     color: '#FFFFFF',
   },
   subtitle: {
     fontSize: 20,
-    paddingTop: 20,
-    paddingLeft: 40,
-    paddingRight: 60,
+    marginTop: Dimensions.get('window').height / 40,
+    marginHorizontal: Dimensions.get('window').width / 11,
     color: '#FFFFFF',
   },
   runButtonAlign: {
-    marginTop: Dimensions.get('window').height / 2.2,
+    marginTop: Dimensions.get('window').height / 2.4,
   },
   runButton: {
     alignSelf: 'center',
     backgroundColor: '#84C2C9',
     borderRadius: 15,
-    paddingVertical: Dimensions.get('window').width / 25,
+    paddingVertical: Dimensions.get('window').width / 35,
     paddingHorizontal: Dimensions.get('window').width / 2.5,
   },
   runText: {
@@ -48,7 +47,8 @@ export default function PocketPromptHomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Pocket Prompts</Text>
       <Text style={styles.subtitle}>
-        Opening warmup chat activities to help you jumpstart your writing
+        Designed to fire up your creativity. Mine your response for nuggets of words,
+        phrases or ideas that can become part of a story, scene or poem.
       </Text>
       <TouchableOpacity style={styles.runButtonAlign} onPress={handleRun}>
         <LinearGradient
@@ -57,7 +57,7 @@ export default function PocketPromptHomeScreen({ navigation }) {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
-          <Text style={styles.runText}>Run</Text>
+          <Text style={styles.runText}>Start</Text>
         </LinearGradient>
       </TouchableOpacity>
     </View>

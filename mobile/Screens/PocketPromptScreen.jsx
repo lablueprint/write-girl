@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     paddingHorizontal: 25,
     position: 'absolute',
-    marginTop: Dimensions.get('window').height / 2,
+    marginTop: Dimensions.get('window').height / 2.5,
     color: '#FFFFFF',
   },
   reshuffleButton: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginTop: Dimensions.get('window').height / 1.3,
     alignSelf: 'center',
     borderRadius: 15,
-    paddingVertical: Dimensions.get('window').width / 25,
+    paddingVertical: Dimensions.get('window').width / 35,
     paddingHorizontal: Dimensions.get('window').width / 3,
   },
   reshuffleText: {
