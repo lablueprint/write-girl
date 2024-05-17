@@ -25,7 +25,6 @@ import EditPasswordScreen from '../Screens/EditPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import LogInScreen from '../Screens/LogInScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
-// import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 import HistoryScreen from '../Screens/HistoryScreen';
 
@@ -42,7 +41,7 @@ function StoryStarterStackScreen() {
       <StoryStarterStack.Screen
         name="Story Starter Stack"
         component={StoryStarterScreen}
-        options={{ headerShown: false, title: 'Story Starters' }}
+        options={{ headerShown: false }}
       />
       <StoryStarterStack.Screen
         name="Objects"
@@ -124,7 +123,6 @@ const createtabOptions = (icon) => ({
       source={icon}
     />
   ),
-  headerShown: icon !== settingsIcon,
 });
 
 const middleTabOptions = {
