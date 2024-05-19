@@ -33,7 +33,7 @@ const activityData = [
     activity: 'Door Activity',
     description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
     image: DoorActivityImage,
-    pageDirect: 'Home',
+    pageDirect: 'Door Activity',
   },
   {
     activity: 'Triple Flips',

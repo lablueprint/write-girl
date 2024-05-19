@@ -30,6 +30,7 @@ import LogInScreen from '../Screens/LogInScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
 // import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
+import ProgressiveWritingScreen from '../Screens/WritingActivities/ProgressiveWritingScreen';
 import HistoryScreen from '../Screens/HistoryScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
@@ -77,6 +78,7 @@ function HomeStackScreen() {
         component={HomeScreen}
         options={{ title: 'HomeScreen' }}
       />
+      <HomeStack.Screen name="Door Activity" component={ProgressiveWritingScreen} />
       <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
     </HomeStack.Navigator>
