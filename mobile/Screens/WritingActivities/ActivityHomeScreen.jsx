@@ -19,25 +19,25 @@ const styles = StyleSheet.create({
 const activityData = [
   {
     activity: 'Pocket Prompts',
-    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    description: 'Let the collection of objects and words inspire a poem, story or even a song. Dont think...',
     image: PocketPromptsImage,
     pageDirect: 'Home',
   },
   {
     activity: 'Story Starters',
-    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    description: 'Let the collection of objects and words inspire a poem, story or even a song. Dont think...',
     image: StoryStartersImage,
     pageDirect: 'Story Starters',
   },
   {
     activity: 'Door Activity',
-    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    description: 'Let the collection of objects and words inspire a poem, story or even a song. Dont think...',
     image: DoorActivityImage,
     pageDirect: 'Door Activity',
   },
   {
     activity: 'Triple Flips',
-    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    description: 'Let the collection of objects and words inspire a poem, story or even a song. Dont think...',
     image: TripleFlipsImage,
     pageDirect: 'Triple Flip',
   },
