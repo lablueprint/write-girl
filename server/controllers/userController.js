@@ -23,7 +23,7 @@ const updateUser = async (req, res) => {
 const addSavedActivities = async (req, res) => {
   try {
     const data = await User.updateOne(
-      { _id: req.params.userId },
+      { _id: req.params.userId, 'savedActivities.activityID': { $ne: req.body.activityID } },
       { $push: { savedActivities: req.body } },
     );
     res.json(data);
@@ -62,7 +62,7 @@ const addSavedWritingTips = async (req, res) => {
 const addSavedTripleFlips = async (req, res) => {
   try {
     const data = await User.updateOne(
-      { _id: req.params.userId },
+      { _id: req.params.userId, 'savedTripleFlips.flipID': { $ne: req.body.flipID } },
       { $push: { savedTripleFlips: req.body } },
     );
     res.json(data);
@@ -116,7 +116,7 @@ const getTripleFlipHistory = async (req, res) => {
 const addSavedTraits = async (req, res) => {
   try {
     const data = await User.updateOne(
-      { _id: req.params.userId },
+      { _id: req.params.userId, 'savedTraits.traitID': { $ne: req.body.traitID } },
       { $push: { savedTraits: req.body } },
     );
     res.json(data);
@@ -129,7 +129,7 @@ const addSavedTraits = async (req, res) => {
 const addSavedPlots = async (req, res) => {
   try {
     const data = await User.updateOne(
-      { _id: req.params.userId },
+      { _id: req.params.userId, 'savedPlots.plotID': { $ne: req.body.plotID } },
       { $push: { savedPlots: req.body } },
     );
     res.json(data);
@@ -142,7 +142,7 @@ const addSavedPlots = async (req, res) => {
 const addSavedSettings = async (req, res) => {
   try {
     const data = await User.updateOne(
-      { _id: req.params.userId },
+      { _id: req.params.userId, 'savedSettings.settingID': { $ne: req.body.settingID } },
       { $push: { savedSettings: req.body } },
     );
     res.json(data);
@@ -154,13 +154,16 @@ const addSavedSettings = async (req, res) => {
 // Send [itemID]
 const addSavedItems = async (req, res) => {
   try {
+    // console.log(req.body.objectID);
     const data = await User.updateOne(
-      { _id: req.params.userId },
+      { _id: req.params.userId, 'savedItems.objectID': { $ne: req.body.objectID } },
       { $push: { savedItems: req.body } },
     );
+    // console.log(data);
     res.json(data);
   } catch (err) {
     console.log(err);
+    res.status(500).send('Error processing your request');
   }
 };
 

@@ -332,8 +332,6 @@ export default function ProgressiveWritingScreen() {
       activityID: genreFilter[selectedActivity]._id,
     };
 
-    console.log(activityJSON);
-
     try {
       if (!saved && userId) {
         const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addActivities/${userId}`, activityJSON);

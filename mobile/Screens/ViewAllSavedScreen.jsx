@@ -180,6 +180,7 @@ export default function ViewAllSavedScreen({ navigation }) {
           ),
         ),
       );
+      console.log (savedData);
       return saved.data;
     } catch (err) {
       console.log(err);
@@ -241,6 +242,35 @@ export default function ViewAllSavedScreen({ navigation }) {
     return 'True';
   };
 
+  const printEveryID = async () => {
+    console.log("Printing All IDs:");
+    // for (let i = 0; i < plotPoints.length; i++) {
+    //   console.log(plotPoints[i]._id);
+    // }
+
+    // for (let i = 0; i < traits.length; i++) {
+    //   console.log(traits[i]._id);
+    // }
+
+    // for (let i = 0; i < items.length; i++) {
+    //   console.log(items[i]._id);
+    // }
+
+    // for (let i = 0; i < settings.length; i++) {
+    //   console.log(settings[i]._id);
+    // }
+
+    // for (let i = 0; i < tripleFlips.length; i++) {
+    //   console.log(tripleFlips[i][2]);
+    // }
+
+    // for (let i = 0; i < activities.length; i++) {
+    //   console.log(activities[i]._id);
+    // }
+
+    console.log("Done");
+  };
+
   useEffect(() => {
     switch (subject) {
       case 'Plot Points':
@@ -268,32 +298,32 @@ export default function ViewAllSavedScreen({ navigation }) {
   let display = null;
   if (subject === 'Traits') {
     display = savedData.map((data) => (
-      <View style={styles.storyStarterCard}>
-        <Text style={styles.normalText} key={data._id}>
+      <View style={styles.storyStarterCard} key={data._id}>
+        <Text style={styles.normalText}>
           {data.trait}
         </Text>
       </View>
     ));
   } else if (subject === 'Plot Points') {
     display = savedData.map((data) => (
-      <View style={styles.storyStarterCard}>
-        <Text style={styles.normalText} key={data._id}>
+      <View style={styles.storyStarterCard} key={data._id}>
+        <Text style={styles.normalText}>
           {data.plotPoint}
         </Text>
       </View>
     ));
   } else if (subject === 'Settings') {
     display = savedData.map((data) => (
-      <View style={styles.storyStarterCard}>
-        <Text style={styles.normalText} key={data._id}>
+      <View style={styles.storyStarterCard} key={data._id}>
+        <Text style={styles.normalText}>
           {data.setting}
         </Text>
       </View>
     ));
   } else if (subject === 'Objects') {
     display = savedData.map((data) => (
-      <View style={styles.storyStarterCard}>
-        <Text style={styles.normalText} key={data._id}>
+      <View style={styles.storyStarterCard} key={data._id}>
+        <Text style={styles.normalText}>
           {data.item}
         </Text>
       </View>

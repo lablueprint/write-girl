@@ -145,6 +145,7 @@ export default function TripleFlipScreen({ navigation }) {
   const [flipButtonShow, setFlipButtonShow] = useState(false);
   const [cardShowBack, setCardShowBack] = useState(0);
   const [endButtonShow, setEndButtonShow] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     if (step === 0) {
@@ -164,6 +165,7 @@ export default function TripleFlipScreen({ navigation }) {
     setEndButtonShow(false);
     setCardShowBack(0);
     setStep(1);
+    setSaved(false);
     setDisplay(false);
   };
 
@@ -218,11 +220,12 @@ export default function TripleFlipScreen({ navigation }) {
     };
 
     try {
-      if (userId) {
+      if (!saved && userId) {
         const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlips/${userId}`, tripleFlip);
+        setSaved(true);
         return response;
       }
-      console.log('User ID is null.');
+      console.log('User ID is null or already saved.');
     } catch (err) {
       console.log(err);
     }

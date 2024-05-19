@@ -317,7 +317,8 @@ export default function SavedScreen({ navigation }) {
       setTripleFlips(
         await Promise.all(
           saved.data.msg.at(0).savedTripleFlips.reverse().slice(0, n).map(
-            async (flip) => [flip.flipID, flip.date],
+            async (flip) => [flip.flipID, flip.date, flip._id],
+            // why _id is undefined, probably becasue the back end function doesn't return this info
           ),
         ),
       );
@@ -352,9 +353,9 @@ export default function SavedScreen({ navigation }) {
           </View>
         </View>
         <Text style={styles.normalText}>Most recent</Text>
-        {plotPoints.map((starter) => (
-          <View style={styles.storyStarterCard}>
-            <Text style={styles.normalText} key={starter._id}>
+        {plotPoints.map((starter, index) => (
+          <View style={styles.storyStarterCard} key={starter._id}>
+            <Text style={styles.normalText}>
               {starter.plotPoint}
             </Text>
           </View>
@@ -371,8 +372,8 @@ export default function SavedScreen({ navigation }) {
         </View>
         <Text style={styles.normalText}>Most recent</Text>
         {traits.map((starter) => (
-          <View style={styles.storyStarterCard}>
-            <Text style={styles.normalText} key={starter._id}>
+          <View style={styles.storyStarterCard} key={starter._id}>
+            <Text style={styles.normalText}>
               {starter.trait}
             </Text>
           </View>
@@ -389,8 +390,8 @@ export default function SavedScreen({ navigation }) {
         </View>
         <Text style={styles.normalText}>Most recent</Text>
         {items.map((starter) => (
-          <View style={styles.storyStarterCard}>
-            <Text style={styles.normalText} key={starter._id}>
+          <View style={styles.storyStarterCard} key={starter._id}>
+            <Text style={styles.normalText}>
               {starter.item}
             </Text>
           </View>
@@ -407,8 +408,8 @@ export default function SavedScreen({ navigation }) {
         </View>
         <Text style={styles.normalText}>Most recent</Text>
         {settings.map((starter) => (
-          <View style={styles.storyStarterCard}>
-            <Text style={styles.normalText} key={starter._id}>
+          <View style={styles.storyStarterCard} key={starter._id}>
+            <Text style={styles.normalText}>
               {starter.setting}
             </Text>
           </View>
@@ -424,9 +425,11 @@ export default function SavedScreen({ navigation }) {
           </View>
         </View>
         <Text style={styles.normalText}>Most recent</Text>
-        {tripleFlips.map((flip, index) => (
+        {tripleFlips.map((flip) => (
           <TripleFlipHistoryCard
-            key={index}
+            // Would need to assign the key differently if there's more than one tripleFlip
+            // IDK why using index as key doesn't work
+            key={0}
             flipId={flip[0]}
             date={flip[1]}
           />
@@ -442,7 +445,7 @@ export default function SavedScreen({ navigation }) {
           </View>
         </View>
         <Text style={styles.normalText}>Most recent</Text>
-        {activities.map((activityObj) => (
+        {activities.map((activityObj, index) => (
           <TouchableOpacity
             key={activityObj._id}
             style={[styles.banner, { backgroundColor: genreColors[activityObj.genre] }]}
