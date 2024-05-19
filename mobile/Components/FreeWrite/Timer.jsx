@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, View, TouchableOpacity, Button, StyleSheet, Pressable, Dimensions,
+  Text, View, TouchableOpacity, StyleSheet, Pressable, Dimensions,
 } from 'react-native';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
@@ -24,10 +24,7 @@ const stopTimer = `<svg width="22" height="22" viewBox="0 0 22 22" fill="none" x
 const styles = StyleSheet.create({
   timer: {
     alignItems: 'center',
-    // justifyContent: 'center',
     position: 'absolute',
-    // absolute: StyleSheet.absoluteFill,
-    bottom: 0,
     top: -windowHeight * 0.4,
     left: 0,
     right: 0,
@@ -60,15 +57,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderStyle: 'dotted',
   },
-  // edit: {
-  //   position: 'absolute',
-  //   alignSelf: 'center',
-  //   top: windowHeight * 0.03,
-
-  // borderColor: 'blue',
-  // borderWidth: 2,
-  // borderStyle: 'dotted',
-  // },
   time: {
     color: 'white',
     fontSize: 30,
@@ -119,29 +107,12 @@ export default function Timer() {
 
   return (
     <View style={styles.timer}>
-      {/* <Text style={styles.timerText}>
-        {alarmString !== null
-          ? 'Timer set for'
-          : 'No timer set'}
-      </Text> */}
-      {/* <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => setShowPicker(true)}
-      > */}
-      {/* <View> */}
-      {/* {alarmString !== null ? (
-            <Text style={{ color: '#F1F1F1', fontSize: 20 }}>
-              {alarmString}
-            </Text>
-          ) : null} */}
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => !alarmString && setShowPicker(true)}
       >
         <SvgXml xml={editTimer} style={styles.edit} />
       </TouchableOpacity>
-      {/* </View> */}
-      {/* </TouchableOpacity> */}
       <TimerPickerModal
         visible={showPicker}
         setIsVisible={setShowPicker}
@@ -164,8 +135,9 @@ export default function Timer() {
         key={timerKey}
         isPlaying={isPlaying}
         duration={totalTime}
-        colors={['#84C2C9', '#BFD25A']}
-        colorsTime={[{ totalTime }, 5]}
+        colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+        colorsTime={[7, 5, 2, 0]}
+        isSmoothColorTransition
         onComplete={() => restartTimer()}
       >
         {({ remainingTime }) => (
@@ -174,7 +146,6 @@ export default function Timer() {
           </Text>
         )}
       </CountdownCircleTimer>
-
       <View style={styles.buttons}>
         <Pressable onPress={handlePause}>
           <SvgXml xml={pauseTimer} style={styles.pause} />
@@ -183,17 +154,6 @@ export default function Timer() {
           <SvgXml xml={stopTimer} style={styles.stop} />
         </Pressable>
       </View>
-
-      {/* <Button
-        title={isPlaying ? 'Pause timer' : 'Resume timer'}
-        disabled={totalTime === 0}
-        onPress={() => setIsPlaying(!isPlaying)}
-      />
-      <Button
-        title="Clear timer"
-        disabled={totalTime === 0}
-        onPress={() => restartTimer()}
-      /> */}
     </View>
   );
 }

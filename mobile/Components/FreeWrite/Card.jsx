@@ -5,6 +5,13 @@ import {
 import PropTypes from 'prop-types';
 import { Audio } from 'expo-av';
 
+const rain = require('../../assets/rain.wav');
+const forest = require('../../assets/birds.wav');
+const ocean = require('../../assets/ocean.wav');
+const winds = require('../../assets/winds.wav');
+const insects = require('../../assets/insects.wav');
+const campfire = require('../../assets/fire.wav');
+
 const icyRiver = require('../../assets/free-write-icons/icyRiverBackground.jpg');
 const cliffs = require('../../assets/free-write-icons/cliffs.jpg');
 const metropolitan = require('../../assets/free-write-icons/metropolitan.jpg');
@@ -45,107 +52,43 @@ const styles = StyleSheet.create({
 });
 
 export default function Card({
-  name, play, setTitle, image, changeBackground,
+  name, play, setTitle, image, changeMusic, changeBackground,
 }) {
-  const [sounds, setSound] = useState();
+  const [sound, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // THIS VERSION PLAYS ALL AT ONCE
+  /// ////////////////////////THIS WORKS KINDA
   // useEffect(() => {
   //   async function playSound() {
-  //     console.log('Loading Sound');
-  //     const { sound } = await Audio.Sound.createAsync(
-  //       require('../../assets/sample.mp3'),
-  //     );
+  //     const { sound } = await Audio.Sound.createAsync(require('../../assets/sample.mp3'));
   //     setSound(sound);
-  //     console.log('Playing Sound');
   //     await sound.playAsync();
+  //   }
+
+  //   async function stopSound() {
+  //     if (sounds) {
+  //       await sounds.stopAsync();
+  //       await sounds.unloadAsync();
+  //     }
   //   }
 
   //   if (play) {
   //     playSound();
+  //   } else {
+  //     stopSound();
   //   }
 
   //   return () => {
   //     if (sounds) {
-  //       console.log('Unloading Sound');
-  //       sounds.stopAsync(); // Stop the sound if it's playing
-  //       sounds.unloadAsync();
+  //       stopSound();
   //     }
   //   };
   // }, [play]);
-  /// ////////////////////////////////////////////
-
-  // THIS STOPS/PLAYS WITH SOME FAULINESS
-  // async function playSound() {
-  //   const { sound } = await Audio.Sound.createAsync(require('../../assets/sample.mp3'));
-  //   setSound(sound);
-  //   await sound.playAsync();
-  // }
-
-  // async function stopSound() {
-  //   if (sounds) {
-  //     await sounds.stopAsync();
-  //   }
-  // }
-
-  // useEffect(() => (sounds ? () => {
-  //   sounds.unloadAsync();
-  // } : undefined), [sounds]);
-
-  // useEffect(() => {
-  //   setIsPlaying(play);
-  //   console.log('play in useEffect: ', play);
-  //   if (isPlaying) {
-  //     playSound();
-  //   } else {
-  //     stopSound();
-  //   }
-  // }, [play]);
-
-  // const handlePress = () => {
-  //   console.log('Pressed');
-  //   console.log('play: ', play);
-  //   setTitle(name);
-  //   // if (isPlaying) {
-  //   //   playSound();
-  //   // } else {
-  //   //   stopSound();
-  //   // }
-  // };
-
-  /// /////////////////////////////////////////
-
-  useEffect(() => {
-    async function playSound() {
-      const { sound } = await Audio.Sound.createAsync(require('../../assets/sample.mp3'));
-      setSound(sound);
-      await sound.playAsync();
-    }
-
-    async function stopSound() {
-      if (sounds) {
-        await sounds.stopAsync();
-        await sounds.unloadAsync();
-      }
-    }
-
-    if (play) {
-      playSound();
-    } else {
-      stopSound();
-    }
-
-    return () => {
-      if (sounds) {
-        stopSound();
-      }
-    };
-  }, [play]);
+  /// /////////////////////////////
 
   const handlePress = () => {
     console.log('Card: Pressed');
-    console.log('play: ', play);
     setTitle(name);
     if (name === 'Icy River') {
       changeBackground(icyRiver);
@@ -161,6 +104,19 @@ export default function Card({
       changeBackground(field);
     } else if (name === 'Campfire') {
       changeBackground(fire);
+    }
+    if (name === 'Rain Sounds') {
+      changeMusic(rain);
+    } else if (name === 'Forest Sounds') {
+      changeMusic(forest);
+    } else if (name === 'Ocean Sounds') {
+      changeMusic(ocean);
+    } else if (name === 'Wind Sounds') {
+      changeMusic(winds);
+    } else if (name === 'Insect Sounds') {
+      changeMusic(insects);
+    } else if (name === 'Fire Sounds') {
+      changeMusic(campfire);
     }
     // if (isPlaying) {
     //   playSound();
@@ -181,10 +137,12 @@ Card.propTypes = {
   name: PropTypes.string.isRequired,
   play: PropTypes.bool.isRequired,
   setTitle: PropTypes.func.isRequired,
+  changeMusic: PropTypes.func,
   changeBackground: PropTypes.func,
   image: PropTypes.string.isRequired,
 };
 
 Card.defaultProps = {
+  changeMusic: null,
   changeBackground: null,
 };

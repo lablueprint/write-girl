@@ -104,7 +104,7 @@ const imageData = [
 ];
 
 export default function VerticalList({
-  title, play, setTitle, changeBackground,
+  title, play, setTitle, changeMusic, changeBackground,
 }) {
   return (
     <View>
@@ -115,7 +115,7 @@ export default function VerticalList({
       >
         {title === 'Nature Sounds' ? musicData.map((item) => (
           <View style={styles.allCards}>
-            <Card name={item.name} play={play} setTitle={setTitle} image={item.image} />
+            <Card name={item.name} play={play} setTitle={setTitle} image={item.image} changeMusic={changeMusic} />
           </View>
         ))
           : imageData.map((item) => (
@@ -132,9 +132,11 @@ VerticalList.propTypes = {
   title: PropTypes.string.isRequired,
   play: PropTypes.bool.isRequired,
   setTitle: PropTypes.func.isRequired,
+  changeMusic: PropTypes.func,
   changeBackground: PropTypes.func,
 };
 
 VerticalList.defaultProps = {
+  changeMusic: null,
   changeBackground: null,
 };
