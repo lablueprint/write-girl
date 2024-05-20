@@ -75,7 +75,7 @@ function HomeStackScreen() {
       <HomeStack.Screen
         name="Home Screen"
         component={HomeScreen}
-        options={{ title: 'HomeScreen' }}
+        options={{ headerShown: false }}
       />
       <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />

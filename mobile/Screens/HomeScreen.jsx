@@ -1,60 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, Dimensions, ScrollView,
+  StyleSheet, Text, View, Dimensions, ScrollView, ImageBackground,
 } from 'react-native';
 import axios from 'axios';
-import Storage from '../Components/Storage';
 import PropTypes from 'prop-types';
-import HomeScreenCard from '../Components/HomeScreenCard';
-import TabBar from '../Components/HomeScreenTab';
+import Carousel from 'react-native-reanimated-carousel';
+import ActivityNavigationCard from '../Components/ActivityNavigationCard';
+import PocketPromptsImage from '../assets/pocketprompts.png';
+import StoryStartersImage from '../assets/storystarters.png';
+import DoorActivityImage from '../assets/dooractivity.png';
+import TripleFlipsImage from '../assets/tripleflips.png';
+import HomeBackground from '../assets/home-screen.png';
 
 const window = Dimensions.get('window');
+const { width } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
-  container: {
+  all: {
     flex: 1,
-    backgroundColor: 'white',
-    flexDirection: 'column',
-    gap: 20,
+    backgroundColor: 'rgba(20, 22, 21, 1)',
   },
-
-  headerBanner: {
-    backgroundColor: '#DCDCDC',
-    justifyContent: 'center',
-    align: 'center',
-    height: window.height * 0.20,
-    paddingTop: 30, // Padding for the top
-    paddingBottom: 10, // Padding for the bottom
-    paddingLeft: 15, // Padding for the left (if needed)
-    paddingRight: 15, // Padding for the right (if needed)
+  imageBackground: {
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+    marginTop: -20,
   },
-
-  bottomHalfContainer: {
-    alignItems: 'center',
+  textContainer: {
+    position: 'absolute',
+    paddingTop: 50,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
-
-  cardContainer: {
-    display: 'flex',
-    alignItems: 'center',
+  name: {
+    color: 'white',
+    fontSize: 50,
+    paddingTop: 90,
   },
-
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
+  greeting: {
+    color: 'white',
+    fontSize: 20,
+    marginBottom: 30,
+    paddingTop: 20,
   },
-
-  description: {
-    fontSize: 14,
+  carouselContainer: {
+    flex: 1,
+    marginTop: 10,
   },
 });
 
+const activityData = [
+  {
+    activity: 'Pocket Prompts',
+    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    image: PocketPromptsImage,
+    pageDirect: 'Home',
+  },
+  {
+    activity: 'Story Starters',
+    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    image: StoryStartersImage,
+    pageDirect: 'Story Starters',
+  },
+  {
+    activity: 'Door Activity',
+    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    image: DoorActivityImage,
+    pageDirect: 'Home',
+  },
+  {
+    activity: 'Triple Flips',
+    description: 'Writing some random things in here to make it look nice but I will be replacing the text in here later.',
+    image: TripleFlipsImage,
+    pageDirect: 'Triple Flip',
+  },
+];
+
 export default function HomeScreen({ navigation }) {
-  const [allSaved, setAllSaved] = useState('');
-  const [activities, setActivities] = useState('');
-  const [storyStarters, setStoryStarters] = useState('');
   const [pepTalks, setPepTalks] = useState('');
   const [writingTips, setWritingTips] = useState('');
-  const [tripleFlips, setTripleFlips] = useState('');
   const [page, setPage] = React.useState('pep_talk');
   const [cardData, setCardData] = React.useState('default_text');
 
@@ -75,62 +99,42 @@ export default function HomeScreen({ navigation }) {
     getCardText('/pepTalk/get');
   }, []);
 
-  function displayPage() {
-    if (page === 'saved') {
-      return (
-        <View>
-          <HomeScreenCard text="saved placeholder" getNewText={() => getCardText()} />
-        </View>
-      );
-    }
-    if (page === 'writing_tip') {
-      return (
-        <View>
-          <HomeScreenCard text={cardData} getNewText={() => getCardText('/writingTip/get')} />
-        </View>
-      );
-    }
-    return (
-      <View>
-        <HomeScreenCard text={cardData} getNewText={() => getCardText('/pepTalk/get')} />
-      </View>
-    );
-  }
-  const welcomeBanner = (
-    <View style={styles.headerBanner}>
-      <Text style={styles.title}>
-        Hi Edwardo & Cwu,
-      </Text>
-      <Text style={styles.description}>
-        the toolkit is where you can find writing
-        help and your saved items!
-      </Text>
-    </View>
-  );
-
-  const directToTripleFlip = () => {
-    navigation.navigate('Triple Flip');
-  };
-
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        {
-        welcomeBanner
-      }
-        <View style={styles.bottomHalfContainer}>
-          <TabBar selectedTab={page} setPage={setPage} getText={getCardText} />
+    <ScrollView style={styles.all}>
+      <ImageBackground
+        source={HomeBackground} // Replace with your image path
+        style={styles.imageBackground}
+      >
+        <View style={styles.textContainer}>
+          <Text style={styles.name}>
+            Hi Angela,
+          </Text>
+          <Text style={styles.greeting}>
+            This is home to all your tools to help guide your creative writing!
+          </Text>
         </View>
-        <View style={styles.cardContainer}>
-          {
-          displayPage()
-        }
-        </View>
+      </ImageBackground>
+      <View style={styles.carouselContainer}>
+        <Carousel
+          loop
+          width={width}
+          height={width}
+          autoPlay
+          data={activityData}
+          scrollAnimationDuration={10000}
+          onSnapToItem={(index) => console.log('current index:', index)}
+          renderItem={({ item, index }) => (
+            <ActivityNavigationCard
+              key={index}
+              activity={item.activity}
+              description={item.description}
+              image={item.image}
+              pageDirect={item.pageDirect}
+              navigation={navigation}
+            />
+          )}
+        />
       </View>
-      <View style={styles.container}>
-        <Text>Home Screen</Text>
-      </View>
-      <Button title="Triple Flips" onPress={directToTripleFlip} />
     </ScrollView>
   );
 }

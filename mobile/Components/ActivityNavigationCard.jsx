@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
     shadowColor: '#fff',
     shadowRadius: 10,
     shadowOpacity: 0.25,
-    transform: [
-      { perspective: 1000 },
-      { rotateX: '-10deg' },
-      { translateY: 8 },
-    ],
+    // transform: [
+    //   { perspective: 1000 },
+    //   { rotateX: '-10deg' },
+    //   { translateY: 8 },
+    // ],
   },
   cardImage: {
     height: 255,
