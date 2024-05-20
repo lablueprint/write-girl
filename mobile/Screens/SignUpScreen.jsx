@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   textfields: {
     fontSize: 16,
     color: 'white',
+    fontFamily: 'Helvetica Neue',
   },
   inputContainerName: {
     backgroundColor: '#ffffff33',
@@ -95,11 +96,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     fontFamily: 'Helvetica Neue',
+    textDecorationLine: 'underline',
   },
   logInTextContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 5,
   },
 });
 export default function SignUp({ navigation }) {

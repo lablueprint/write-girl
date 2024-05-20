@@ -1,71 +1,99 @@
 import { React, useState } from 'react';
 import {
-  View, TextInput, Button, Alert, StyleSheet, Text, Pressable, Image,
+  // eslint-disable-next-line max-len
+  View, TextInput, StyleSheet, Text, Pressable, Image, ImageBackground, Dimensions, TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import welcomeIcon from '../assets/welcomeIcon.png';
+import emailIcon from '../assets/sign-up/emailIcon.png';
+import passwordIcon from '../assets/sign-up/passwordIcon.png';
+import welcomeBackground from '../assets/sign-up/signupbackground.png';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingTop: 100,
-    padding: 40,
   },
-  centered: {
+  imageBackground: {
+    width: '100%',
+    height: '100%',
+  },
+  paddingContainer: {
+    paddingLeft: 30,
+    paddingRight: 30,
+  },
+  heading: {
+    marginTop: 120,
+    paddingBottom: 70,
+    fontSize: 50,
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+    fontWeight: 'bold',
+    lineHeight: 50,
+    maxWidth: screenWidth * 0.7,
+  },
+  forgotContainer: {
+    paddingTop: 20,
+    paddingBottom: 35,
+  },
+  resetButton: {
+    fontSize: 16,
+    textAlign: 'right',
+    fontFamily: 'Helvetica Neue',
+    color: 'white',
+  },
+  textfields: {
+    fontSize: 16,
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+  },
+  inputContainer: {
+    backgroundColor: '#ffffff33',
+    flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: 14,
+    marginTop: 14,
+    padding: 14,
+  },
+  icon: {
+    marginRight: 14,
+    marginLeft: 10,
   },
   signButton: {
-    backgroundColor: '#D9D9D9',
-    borderRadius: 5,
+    backgroundColor: '#BFD25A',
+    borderRadius: 14,
     marginTop: 20,
     marginBottom: 10,
     padding: 5,
   },
-  heading: {
-    marginTop: 10,
-    fontSize: 40,
-  },
-  subTitle: {
-    marginTop: 5,
-    marginBottom: 20,
-  },
-  smallSubtitle: {
-    marginTop: 10,
-    marginBottom: 50,
-    fontSize: 10,
-  },
-  resetButton: {
-    fontSize: 10,
-    textDecorationLine: 'underline',
-  },
-  textfields: {
-    fontSize: 16,
-  },
-  inputContainer: {
-    backgroundColor: '#D9D9D9',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 5,
-    marginTop: 10,
+  button: {
     padding: 10,
+    alignItems: 'center',
   },
-  icon: {
-    marginRight: 5,
-    width: 20,
-    height: 23,
-  },
-  image: {
-    width: 254,
-    height: 254,
-    backgroundColor: '#DCDCDC',
+  buttonText: {
+    color: '#214553',
+    fontSize: 18,
+    fontFamily: 'Helvetica Neue',
   },
   signUpText: {
     textAlign: 'center',
-    fontSize: 15,
+    fontSize: 16,
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
   },
   signUpRedirect: {
+    textAlign: 'center',
+    fontSize: 16,
     fontWeight: 'bold',
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+    textDecorationLine: 'underline',
+  },
+  signUpTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 5,
   },
 });
 export default function LogIn({ navigation }) {
@@ -113,53 +141,57 @@ export default function LogIn({ navigation }) {
 
   return (
     <View className="logIn" style={styles.container}>
-      <View style={styles.centered}>
-        <View style={styles.image} />
-      </View>
-      <Text style={styles.heading}>
-        Login
-      </Text>
-      <Text style={styles.subTitle}>
-        Please Sign in to continue.
-      </Text>
-      <View style={styles.inputContainer}>
-        <Image source={welcomeIcon} style={styles.icon} />
-        <TextInput
-          style={styles.textfields}
-          onChangeText={setEmail}
-          value={email}
-          placeholder="Email Address"
-          placeholderTextColor="#000000"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Image source={welcomeIcon} style={styles.icon} />
-        <TextInput
-          style={styles.textfields}
-          secureTextEntry={bool}
-          onChangeText={handleChangePassword}
-          value={hiddenPassword}
-          placeholder="Password"
-          placeholderTextColor="#000000"
-        />
-      </View>
+      <ImageBackground
+        source={welcomeBackground} // Replace with your image path
+        style={styles.imageBackground}
+      >
+        <View style={styles.paddingContainer}>
+          <Text style={styles.heading}>
+            Nice to see you again!
+          </Text>
+          <View style={styles.inputContainer}>
+            <Image source={emailIcon} style={styles.icon} />
+            <TextInput
+              style={styles.textfields}
+              onChangeText={setEmail}
+              value={email}
+              placeholder="Email Address"
+              placeholderTextColor="white"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image source={passwordIcon} style={styles.icon} />
+            <TextInput
+              style={styles.textfields}
+              secureTextEntry={bool}
+              onChangeText={handleChangePassword}
+              value={hiddenPassword}
+              placeholder="Password"
+              placeholderTextColor="white"
+            />
+          </View>
 
-      <Text style={styles.smallSubtitle}>
-        Forgot your passwords?
-        <Pressable onPress={redirectPasswordReset}>
-          <Text style={styles.resetButton}> Reset Here.</Text>
-        </Pressable>
-      </Text>
+          <View style={styles.forgotContainer}>
+            <Pressable onPress={redirectPasswordReset}>
+              <Text style={styles.resetButton}> Forgot Password? </Text>
+            </Pressable>
+          </View>
 
-      <View style={styles.signButton}>
-        <Button title="Sign In" onPress={handleLogIn} color="#000000" />
-      </View>
-      <Text style={styles.signUpText}>
-        Don't have an account?
-        <Pressable onPress={redirectSignUp}>
-          <Text style={styles.signUpRedirect}> Sign Up</Text>
-        </Pressable>
-      </Text>
+          <View style={styles.signButton}>
+            <TouchableOpacity onPress={handleLogIn} style={styles.button}>
+              <Text style={styles.buttonText}>Sign In</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.signUpTextContainer}>
+            <Text style={styles.signUpText}>
+              Don't have an account?
+            </Text>
+            <Pressable onPress={redirectSignUp}>
+              <Text style={styles.signUpRedirect}> Sign Up</Text>
+            </Pressable>
+          </View>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
