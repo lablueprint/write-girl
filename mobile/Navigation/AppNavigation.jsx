@@ -34,7 +34,7 @@ import PasswordResetScreen from '../Screens/PasswordResetScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 import HistoryScreen from '../Screens/HistoryScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
-import TimedWritingScreen from '../Screens/TimedWritingScreen';
+import TimedWritingScreen from '../Components/Timer';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -109,12 +109,17 @@ function MindBodyStackScreen({ setTimer }) {
           />
         )}
       </MindBodyStack.Screen>
-      <MindBodyStack.Screen name="Activity Type" component={ActivityTypeScreen} options={{ headerBackTitleVisible: false }} />
-      <MindBodyStack.Screen name="Activity Duration" component={ActivityDurationScreen} options={{ headerBackTitleVisible: false }} />
+      <MindBodyStack.Screen name="Activity Type" component={ActivityTypeScreen} options={{ headerBackTitleVisible: false, headerShown: false }} />
+      <MindBodyStack.Screen name="Activity Duration" component={ActivityDurationScreen} options={{ headerBackTitleVisible: false, headerShown: false }} />
       <MindBodyStack.Screen
         name="Mind and Body Deck"
         // eslint-disable-next-line react/no-children-prop
-        children={() => <MindBodyDeckScreen setTimer={setTimer} />}
+        children={({ navigation }) => (
+          <MindBodyDeckScreen
+            setTimer={setTimer}
+            navigation={navigation}
+          />
+        )}
         options={{ headerBackTitleVisible: false, headerShown: false }}
       />
     </MindBodyStack.Navigator>
@@ -127,7 +132,7 @@ const createtabOptions = (icon) => ({
       source={icon}
     />
   ),
-  headerShown: icon !== settingsIcon,
+  headerShown: icon === settingsIcon,
 });
 
 const middleTabOptions = {

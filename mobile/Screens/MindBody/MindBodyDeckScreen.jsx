@@ -1,12 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useEffect, useState } from 'react';
 import {
-  View, Animated, Text, FlatList, StyleSheet, Pressable, Dimensions,
+  View, Text, FlatList, StyleSheet, Pressable, Dimensions, Animated,
 } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import * as Progress from 'react-native-progress';
 import PropTypes from 'prop-types';
+import { SvgXml } from 'react-native-svg';
+import { withTiming } from 'react-native-reanimated';
 import MindBodyCard from '../../Components/MindBodyCard';
 
 const windowWidth = Dimensions.get('window').width;
@@ -17,6 +19,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
+    // marginTop: 70,
+    paddingTop: 80,
+    // paddingHorizontal: windowWidth * 0.05,
   },
   heading: {
     color: '#fff',
@@ -33,12 +38,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    // paddingHorizontal: 24,
     borderRadius: 50,
     backgroundColor: 'white',
     width: '50%',
     marginBottom: 72,
-    marginTop: 24,
   },
   body: {
     color: '#000',
@@ -47,33 +51,62 @@ const styles = StyleSheet.create({
   bar: {
     marginTop: 32,
   },
+  banner: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    width: '100%',
+    marginVertical: 15,
+    paddingHorizontal: windowWidth * 0.05,
+  },
+  indicator: {
+    backgroundColor: 'white',
+    height: 10,
+    width: 10,
+    borderRadius: 20,
+  },
+  cardProgressIndicator: {
+    display: 'flex',
+    flexDirection: 'row',
+    columnGap: 10,
+    marginVertical: 10,
+  },
 });
 
-function MindBodyDeckScreen({ setTimer }) {
+const backSVG = `<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M9 15L2 8L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+  `;
+
+function MindBodyDeckScreen({ setTimer, navigation }) {
   const [scrollViewWidth, setScrollViewWidth] = React.useState(0);
+  const [currentIndex, setIndex] = React.useState(0);
   const boxWidth = scrollViewWidth * 0.8;
   const boxDistance = scrollViewWidth - boxWidth;
   const halfBoxDistance = boxDistance / 2;
   const pan = React.useRef(new Animated.ValueXY()).current;
+  const width = React.useRef(new Animated.Value(10)).current;
   const [mindBodyDeck, setMindBodyDeck] = useState(null);
 
   const route = useRoute();
   const type = route.params?.type;
-  let high = '';
-  let low = '';
-  if (route.params?.duration === 'brisk') {
-    // 0-4 minutes
-    high = String(5);
-    low = String(0);
-  } else if (route.params?.duration === 'casual') {
-    // 5-10 minutes
-    high = String(11);
-    low = String(4);
-  } else {
-    // 11+ minutes
-    high = String(60);
-    low = String(10);
-  }
+  const high = '60';
+  const low = '0';
+  console.log(type);
+  // if (route.params?.duration === 'brisk') {
+  //   // 0-4 minutes
+  //   high = String(5);
+  //   low = String(0);
+  // } else if (route.params?.duration === 'casual') {
+  //   // 5-10 minutes
+  //   high = String(11);
+  //   low = String(4);
+  // } else {
+  //   // 11+ minutes
+  //   high = String(60);
+  //   low = String(10);
+  // }
 
   const getRandomMindBody = async () => {
     try {
@@ -115,8 +148,20 @@ function MindBodyDeckScreen({ setTimer }) {
 
   return (
     <View style={styles.container}>
-      <Progress.Bar progress={1} width={windowWidth * 0.8} height={16} borderRadius={50} borderWidth={0} unfilledColor="#333333" color="white" style={styles.bar} />
+      <View style={styles.banner}>
+        <Pressable onPress={() => { navigation.goBack(); }}>
+          <SvgXml
+            xml={backSVG}
+            style={styles.design}
+            height={15}
+            width={15}
+          />
+        </Pressable>
+        <View />
+      </View>
+      <Progress.Bar progress={0.66} width={windowWidth * 0.8} height={8} borderRadius={50} borderWidth={0} unfilledColor="#333333" color="white" style={styles.bar} />
       <Text style={styles.heading}>Swipe through suggested activities</Text>
+      <View />
       <FlatList
         horizontal
         data={mindBodyDeck}
@@ -142,11 +187,28 @@ function MindBodyDeckScreen({ setTimer }) {
           [{ nativeEvent: { contentOffset: { x: pan.x } } }],
           {
             useNativeDriver: false,
+            listener: (event) => {
+              const index = Math.round(event.nativeEvent.contentOffset.x / boxWidth);
+              setIndex(index);
+            },
           },
         )}
         keyExtractor={(item, index) => `${index}-${item}`}
         renderItem={renderItem}
       />
+      <View style={styles.cardProgressIndicator}>
+        {[...Array(5).keys()].map((idx) => (
+          <View
+            key={idx}
+            style={
+              [
+                styles.indicator,
+                currentIndex === idx ? { width: 30 } : {},
+              ]
+            }
+          />
+        ))}
+      </View>
       <Pressable style={styles.button} onPress={() => { setTimer(5); }}>
         <Text style={styles.body}>Confirm</Text>
       </Pressable>
@@ -156,5 +218,9 @@ function MindBodyDeckScreen({ setTimer }) {
 
 MindBodyDeckScreen.propTypes = {
   setTimer: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    goBack: PropTypes.func,
+  }).isRequired,
 };
 export default MindBodyDeckScreen;
