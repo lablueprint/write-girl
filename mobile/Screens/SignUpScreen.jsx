@@ -1,32 +1,51 @@
 import { React, useState } from 'react';
 import {
-  View, TextInput, Button, Alert, StyleSheet, Text, Pressable, Image,
+  View, TextInput, Alert, StyleSheet, Text, Pressable, Image, ImageBackground, TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Storage from '../Components/Storage';
-import welcomeIcon from '../assets/welcomeIcon.png';
+import emailIcon from '../assets/sign-up/emailIcon.png';
+import nameIcon from '../assets/sign-up/nameIcon.png';
+import passwordIcon from '../assets/sign-up/passwordIcon.png';
+import countryIcon from '../assets/sign-up/countryIcon.png';
+import welcomeBackground from '../assets/sign-up/signupbackground.png';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingTop: 100,
-    padding: 40,
   },
-  centered: {
-    alignItems: 'center',
+  imageBackground: {
+    width: '100%',
+    height: '100%',
+  },
+  paddingContainer: {
+    paddingLeft: 30,
+    paddingRight: 30,
   },
   signButton: {
-    backgroundColor: '#D9D9D9',
-    borderRadius: 5,
+    backgroundColor: '#BFD25A',
+    borderRadius: 14,
     marginTop: 20,
     marginBottom: 10,
     padding: 5,
   },
+  button: {
+    padding: 10,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#214553',
+    fontSize: 18,
+    fontFamily: 'Helvetica Neue',
+  },
   heading: {
-    marginTop: 10,
-    fontSize: 40,
+    marginTop: 120,
+    fontSize: 50,
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+    fontWeight: 'bold',
+    lineHeight: 50,
   },
   smallSubtitle: {
     marginTop: 10,
@@ -34,31 +53,53 @@ const styles = StyleSheet.create({
   },
   textfields: {
     fontSize: 16,
+    color: 'white',
   },
-  inputContainer: {
-    backgroundColor: '#D9D9D9',
+  inputContainerName: {
+    backgroundColor: '#ffffff33',
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 5,
-    marginTop: 10,
-    padding: 10,
+    borderRadius: 14,
+    marginTop: 80,
+    padding: 14,
+  },
+  inputContainer: {
+    backgroundColor: '#ffffff33',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 14,
+    marginTop: 14,
+    padding: 14,
+  },
+  inputContainerCountry: {
+    backgroundColor: '#ffffff33',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 14,
+    marginTop: 60,
+    padding: 14,
   },
   icon: {
-    marginRight: 5,
-    width: 20,
-    height: 23,
-  },
-  image: {
-    width: 254,
-    height: 254,
-    backgroundColor: '#DCDCDC',
+    marginRight: 14,
+    marginLeft: 10,
   },
   logInText: {
     textAlign: 'center',
-    fontSize: 15,
+    fontSize: 16,
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
   },
   logInRedirect: {
+    textAlign: 'center',
+    fontSize: 16,
     fontWeight: 'bold',
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+  },
+  logInTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export default function SignUp({ navigation }) {
@@ -147,66 +188,76 @@ export default function SignUp({ navigation }) {
 
   return (
     <View className="signUp" style={styles.container}>
-      <View style={styles.centered}>
-        <View style={styles.image} />
-      </View>
-      <Text style={styles.heading}>
-        Register
-      </Text>
-      <Text>
-        Please Register to login.
-      </Text>
-      <Text style={styles.smallSubtitle}>
-        So we can call you by your name!
-      </Text>
-      <View style={styles.inputContainer}>
-        <Image source={welcomeIcon} style={styles.icon} />
-        <TextInput
-          style={styles.textfields}
-          onChangeText={setFirstName}
-          value={firstName}
-          placeholder="First Name"
-          placeholderTextColor="#000000"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Image source={welcomeIcon} style={styles.icon} />
-        <TextInput
-          style={styles.textfields}
-          onChangeText={setEmail}
-          value={email}
-          placeholder="Email Address"
-          placeholderTextColor="#000000"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Image source={welcomeIcon} style={styles.icon} />
-        <TextInput
-          style={styles.textfields}
-          secureTextEntry={bool}
-          onChangeText={handleChangePassword}
-          value={hiddenPassword}
-          placeholder="Password"
-          placeholderTextColor="#000000"
-        />
-      </View>
+      <ImageBackground
+        source={welcomeBackground} // Replace with your image path
+        style={styles.imageBackground}
+      >
+        <View style={styles.paddingContainer}>
+          <Text style={styles.heading}>
+            Let's get you started.
+          </Text>
+          <View style={styles.inputContainerName}>
+            <Image source={nameIcon} style={styles.icon} />
+            <TextInput
+              style={styles.textfields}
+              onChangeText={setFirstName}
+              value={firstName}
+              placeholder="First Name"
+              placeholderTextColor="white"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image source={emailIcon} style={styles.icon} />
+            <TextInput
+              style={styles.textfields}
+              onChangeText={setEmail}
+              value={email}
+              placeholder="Email"
+              placeholderTextColor="white"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image source={passwordIcon} style={styles.icon} />
+            <TextInput
+              style={styles.textfields}
+              secureTextEntry={bool}
+              onChangeText={handleChangePassword}
+              value={hiddenPassword}
+              placeholder="Password"
+              placeholderTextColor="white"
+            />
+          </View>
 
-      <Text style={styles.smallSubtitle}>
-        We&apos;d love to know where you&apos;re from!
-      </Text>
+          <View style={styles.inputContainerCountry}>
+            <Image source={countryIcon} style={styles.icon} />
+            <TextInput
+              style={styles.textfields}
+              secureTextEntry={bool}
+              onChangeText={handleChangePassword}
+              value={hiddenPassword}
+              placeholder="Country"
+              placeholderTextColor="white"
+            />
+          </View>
 
-      <View style={styles.signButton}>
-        <Button title="Sign Up" onPress={handleSignUp} color="#000000" />
-      </View>
-      <Text style={styles.logInText}>
-        Already have an account?
-        <Pressable onPress={redirectLogIn}>
-          <Text style={styles.logInRedirect}> Log In</Text>
-        </Pressable>
-      </Text>
-      <View>
-        <Button title="Super Special Dev Button😈" onPress={redirectHome} color="#000000" />
-      </View>
+          <View style={styles.signButton}>
+            <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+              <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.logInTextContainer}>
+            <Text style={styles.logInText}>
+              Already have an account?
+            </Text>
+            <Pressable onPress={redirectLogIn}>
+              <Text style={styles.logInRedirect}> Login</Text>
+            </Pressable>
+          </View>
+          {/* <View>
+            <Button title="Super Special Dev Button😈" onPress={redirectHome} color="#000000" />
+          </View> */}
+        </View>
+      </ImageBackground>
     </View>
   );
 }
