@@ -1,9 +1,10 @@
 import { React, useState } from 'react';
 import {
-  View, TextInput, Button, Alert, StyleSheet, Text, Pressable, Image,
+  View, TextInput, Button, Alert, StyleSheet, Text, Pressable, Image, ImageBackground
 } from 'react-native';
 import PropTypes from 'prop-types';
 import welcomeIcon from '../assets/welcomeIcon.png';
+import signUpBack from '../assets/signupbackground.png';
 
 const styles = StyleSheet.create({
   container: {
@@ -123,7 +124,7 @@ export default function SignUp({ navigation }) {
   };
 
   return (
-    <View className="signUp" style={styles.container}>
+    <ImageBackground source={signUpBack} style={styles.container}>
       <View style={styles.centered}>
         <View style={styles.image} />
       </View>
@@ -181,7 +182,7 @@ export default function SignUp({ navigation }) {
           <Text style={styles.logInRedirect}> Log In</Text>
         </Pressable>
       </Text>
-    </View>
+    </ImageBackground>
   );
 }
 
