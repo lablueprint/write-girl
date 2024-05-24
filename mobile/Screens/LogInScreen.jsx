@@ -179,7 +179,7 @@ export default function LogIn({ navigation }) {
 
           <View style={styles.signButton}>
             <TouchableOpacity onPress={handleLogIn} style={styles.button}>
-              <Text style={styles.buttonText}>Sign In</Text>
+              <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.signUpTextContainer}>

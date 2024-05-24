@@ -1,9 +1,10 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import {
   View, TextInput, Alert, StyleSheet, Text, Pressable, Image, ImageBackground, TouchableOpacity,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import axios from 'axios';
+import { SelectCountry } from 'react-native-element-dropdown';
+import PropTypes from 'prop-types';
 import Storage from '../Components/Storage';
 import emailIcon from '../assets/sign-up/emailIcon.png';
 import nameIcon from '../assets/sign-up/nameIcon.png';
@@ -104,11 +105,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 5,
   },
+  dropdown: {
+    margin: 16,
+    height: 50,
+    borderBottomColor: 'gray',
+    borderBottomWidth: 0.5,
+  },
+  
 });
 export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, onChangePassword] = useState('');
+  const [country, setCountry] = useState('1');
+  const [localData, setLocalData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://restcountries.com/v2/all');
+        const formattedData = response.data.map(country => ({
+          value: 1,
+          label: country.name,
+          image: {
+            uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+          },
+        }));
+        setLocalData(formattedData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
@@ -146,8 +176,8 @@ export default function SignUp({ navigation }) {
       Alert.alert('Please enter a valid email to proceed');
     } else if (password === '') {
       Alert.alert('Please enter a password to proceed');
-    } else if (password.length < 6) {
-      Alert.alert('Password must be longer than five characters');
+    } else if (password.length < 8) {
+      Alert.alert('Password must be at least eight characters');
     } else {
       return true;
     }
@@ -242,6 +272,27 @@ export default function SignUp({ navigation }) {
               placeholderTextColor="white"
             />
           </View>
+
+          <SelectCountry
+            style={styles.dropdown}
+            selectedTextStyle={styles.selectedTextStyle}
+            placeholderStyle={styles.placeholderStyle}
+            imageStyle={styles.imageStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            search
+            maxHeight={200}
+            value={country}
+            data={localData}
+            valueField="value"
+            labelField="lable"
+            imageField="image"
+            placeholder="Select country"
+            searchPlaceholder="Search..."
+            onChange={e => {
+              setCountry(e.value);
+            }}
+          />
 
           <View style={styles.signButton}>
             <TouchableOpacity onPress={handleSignUp} style={styles.button}>
