@@ -6,7 +6,6 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
 import PropTypes from 'prop-types';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
@@ -60,14 +59,16 @@ function StoryStarterStackScreen() {
 
 const SettingsStack = createNativeStackNavigator();
 
-function SettingsStackScreen() {
+function SettingsStackScreen({ navigation, setUser }) {
+  console.log('blah', typeof setUser);
   return (
     <SettingsStack.Navigator initialRouteName="Settings">
       <SettingsStack.Screen
         name="App Settings"
-        component={AppSettingsScreen}
         options={{ headerShown: false, title: 'Story Starters' }}
-      />
+      >
+        {() => <AppSettingsScreen navigation={navigation} setUser={setUser} />}
+      </SettingsStack.Screen>
       <SettingsStack.Screen name="Account Information" component={AccountInformationScreen} options={{ headerShown: false }} />
       <SettingsStack.Screen name="Edit First Name" component={EditFirstNameScreen} options={{ headerShown: false }} />
       <SettingsStack.Screen name="Edit Password" component={EditPasswordScreen} options={{ headerShown: false }} />
@@ -82,8 +83,8 @@ function HomeStackScreen() {
     <HomeStack.Navigator initialRouteName="App Home">
       <HomeStack.Screen
         name="Home Screen"
-        component={HomeScreen}
         options={{ title: 'HomeScreen' }}
+        component={HomeScreen}
       />
       <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
@@ -174,6 +175,7 @@ export default function AppNavigation({ user, setUser }) {
   const [isLoading, setIsLoading] = useState(true);
   const { id, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  console.log('yah', typeof setUser);
 
   const populateRedux = async (userObj) => {
     if (userObj === null) {
@@ -219,17 +221,16 @@ export default function AppNavigation({ user, setUser }) {
           <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
           <Tab.Screen
             name="Center"
-            component={HomeStackScreen}
             options={middleTabOptions}
+            component={HomeStackScreen}
           />
           <Tab.Screen name="Mind & Body" component={MindBodyStackScreen} options={createtabOptions(mindBodyIcon)} />
           <Tab.Screen
             name="Settings"
-            component={SettingsStackScreen}
-            // eslint-disable-next-line react/no-children-prop
-            children={() => <HomeScreen setUser={setUser} />}
             options={createtabOptions(settingsIcon)}
-          />
+          >
+            {() => <SettingsStackScreen setUser={setUser} />}
+          </Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
     ) : (
@@ -251,4 +252,11 @@ AppNavigation.propTypes = {
 
 AppNavigation.defaultProps = {
   user: null,
+};
+
+SettingsStackScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+  setUser: PropTypes.func.isRequired,
 };

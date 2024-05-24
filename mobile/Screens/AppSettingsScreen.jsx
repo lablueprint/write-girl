@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Image, View, Text, Dimensions, StyleSheet, ScrollView, TouchableHighlight,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import accountIcon from '../assets/settings-icons/account-icon.png';
 import rightArrowIcon from '../assets/settings-icons/right-arrow-icon.png';
 import trashIcon from '../assets/settings-icons/trash-icon.png';
 import logoutIcon from '../assets/settings-icons/logout-icon.png';
 import gears from '../assets/settings-icons/gears.png';
+import { logout } from '../redux/sliceAuth';
 
 const styles = StyleSheet.create({
   all: {
@@ -66,7 +68,18 @@ const styles = StyleSheet.create({
   },
 });
 
-function AppSettingsScreen({ navigation }) {
+function AppSettingsScreen({ navigation, setUser }) {
+  const dispatch = useDispatch();
+
+  const onPressLogOut = async () => {
+    try {
+      await dispatch(logout());
+      setUser(null);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const navigateAccountInfo = () => {
     navigation.navigate('Account Information');
   };
@@ -96,7 +109,7 @@ function AppSettingsScreen({ navigation }) {
           <Image
             source={logoutIcon}
           />
-          <Text style={styles.buttontext}>Logout</Text>
+          <Text style={styles.buttontext} onPress={onPressLogOut} color="#841584">Log Out</Text>
         </View>
         <View style={styles.button}>
           <Image
@@ -122,6 +135,7 @@ AppSettingsScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default AppSettingsScreen;
