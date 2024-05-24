@@ -32,7 +32,7 @@ import PocketPromptScreen from '../Screens/PocketPromptScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
 // import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
-import ProgressiveWritingScreen from '../Screens/WritingActivities/ProgressiveWritingScreen';
+import ProgressiveWritingScreen from '../Screens/WritingActivities/ProgressiveWriting';
 import HistoryScreen from '../Screens/HistoryScreen';
 
 const StoryStarterStack = createNativeStackNavigator();

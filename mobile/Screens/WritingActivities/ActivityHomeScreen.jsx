@@ -21,7 +21,7 @@ const activityData = [
     activity: 'Pocket Prompts',
     description: 'Let the collection of objects and words inspire a poem, story or even a song. Dont think...',
     image: PocketPromptsImage,
-    pageDirect: 'Home',
+    pageDirect: 'Pocket Prompt Home',
   },
   {
     activity: 'Story Starters',
