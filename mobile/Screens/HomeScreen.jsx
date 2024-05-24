@@ -21,13 +21,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(20, 22, 21, 1)',
   },
   imageBackground: {
-    width: '100%',
-    height: '100%',
-    position: 'relative',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width,
     marginTop: -20,
   },
   textContainer: {
-    position: 'absolute',
     paddingTop: 50,
     paddingLeft: 20,
     paddingRight: 20,
@@ -37,6 +35,13 @@ const styles = StyleSheet.create({
     fontSize: 50,
     paddingTop: 90,
   },
+  title: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    padding: '5%',
+    paddingTop: 0,
+  },
   greeting: {
     color: 'white',
     fontSize: 20,
@@ -44,8 +49,9 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   carouselContainer: {
-    flex: 1,
+    height: Dimensions.get('window').width / 1.5,
     marginTop: 10,
+    marginBottom: '5%',
   },
 });
 
@@ -114,6 +120,7 @@ export default function HomeScreen({ navigation }) {
           </Text>
         </View>
       </ImageBackground>
+      <Text style={styles.title}>Writing Activities</Text>
       <View style={styles.carouselContainer}>
         <Carousel
           loop
@@ -122,7 +129,6 @@ export default function HomeScreen({ navigation }) {
           autoPlay
           data={activityData}
           scrollAnimationDuration={10000}
-          onSnapToItem={(index) => console.log('current index:', index)}
           renderItem={({ item, index }) => (
             <ActivityNavigationCard
               key={index}
@@ -135,6 +141,8 @@ export default function HomeScreen({ navigation }) {
           )}
         />
       </View>
+      <Text style={styles.title}>Explore More</Text>
+
     </ScrollView>
   );
 }
