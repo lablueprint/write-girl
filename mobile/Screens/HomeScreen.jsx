@@ -111,6 +111,10 @@ export default function HomeScreen({ navigation }) {
   const directToTripleFlip = () => {
     navigation.navigate('Triple Flip');
   };
+  
+  const navigatePocketPrompt = () => {
+    navigation.navigate('Pocket Prompt Home');
+  };
 
   return (
     <ScrollView>
@@ -131,6 +135,7 @@ export default function HomeScreen({ navigation }) {
         <Text>Home Screen</Text>
       </View>
       <Button title="Triple Flips" onPress={directToTripleFlip} />
+      <Button title="Pocket Prompts" onPress={navigatePocketPrompt}>Pocket Prompts</Button>
     </ScrollView>
   );
 }

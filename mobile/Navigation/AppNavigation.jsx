@@ -27,6 +27,8 @@ import EditFirstNameScreen from '../Screens/EditFirstNameScreen';
 import EditPasswordScreen from '../Screens/EditPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import LogInScreen from '../Screens/LogInScreen';
+import PocketPromptHomeScreen from '../Screens/PocketPromptHomeScreen';
+import PocketPromptScreen from '../Screens/PocketPromptScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
 // import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
@@ -81,6 +83,18 @@ function HomeStackScreen() {
       <HomeStack.Screen name="Door Activity" component={ProgressiveWritingScreen} />
       <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Pocket Prompt Home" component={PocketPromptHomeScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen
+        name="Pocket Prompts"
+        component={PocketPromptScreen}
+        options={{
+          headerTransparent: true,
+          headerTitleStyle: {
+            fontSize: 24,
+          },
+          headerTintColor: '#fff',
+        }}
+      />
     </HomeStack.Navigator>
   );
 }
