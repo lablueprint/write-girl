@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
-import StoryStarterComponent from '../Screens/StoryStarters/StoryStarterComponent';
+import StoryStarterComponent from '../Screens/StoryStarters/StoryStarterPage';
 import MindBodyScreen from '../Screens/MindBody/MindBodyScreen';
 import ActivityTypeScreen from '../Screens/MindBody/ActivityTypeScreen';
 import ActivityDurationScreen from '../Screens/MindBody/ActivityDurationScreen';
@@ -45,22 +45,24 @@ function StoryStarterStackScreen() {
         component={StoryStarterScreen}
         options={{ headerShown: false }}
       />
-      <StoryStarterStack.Screen
-        name="Objects"
-        children={() => (<StoryStarterComponent title="OBJECT" route="item" textColor="#7BAC8A" />)}
-      />
+      <StoryStarterStack.Screen name="Objects">
+        {() => (<StoryStarterComponent title="OBJECT" route="item" textColor="#7BAC8A" />)}
+      </StoryStarterStack.Screen>
       <StoryStarterStack.Screen
         name="Settings"
-        children={() => (<StoryStarterComponent title="SETTING" route="setting" textColor="#BFD25A" />)}
-      />
+      >
+        {() => (<StoryStarterComponent title="SETTING" route="setting" textColor="#BFD25A" />)}
+      </StoryStarterStack.Screen>
       <StoryStarterStack.Screen
         name="Character Traits"
-        children={() => (<StoryStarterComponent title="CHARACTER TRAIT" route="characterTrait" textColor="#DC5F41" />)}
-      />
+      >
+        {() => (<StoryStarterComponent title="CHARACTER TRAIT" route="characterTrait" textColor="#DC5F41" />)}
+      </StoryStarterStack.Screen>
       <StoryStarterStack.Screen
         name="Plot Points"
-        children={() => (<StoryStarterComponent title="PLOT POINT" route="plotPoint" textColor="#5BB2CF" />)}
-      />
+      >
+        {() => (<StoryStarterComponent title="PLOT POINT" route="plotPoint" textColor="#5BB2CF" />)}
+      </StoryStarterStack.Screen>
     </StoryStarterStack.Navigator>
   );
 }
