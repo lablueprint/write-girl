@@ -1,9 +1,13 @@
+import { React, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   Image, View, ImageBackground, Dimensions,
 } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useDispatch, useSelector } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
+import PropTypes from 'prop-types';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
@@ -33,6 +37,8 @@ import PasswordResetScreen from '../Screens/PasswordResetScreen';
 // import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 import HistoryScreen from '../Screens/HistoryScreen';
+import { isTokenExpired, login } from '../redux/sliceAuth';
+import LoadingScreen from './Loading';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -164,43 +170,85 @@ const middleTabOptions = {
 
 };
 
-function MainAppScreen() {
+export default function AppNavigation({ user, setUser }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const { id, token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const populateRedux = async (userObj) => {
+    if (userObj === null) {
+      return;
+    }
+    await dispatch(login(JSON.parse(userObj)));
+  };
+
+  useEffect(() => {
+    // Simulate an API call
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    populateRedux(user);
+  }, [user]);
+
+  if (isLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: {
-          backgroundColor: 'black',
-          height: Dimensions.get('window').height / 10,
-        },
-      }}
-      initialRouteName="Center"
-    >
-      <Tab.Screen
-        name="Writing Activities"
-        component={ActivityHomeScreen}
-        options={createtabOptions(writingActivitiesIcon)}
-      />
-      <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
-      <Tab.Screen
-        name="Center"
-        component={HomeStackScreen}
-        options={middleTabOptions}
-      />
-      <Tab.Screen name="Mind & Body" component={MindBodyStackScreen} options={createtabOptions(mindBodyIcon)} />
-      <Tab.Screen name="Settings" component={SettingsStackScreen} options={createtabOptions(settingsIcon)} />
-    </Tab.Navigator>
+    (token && !isTokenExpired(token) && id) ? (
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarStyle: {
+              backgroundColor: 'black',
+              height: Dimensions.get('window').height / 10,
+            },
+          }}
+          initialRouteName="Center"
+        >
+          <Tab.Screen
+            name="Writing Activities"
+            component={ActivityHomeScreen}
+            options={createtabOptions(writingActivitiesIcon)}
+          />
+          <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
+          <Tab.Screen
+            name="Center"
+            component={HomeStackScreen}
+            options={middleTabOptions}
+          />
+          <Tab.Screen name="Mind & Body" component={MindBodyStackScreen} options={createtabOptions(mindBodyIcon)} />
+          <Tab.Screen
+            name="Settings"
+            component={SettingsStackScreen}
+            // eslint-disable-next-line react/no-children-prop
+            children={() => <HomeScreen setUser={setUser} />}
+            options={createtabOptions(settingsIcon)}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    ) : (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="Forgot Password" component={PasswordResetScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
   );
 }
 
-export default function AppNavigation() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Home" component={MainAppScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Forgot Password" component={PasswordResetScreen} options={{ headerShown: false, gestureEnabled: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+AppNavigation.propTypes = {
+  user: PropTypes.string,
+  setUser: PropTypes.func.isRequired,
+};
+
+AppNavigation.defaultProps = {
+  user: null,
+};

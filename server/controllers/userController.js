@@ -1,14 +1,7 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
-
-const createUser = async (req, res) => {
-  const user = new User(req.body);
-  try {
-    const data = await user.save(user);
-    res.send(data);
-  } catch (err) {
-    console.error(err);
-  }
-};
+const passport = require('../utils/passportConfig');
 
 const updateUser = async (req, res) => {
   try {
@@ -19,7 +12,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-// Send [activityID]
 const addSavedActivities = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -32,7 +24,6 @@ const addSavedActivities = async (req, res) => {
   }
 };
 
-// Send [pepTalkID]
 const addSavedPepTalks = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -45,7 +36,6 @@ const addSavedPepTalks = async (req, res) => {
   }
 };
 
-// Send [writingTipID]
 const addSavedWritingTips = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -58,7 +48,6 @@ const addSavedWritingTips = async (req, res) => {
   }
 };
 
-// Send [tripleFlipID]
 const addSavedTripleFlips = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -112,7 +101,6 @@ const getTripleFlipHistory = async (req, res) => {
   }
 };
 
-// Send [traitsID]
 const addSavedTraits = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -125,7 +113,6 @@ const addSavedTraits = async (req, res) => {
   }
 };
 
-// Send [plotID]
 const addSavedPlots = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -138,7 +125,6 @@ const addSavedPlots = async (req, res) => {
   }
 };
 
-// Send [settingID]
 const addSavedSettings = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -151,7 +137,6 @@ const addSavedSettings = async (req, res) => {
   }
 };
 
-// Send [itemID]
 const addSavedItems = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -391,7 +376,7 @@ const removeSavedTripleFlips = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pull: { savedTripleFlips: req.body } },
+      { $pullAll: { savedTripleFlips: req.body } },
     );
     res.json(data);
   } catch (err) {
@@ -447,8 +432,57 @@ const removeSavedItems = async (req, res) => {
   }
 };
 
+const userSignUp = async (req, res, next) => {
+  const userExists = await User.findOne({ email: req.body.email });
+  if (userExists) {
+    return res.json({ error: 'That email already exists.' });
+  }
+  try {
+    // Generate a salted passwordr
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hashSync(req.body.password, salt);
+    // Create a new user object with secure password
+    const secureUser = { ...req.body };
+    secureUser.password = hashedPassword;
+    // Save user in database
+    const user = new User(secureUser);
+    await user.save(user);
+
+    passport.authenticate('user-log-in', (err, userInfo, info) => {
+      console.log('callback');
+      if (err) { return next(err); }
+      if (!userInfo) { return res.json({ error: info.message }); }
+      console.log(userInfo.id);
+      return req.logIn(userInfo, { session: false }, (e) => {
+        if (err) return next(e);
+        const token = jwt.sign({ id: userInfo.id }, process.env.JWT_SECRET);
+        return res.json({ id: userInfo.id, token });
+      });
+    })(req, res, next);
+
+    // Send success response
+    // return res.send('User successfully created!');
+  } catch (err) {
+    return res.status(404).json({ error: 'Unable to create a user properly' });
+  }
+};
+
+const userLogIn = async (req, res, next) => {
+  console.log('file');
+  passport.authenticate('user-log-in', (err, user, info) => {
+    console.log('callback');
+    if (err) { return next(err); }
+    if (!user) { return res.json({ error: info.message }); }
+    console.log(user.id);
+    return req.logIn(user, { session: false }, (e) => {
+      if (err) return next(e);
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      return res.json({ id: user.id, token });
+    });
+  })(req, res, next);
+};
+
 module.exports = {
-  createUser,
   updateUser,
   addTripleFlipHistory,
   addSavedActivities,
@@ -481,4 +515,6 @@ module.exports = {
   removeSavedPlots,
   removeSavedSettings,
   removeSavedItems,
+  userLogIn,
+  userSignUp,
 };
