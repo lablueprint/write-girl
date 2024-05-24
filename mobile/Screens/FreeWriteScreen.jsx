@@ -92,17 +92,17 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: '100%',
 
-    borderColor: 'pink',
-    borderWidth: 2,
-    borderStyle: 'dotted',
+    // borderColor: 'pink',
+    // borderWidth: 2,
+    // borderStyle: 'dotted',
   },
   svg: {
     // position: 'absolute',
     ...StyleSheet.absoluteFill,
     zIndex: -1,
-    borderColor: 'black',
-    borderWidth: 2,
-    borderStyle: 'dotted',
+    // borderColor: 'black',
+    // borderWidth: 2,
+    // borderStyle: 'dotted',
   },
   title: {
     fontSize: 50,
@@ -130,15 +130,29 @@ export default function FreeWriteScreen() {
   const photographer = 'Bob';
   const [timerPressed, setTimerPressed] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(require('../assets/free-write-icons/background.jpg'));
+  const [sceneHistory, setSceneHistory] = useState([]);
+  const [i, setI] = useState(0);
+  const [sceneSelected, setSceneSelected] = useState(null);
 
   const handlePress = () => {
     setTimerPressed(!timerPressed);
   };
 
   const changeScene = (message) => {
-    console.log('message is: ', message);
+    console.log('change scene: ', message);
     setBackgroundImage(message);
+    setSceneSelected(message);
   };
+
+  useEffect(() => {
+    setSceneHistory([...sceneHistory, sceneSelected]);
+    setI(Math.max(sceneHistory.length - 1, 0));
+    console.log('scene index right now: ', i);
+    sceneHistory.map((item) => {
+      console.log('map: ', item);
+      // return null;
+    });
+  }, [sceneSelected]);
 
   return (
     <ImageBackground
@@ -162,7 +176,7 @@ export default function FreeWriteScreen() {
             </Pressable>
           ) : null}
           {!isMusicOpen ? (
-            <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} creator={photographer} changeBackground={changeScene} />
+            <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} creator={photographer} changeBackground={changeScene} sceneHistory={sceneHistory} currIndex={i} />
           ) : null}
         </View>
       </View>

@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
     zIndex: 4,
     // width: '100%',
 
-    borderColor: 'red',
-    borderWidth: 2,
-    borderStyle: 'dotted',
+    // borderColor: 'red',
+    // borderWidth: 2,
+    // borderStyle: 'dotted',
     // position: 'absolute',
     // width: windowWidth,
     // top: '50%', // Adjust this to set vertical positioning if needed
@@ -96,9 +96,9 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -windowWidth * 0.84 }],
     zIndex: 4,
 
-    borderColor: 'green',
-    borderWidth: 2,
-    borderStyle: 'dotted',
+    // borderColor: 'green',
+    // borderWidth: 2,
+    // borderStyle: 'dotted',
 
     // position: 'absolute',
     // width: windowWidth,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
 });
 
 export default function ModalScreen({
-  icon, name, modalIcon, isMusicOpen, setIsMusicOpen, isImageOpen, setIsImageOpen, creator, changeBackground,
+  icon, name, modalIcon, isMusicOpen, setIsMusicOpen, isImageOpen, setIsImageOpen, creator, changeBackground, sceneHistory, currIndex,
 }) {
   // const [isOpen, setIsOpen] = useState(false);
   const modalizeRef = useRef(null);
@@ -213,13 +213,17 @@ export default function ModalScreen({
   const [musicDetail, setMusicDetail] = useState('----');
   const [imageDetail, setImageDetail] = useState('----');
   const [sound, setSound] = useState(null);
-  const [musicSelected, setMusicSelected] = useState(require('../../assets/birds.wav'));
+  const [musicSelected, setMusicSelected] = useState(null);
   // const [isPlaying, setIsPlaying] = useState(false);
   // const [isLoaded, setIsLoaded] = useState(false);
-  const [prevMusic, setPrevMusic] = useState('Rain Sounds');
-  const [prevScene, setPrevScene] = useState('Icy River');
-  const [nextMusic, setNextMusic] = useState('Rain Sounds');
-  const [nextScene, setNextScene] = useState('Icy River');
+  // const [prevMusic, setPrevMusic] = useState(null);
+  const [i, setI] = useState(0);
+  const [j, setJ] = useState(0);
+  const [musicHistory, setMusicHistory] = useState([null]);
+  const [imageTitleHistory, setImageTitleHistory] = useState([]);
+  // const [prevScene, setPrevScene] = useState(null);
+  const [nextMusic, setNextMusic] = useState(null);
+  const [nextScene, setNextScene] = useState(null);
 
   const handlePresentModalPress = useCallback(() => {
     if (modalizeRef.current) {
@@ -244,13 +248,6 @@ export default function ModalScreen({
     }
   }, []);
 
-  async function loadSound() {
-    console.log('loading sound');
-    setSound(await Audio.Sound.createAsync(require('../../assets/sample.mp3')));
-    // setSound(music);
-    setIsLoaded(true);
-  }
-
   async function updateSound(message) {
     const { sound: music } = await Audio.Sound.createAsync(message);
     setSound(music);
@@ -264,7 +261,7 @@ export default function ModalScreen({
 
   useEffect(() => {
     async function playSound() {
-      if (sound) {
+      if (playMusic && sound) { // originally if (sound)
         console.log('Playing sound...');
         await sound.playAsync();
       } else {
@@ -280,44 +277,35 @@ export default function ModalScreen({
   }
 
   const changeMusic = (message) => {
+    // if (musicHistory.length !== 0) {
+    //   setMusicHistory([...musicHistory, { key: songTitle, value: musicSelected }]);
+    // }
+    // setMusicHistory([...musicHistory, { key: songTitle, value: musicSelected }]);
+
+    // setPrevMusic(musicSelected);
     console.log('change music: ', message);
     setMusicSelected(message);
+    unloadSound();
+    // if (songTitle !== 'No Music') {
+    //   setMusicHistory([...musicHistory, { key: songTitle, value: message }]);
+    // }
+    // setI(musicHistory.length - 1);
+    // console.log('index right now: ', i);
+    // musicHistory.map((item) => {
+    //   console.log('map: ', item);
+    //   // return null;
+    // });
   };
 
-  // useEffect(() => () => { // avoid memory leaks
-  //   if (sound) {
-  //     sound.unloadAsync();
-  //   }
-  // }, [sound]);
-
-  // async function playSound() {
-  //   // if (isLoaded) {
-  //   // console.log('and here');
-  //   await sound.playAsync();
-  //   // console.log('playing sound');
-  //   // }
-  // }
-
-  // useEffect(() => {
-  //   if (sound) {
-  //     console.log('unloading sound');
-  //     sound.unloadAsync();
-  //     setSound(null);
-  //     setIsLoaded(false);
-  //   }
-  // }, [sound]);
-
-  // useEffect(() => {
-  //   console.log('loaded: ', isLoaded);
-  //   playSound();
-  // }, [isLoaded]);
-
-  // useEffect(() => {
-  //   console.log('sound: ', sound);
-  //   // if (sound) {
-  //   playSound();
-  //   // }
-  // }, [sound]);
+  useEffect(() => {
+    setMusicHistory([...musicHistory, { key: songTitle, value: musicSelected }]);
+    setI(musicHistory.length - 1);
+    console.log('index right now: ', i);
+    musicHistory.map((item) => {
+      console.log('map: ', item);
+      // return null;
+    });
+  }, [musicSelected]);
 
   const handlePlay = () => {
     // if (songTitle === 'No Music') {
@@ -353,20 +341,68 @@ export default function ModalScreen({
 
   const handleBack = () => {
     console.log('hit back');
+    console.log('currIndex: ', currIndex);
+    setJ(currIndex);
     if (name === 'Music') {
-
+      console.log('musicHistory.length: ', musicHistory.length);
+      if (musicHistory.length === 0) {
+        return;
+      }
+      unloadSound();
+      // if (playMusic) {
+      setI((prevI) => prevI - 1);
+      console.log('index: ', i);
+      console.log('backed sound: ', musicHistory[i]);
+      updateSound(musicHistory[i].value);
+      setSongTitle(musicHistory[i].key);
+      setMusicDetail(musicHistory[i].key);
+      // } else if (!playMusic) {
+      // unloadSound();
+      // }
     }
     if (name === 'Scene') {
-      changeBackground(prevScene);
+      if (sceneHistory.length === 0) {
+        return;
+      }
+      setJ(currIndex - 1);
+      // console.log('index j: ', j);
+      // console.log('backed image: ', sceneHistory[j]);
     }
   };
 
+  // useEffect(() => {
+  //   if (!sceneHistory) {
+  //     return;
+  //   }
+  //   console.log('index j: ', j);
+  //   console.log('backed image: ', sceneHistory[j]);
+  //   changeBackground(sceneHistory[j]);
+  //   setImageTitle(imageTitleHistory[j]);
+  // }, [currIndex]);
+
   const handleForward = () => {
     console.log('hit forward');
+    if (name === 'Music') {
+      if (i > musicHistory.length - 1) {
+        return;
+      }
+      unloadSound();
+      if (playMusic) {
+        setI((prevI) => prevI + 1);
+        console.log('index: ', i);
+        console.log('forward sound: ', musicHistory[i]);
+        updateSound(musicHistory[i].value);
+        setSongTitle(musicHistory[i].key);
+        setMusicDetail(musicHistory[i].key);
+      } else if (!playMusic) {
+        unloadSound();
+      }
+    }
     if (name === 'Scene') {
       changeBackground(nextScene);
     }
   };
+
   const handleTitle = (message) => {
     if (name === 'Music') {
       setSongTitle(message);
@@ -374,6 +410,7 @@ export default function ModalScreen({
     } else if (name === 'Scene') {
       setImageTitle(message);
       setImageDetail('Current Scene');
+      setImageTitleHistory([...imageTitleHistory, message]);
     }
   };
 
@@ -509,6 +546,8 @@ ModalScreen.propTypes = {
   isImageOpen: PropTypes.bool,
   setIsImageOpen: PropTypes.func,
   changeBackground: PropTypes.func,
+  sceneHistory: PropTypes.array,
+  currIndex: PropTypes.number,
   // mediaTitle: PropTypes.string,
   creator: PropTypes.string,
   // mediaName: PropTypes.string,
@@ -521,6 +560,8 @@ ModalScreen.defaultProps = {
   setIsImageOpen: null,
   creator: '',
   changeBackground: null,
+  sceneHistory: null,
+  currIndex: 0,
   // mediaName: '----',
   // mediaTitle: '',
 };

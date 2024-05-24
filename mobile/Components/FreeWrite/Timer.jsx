@@ -21,6 +21,10 @@ const stopTimer = `<svg width="22" height="22" viewBox="0 0 22 22" fill="none" x
 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.6 15.4H15.4V6.6H6.6V15.4ZM11 0C4.928 0 0 4.928 0 11C0 17.072 4.928 22 11 22C17.072 22 22 17.072 22 11C22 4.928 17.072 0 11 0Z" fill="white"/>
 </svg>`;
 
+const playTimer = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M23.5 11.634C24.1667 12.0189 24.1667 12.9811 23.5 13.366L7.75 22.4593C7.08333 22.8442 6.25 22.3631 6.25 21.5933V3.40673C6.25 2.63693 7.08333 2.15581 7.75 2.54071L23.5 11.634Z" fill="white"/>
+</svg>`;
+
 const styles = StyleSheet.create({
   timer: {
     alignItems: 'center',
@@ -29,33 +33,33 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
 
-    borderColor: 'black',
-    borderWidth: 2,
-    borderStyle: 'dotted',
+    // borderColor: 'black',
+    // borderWidth: 2,
+    // borderStyle: 'dotted',
   },
   buttons: {
     flexDirection: 'row',
 
-    borderColor: 'red',
-    borderWidth: 2,
-    borderStyle: 'dotted',
+    // borderColor: 'red',
+    // borderWidth: 2,
+    // borderStyle: 'dotted',
   },
   pause: {
     justifyContent: 'space-between',
     alignContents: 'center',
     paddingRight: 100,
 
-    borderColor: 'blue',
-    borderWidth: 2,
-    borderStyle: 'dotted',
+    // borderColor: 'blue',
+    // borderWidth: 2,
+    // borderStyle: 'dotted',
   },
   stop: {
     justifyContent: 'flex-end',
     paddingRight: 100,
 
-    borderColor: 'orange',
-    borderWidth: 2,
-    borderStyle: 'dotted',
+    // borderColor: 'orange',
+    // borderWidth: 2,
+    // borderStyle: 'dotted',
   },
   time: {
     color: 'white',
@@ -135,7 +139,7 @@ export default function Timer() {
         key={timerKey}
         isPlaying={isPlaying}
         duration={totalTime}
-        colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+        colors={['#245764', '#7EA591', '#D1752D', '#DE5B45']}
         colorsTime={[7, 5, 2, 0]}
         isSmoothColorTransition
         onComplete={() => restartTimer()}
@@ -148,7 +152,8 @@ export default function Timer() {
       </CountdownCircleTimer>
       <View style={styles.buttons}>
         <Pressable onPress={handlePause}>
-          <SvgXml xml={pauseTimer} style={styles.pause} />
+          {isPlaying ? <SvgXml xml={pauseTimer} style={styles.pause} />
+            : <SvgXml xml={playTimer} style={styles.pause} />}
         </Pressable>
         <Pressable onPress={handleStop}>
           <SvgXml xml={stopTimer} style={styles.stop} />
