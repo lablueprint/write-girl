@@ -32,6 +32,7 @@ import PocketPromptScreen from '../Screens/PocketPromptScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
 // import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
+import ProgressiveWritingScreen from '../Screens/WritingActivities/ProgressiveWriting';
 import HistoryScreen from '../Screens/HistoryScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
@@ -79,6 +80,7 @@ function HomeStackScreen() {
         component={HomeScreen}
         options={{ title: 'HomeScreen' }}
       />
+      <HomeStack.Screen name="Door Activity" component={ProgressiveWritingScreen} />
       <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="Pocket Prompt Home" component={PocketPromptHomeScreen} options={{ headerShown: false }} />
@@ -172,6 +174,14 @@ function MainAppScreen() {
           backgroundColor: 'black',
           height: Dimensions.get('window').height / 10,
         },
+        headerStyle: {
+          backgroundColor: '#021921',
+        },
+        headerTitleStyle: {
+          fontSize: 24,
+        },
+        headerTintColor: '#fff',
+        headerShadowVisible: false,
       }}
       initialRouteName="Center"
     >
