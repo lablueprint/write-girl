@@ -6,6 +6,7 @@ import {
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
+import StoryStarterCard from '../Components/StoryStarterCard';
 
 // List of genre mappings in order
 const genreColors = {
@@ -353,13 +354,10 @@ export default function SavedScreen({ navigation }) {
           </View>
         </View>
         <Text style={styles.normalText}>Most recent</Text>
-        {plotPoints.map((starter, index) => (
-          <View style={styles.storyStarterCard} key={starter._id}>
-            <Text style={styles.normalText}>
-              {starter.plotPoint}
-            </Text>
-          </View>
-        ))}
+        <StoryStarterCard
+          category="Plot Points"
+          storyStarters={plotPoints.map((starter) => (starter.plotPoint))}
+        />
         <View style={styles.headingContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Traits</Text>
@@ -371,13 +369,10 @@ export default function SavedScreen({ navigation }) {
           </View>
         </View>
         <Text style={styles.normalText}>Most recent</Text>
-        {traits.map((starter) => (
-          <View style={styles.storyStarterCard} key={starter._id}>
-            <Text style={styles.normalText}>
-              {starter.trait}
-            </Text>
-          </View>
-        ))}
+        <StoryStarterCard
+          category="Traits"
+          storyStarters={traits.map((starter) => (starter.trait))}
+        />
         <View style={styles.headingContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Objects</Text>
@@ -389,13 +384,10 @@ export default function SavedScreen({ navigation }) {
           </View>
         </View>
         <Text style={styles.normalText}>Most recent</Text>
-        {items.map((starter) => (
-          <View style={styles.storyStarterCard} key={starter._id}>
-            <Text style={styles.normalText}>
-              {starter.item}
-            </Text>
-          </View>
-        ))}
+        <StoryStarterCard
+          category="Objects"
+          storyStarters={items.map((starter) => (starter.item))}
+        />
         <View style={styles.headingContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Settings</Text>
@@ -407,13 +399,10 @@ export default function SavedScreen({ navigation }) {
           </View>
         </View>
         <Text style={styles.normalText}>Most recent</Text>
-        {settings.map((starter) => (
-          <View style={styles.storyStarterCard} key={starter._id}>
-            <Text style={styles.normalText}>
-              {starter.setting}
-            </Text>
-          </View>
-        ))}
+        <StoryStarterCard
+          category="Settings"
+          storyStarters={settings.map((starter) => (starter.setting))}
+        />
         <View style={styles.headingContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Triple Flips</Text>
