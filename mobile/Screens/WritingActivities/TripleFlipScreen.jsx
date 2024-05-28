@@ -187,9 +187,9 @@ export default function TripleFlipScreen({ navigation }) {
         const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlipHistory/65bc75ca64a9510aeb9c5cc0`, tripleFlip);
         return response;
       }
-      console.log('User ID is null.');
+      console.error('User ID is null.');
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return -1;
   };
@@ -208,10 +208,10 @@ export default function TripleFlipScreen({ navigation }) {
 
     try {
       if (!userId) {
-        console.log('User ID is null.');
+        console.error('User ID is null.');
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return userId;
   }

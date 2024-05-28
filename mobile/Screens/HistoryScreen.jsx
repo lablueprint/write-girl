@@ -101,10 +101,10 @@ async function getId() {
   const userId = '65bc75ca64a9510aeb9c5cc0';
   try {
     if (!userId) {
-      console.log('User ID is null.');
+      console.error('User ID is null.');
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
   return userId;
 }
@@ -120,7 +120,7 @@ export default function HistoryScreen({ navigation }) {
       setFlipHistory(JSON.parse(JSON.stringify(res.data.tripleFlipHistory)).reverse());
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return err;
     }
   };

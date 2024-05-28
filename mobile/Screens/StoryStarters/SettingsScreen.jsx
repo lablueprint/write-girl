@@ -67,7 +67,7 @@ export default function SettingsScreen() {
       setSetting(randomSetting.data);
       setResultShown(true);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return true;
   };

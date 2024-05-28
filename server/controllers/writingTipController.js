@@ -22,7 +22,7 @@ const getRandomWritingTip = async () => {
       // Extract the talk string from the random document
     const randomWritingTipMsg = randomWritingTip.length > 0 ? randomWritingTip[0].writingTip : null;
     if (randomWritingTipMsg === null) {
-      console.log('No valid writing tip found');
+      console.error('No valid writing tip found');
       return 'No writing tips here!';
     }
     return randomWritingTipMsg;

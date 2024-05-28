@@ -16,10 +16,10 @@ export default function SavedScreen() {
 
     try {
       if (!userId) {
-        console.log('User ID is null.');
+        console.error('User ID is null.');
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return userId;
   }
@@ -32,9 +32,9 @@ export default function SavedScreen() {
         setAllSaved(saved.data);
         return saved.data;
       }
-      console.log('User ID is null.');
+      console.error('User ID is null.');
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return 'True';
   };

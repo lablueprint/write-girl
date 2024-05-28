@@ -1,14 +1,7 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
-
-const createUser = async (req, res) => {
-  const user = new User(req.body);
-  try {
-    const data = await user.save(user);
-    res.send(data);
-  } catch (err) {
-    console.error(err);
-  }
-};
+const passport = require('../utils/passportConfig');
 
 const updateUser = async (req, res) => {
   try {
@@ -19,7 +12,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-// Send [activityID]
 const addSavedActivities = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -28,11 +20,10 @@ const addSavedActivities = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-// Send [pepTalkID]
 const addSavedPepTalks = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -41,11 +32,10 @@ const addSavedPepTalks = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-// Send [writingTipID]
 const addSavedWritingTips = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -54,11 +44,10 @@ const addSavedWritingTips = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-// Send [tripleFlipID]
 const addSavedTripleFlips = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -67,7 +56,7 @@ const addSavedTripleFlips = async (req, res) => {
     );
     res.send(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -99,7 +88,7 @@ const addTripleFlipHistory = async (req, res) => {
     }
     res.send(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -108,11 +97,10 @@ const getTripleFlipHistory = async (req, res) => {
     const data = await User.findOne({ _id: req.params.userId }, 'tripleFlipHistory -_id');
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-// Send [traitsID]
 const addSavedTraits = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -121,11 +109,10 @@ const addSavedTraits = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-// Send [plotID]
 const addSavedPlots = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -134,11 +121,10 @@ const addSavedPlots = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-// Send [settingID]
 const addSavedSettings = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -147,11 +133,10 @@ const addSavedSettings = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
-// Send [itemID]
 const addSavedItems = async (req, res) => {
   try {
     const data = await User.updateOne(
@@ -160,7 +145,7 @@ const addSavedItems = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -181,7 +166,7 @@ const getAllSaved = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      console.log(res.status(404).json({ message: 'User not found' }));
+      console.error(res.status(404).json({ message: 'User not found' }));
     }
 
     const {
@@ -218,7 +203,7 @@ const getStoryStarters = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      console.log(res.status(404).json({ message: 'User not found' }));
+      console.error(res.status(404).json({ message: 'User not found' }));
     }
     const {
       savedTraits,
@@ -259,7 +244,7 @@ const getSavedActivities = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -270,7 +255,7 @@ const getSavedPepTalks = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -281,7 +266,7 @@ const getSavedWritingTips = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -292,7 +277,7 @@ const getSavedTripleFlips = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -303,7 +288,7 @@ const getSavedTraits = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -314,7 +299,7 @@ const getSavedPlots = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -325,7 +310,7 @@ const getSavedSettings = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -336,7 +321,7 @@ const getSavedItems = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -347,7 +332,7 @@ const deleteUser = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -359,7 +344,7 @@ const removeSavedActivities = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -371,7 +356,7 @@ const removeSavedPepTalks = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -383,7 +368,7 @@ const removeSavedWritingTips = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -391,11 +376,11 @@ const removeSavedTripleFlips = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pull: { savedTripleFlips: req.body } },
+      { $pullAll: { savedTripleFlips: req.body } },
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -407,7 +392,7 @@ const removeSavedTraits = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -419,7 +404,7 @@ const removeSavedPlots = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -431,7 +416,7 @@ const removeSavedSettings = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -443,12 +428,56 @@ const removeSavedItems = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
+const userSignUp = async (req, res, next) => {
+  const userExists = await User.findOne({ email: req.body.email });
+  if (userExists) {
+    return res.json({ error: 'That email already exists.' });
+  }
+  try {
+    // Generate a salted passwordr
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hashSync(req.body.password, salt);
+    // Create a new user object with secure password
+    const secureUser = { ...req.body };
+    secureUser.password = hashedPassword;
+    // Save user in database
+    const user = new User(secureUser);
+    await user.save(user);
+
+    passport.authenticate('user-log-in', (err, userInfo, info) => {
+      if (err) { return next(err); }
+      if (!userInfo) { return res.json({ error: info.message }); }
+      return req.logIn(userInfo, { session: false }, (e) => {
+        if (err) return next(e);
+        const token = jwt.sign({ id: userInfo.id }, process.env.JWT_SECRET);
+        return res.json({ id: userInfo.id, token });
+      });
+    })(req, res, next);
+
+    // Send success response
+    // return res.send('User successfully created!');
+  } catch (err) {
+    return res.status(404).json({ error: 'Unable to create a user properly' });
+  }
+};
+
+const userLogIn = async (req, res, next) => {
+  passport.authenticate('user-log-in', (err, user, info) => {
+    if (err) { return next(err); }
+    if (!user) { return res.json({ error: info.message }); }
+    return req.logIn(user, { session: false }, (e) => {
+      if (err) return next(e);
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      return res.json({ id: user.id, token });
+    });
+  })(req, res, next);
+};
+
 module.exports = {
-  createUser,
   updateUser,
   addTripleFlipHistory,
   addSavedActivities,
@@ -481,4 +510,6 @@ module.exports = {
   removeSavedPlots,
   removeSavedSettings,
   removeSavedItems,
+  userLogIn,
+  userSignUp,
 };

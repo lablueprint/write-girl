@@ -21,7 +21,7 @@ export default function WritingTipScreen() {
       setWritingTip(randomWritingTip.data);
       return randomWritingTip.data;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return 'True';
   };

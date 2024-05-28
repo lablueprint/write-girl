@@ -21,7 +21,7 @@ const getRandomCharacterTrait = async () => {
       // Extract the talk string from the random document
     const extractedRandomTrait = randomTrait.length > 0 ? randomTrait[0].trait : null;
     if (extractedRandomTrait === null) {
-      console.log('No valid trait found');
+      console.error('No valid trait found');
       return 'No traits here!';
     }
     return extractedRandomTrait;

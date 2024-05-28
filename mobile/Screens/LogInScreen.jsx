@@ -1,9 +1,12 @@
 import { React, useState } from 'react';
 import {
-  View, TextInput, Button, Alert, StyleSheet, Text, Pressable, Image,
+  View, TextInput, Button, StyleSheet, Text, Pressable, Image, Alert,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import welcomeIcon from '../assets/welcomeIcon.png';
+import { login } from '../redux/sliceAuth';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,7 +18,7 @@ const styles = StyleSheet.create({
   centered: {
     alignItems: 'center',
   },
-  signButton: {
+  loginButton: {
     backgroundColor: '#D9D9D9',
     borderRadius: 5,
     marginTop: 20,
@@ -71,11 +74,10 @@ const styles = StyleSheet.create({
 export default function LogIn({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, onChangePassword] = useState('');
-
+  const dispatch = useDispatch();
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
 
-  // Make the display of the password hidden
   const handleChangePassword = (newText) => {
     const lastLetter = newText.slice(-1);
     if (newText.length > password.length) {
@@ -97,18 +99,27 @@ export default function LogIn({ navigation }) {
     onChangeHiddenPassword(newTextWithDots);
   };
 
-  const handleLogIn = () => {
-    setEmail('');
-    onChangePassword('');
-    navigation.navigate('Home');
+  const handleLogIn = async () => {
+    try {
+      const userData = {
+        email,
+        password,
+      };
+      const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/user-log-in`, userData);
+      if (res.data.error) {
+        console.error(res.data.error);
+      } else {
+        // Create tokens for persistent data
+        await dispatch(login(res.data));
+      }
+    } catch (err) {
+      console.error(err.message);
+      Alert.alert('Error', 'Invalid username or password');
+    }
   };
 
   const redirectSignUp = () => {
     navigation.navigate('Sign Up');
-  };
-
-  const redirectPasswordReset = () => {
-    navigation.navigate('Forgot Password');
   };
 
   return (
@@ -120,7 +131,7 @@ export default function LogIn({ navigation }) {
         Login
       </Text>
       <Text style={styles.subTitle}>
-        Please Sign in to continue.
+        Please Login to continue.
       </Text>
       <View style={styles.inputContainer}>
         <Image source={welcomeIcon} style={styles.icon} />
@@ -146,13 +157,13 @@ export default function LogIn({ navigation }) {
 
       <Text style={styles.smallSubtitle}>
         Forgot your passwords?
-        <Pressable onPress={redirectPasswordReset}>
+        <Pressable>
           <Text style={styles.resetButton}> Reset Here.</Text>
         </Pressable>
       </Text>
 
-      <View style={styles.signButton}>
-        <Button title="Sign In" onPress={handleLogIn} color="#000000" />
+      <View style={styles.loginButton}>
+        <Button title="Log In" onPress={handleLogIn} color="#000000" />
       </View>
       <Text style={styles.signUpText}>
         Don't have an account?
