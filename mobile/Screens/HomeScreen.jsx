@@ -3,6 +3,7 @@ import {
   StyleSheet, Text, View, Button, Dimensions, ScrollView,
 } from 'react-native';
 import axios from 'axios';
+import Storage from '../Components/Storage';
 import PropTypes from 'prop-types';
 import HomeScreenCard from '../Components/HomeScreenCard';
 import TabBar from '../Components/HomeScreenTab';
@@ -47,7 +48,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
+  const [allSaved, setAllSaved] = useState('');
+  const [activities, setActivities] = useState('');
+  const [storyStarters, setStoryStarters] = useState('');
+  const [pepTalks, setPepTalks] = useState('');
+  const [writingTips, setWritingTips] = useState('');
+  const [tripleFlips, setTripleFlips] = useState('');
   const [page, setPage] = React.useState('pep_talk');
   const [cardData, setCardData] = React.useState('default_text');
 
@@ -101,6 +108,14 @@ export default function HomeScreen() {
     </View>
   );
 
+  const directToTripleFlip = () => {
+    navigation.navigate('Triple Flip');
+  };
+  
+  const navigatePocketPrompt = () => {
+    navigation.navigate('Pocket Prompt Home');
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -119,6 +134,14 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <Text>Home Screen</Text>
       </View>
+      <Button title="Triple Flips" onPress={directToTripleFlip} />
+      <Button title="Pocket Prompts" onPress={navigatePocketPrompt}>Pocket Prompts</Button>
     </ScrollView>
   );
 }
+
+HomeScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

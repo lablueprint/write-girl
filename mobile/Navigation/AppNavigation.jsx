@@ -7,21 +7,33 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
+import MindBodyScreen from '../Screens/MindBody/MindBodyScreen';
+import ActivityTypeScreen from '../Screens/MindBody/ActivityTypeScreen';
+import ActivityDurationScreen from '../Screens/MindBody/ActivityDurationScreen';
+import MindBodyDeckScreen from '../Screens/MindBody/MindBodyDeckScreen';
 import ObjectsScreen from '../Screens/StoryStarters/ObjectsScreen';
 import SettingsScreen from '../Screens/StoryStarters/SettingsScreen';
 import TraitsScreen from '../Screens/StoryStarters/TraitsScreen';
 import PlotPointsScreen from '../Screens/StoryStarters/PlotPointsScreen';
-import MindBodyScreen from '../Screens/MindBodyScreen';
 import homeIcon from '../assets/home-icon.png';
 import writingActivitiesIcon from '../assets/writing-activities-icon.png';
 import storyStarterIcon from '../assets/story-starters-icon.png';
 import mindBodyIcon from '../assets/mind-body-icon.png';
-import howToIcon from '../assets/how-to-icon.png';
+import settingsIcon from '../assets/settings-icon.png';
 import whiteCircle from '../assets/white-circle.png';
+import AppSettingsScreen from '../Screens/AppSettingsScreen';
+import AccountInformationScreen from '../Screens/AccountInformationScreen';
+import EditFirstNameScreen from '../Screens/EditFirstNameScreen';
+import EditPasswordScreen from '../Screens/EditPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import LogInScreen from '../Screens/LogInScreen';
+import PocketPromptHomeScreen from '../Screens/PocketPromptHomeScreen';
+import PocketPromptScreen from '../Screens/PocketPromptScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
 // import SavedScreen from '../Screens/SavedScreen';
+import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
+import ProgressiveWritingScreen from '../Screens/WritingActivities/ProgressiveWriting';
+import HistoryScreen from '../Screens/HistoryScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -41,8 +53,71 @@ function StoryStarterStackScreen() {
   );
 }
 
+const SettingsStack = createNativeStackNavigator();
+
+function SettingsStackScreen() {
+  return (
+    <SettingsStack.Navigator initialRouteName="Settings">
+      <SettingsStack.Screen
+        name="App Settings"
+        component={AppSettingsScreen}
+        options={{ headerShown: false, title: 'Story Starters' }}
+      />
+      <SettingsStack.Screen name="Account Information" component={AccountInformationScreen} options={{ headerShown: false }} />
+      <SettingsStack.Screen name="Edit First Name" component={EditFirstNameScreen} options={{ headerShown: false }} />
+      <SettingsStack.Screen name="Edit Password" component={EditPasswordScreen} options={{ headerShown: false }} />
+    </SettingsStack.Navigator>
+  );
+}
+
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator initialRouteName="App Home">
+      <HomeStack.Screen
+        name="Home Screen"
+        component={HomeScreen}
+        options={{ title: 'HomeScreen' }}
+      />
+      <HomeStack.Screen name="Door Activity" component={ProgressiveWritingScreen} />
+      <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Pocket Prompt Home" component={PocketPromptHomeScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen
+        name="Pocket Prompts"
+        component={PocketPromptScreen}
+        options={{
+          headerTransparent: true,
+          headerTitleStyle: {
+            fontSize: 24,
+          },
+          headerTintColor: '#fff',
+        }}
+      />
+    </HomeStack.Navigator>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+const MindBodyStack = createNativeStackNavigator();
+
+function MindBodyStackScreen() {
+  return (
+    <MindBodyStack.Navigator initialRouteName="Mind and Body">
+      <MindBodyStack.Screen
+        name="Mind and Body Stack"
+        component={MindBodyScreen}
+        options={{ title: 'Mind and Body' }}
+      />
+      <MindBodyStack.Screen name="Activity Type" component={ActivityTypeScreen} options={{ headerBackTitleVisible: false }} />
+      <MindBodyStack.Screen name="Activity Duration" component={ActivityDurationScreen} options={{ headerBackTitleVisible: false }} />
+      <MindBodyStack.Screen name="Mind and Body Deck" component={MindBodyDeckScreen} options={{ headerBackTitleVisible: false }} />
+    </MindBodyStack.Navigator>
+  );
+}
 
 const createtabOptions = (icon) => ({
   tabBarIcon: () => (
@@ -50,6 +125,7 @@ const createtabOptions = (icon) => ({
       source={icon}
     />
   ),
+  headerShown: icon !== settingsIcon,
 });
 
 const middleTabOptions = {
@@ -90,7 +166,7 @@ const middleTabOptions = {
 
 };
 
-function HomeStackScreen() {
+function MainAppScreen() {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -98,6 +174,14 @@ function HomeStackScreen() {
           backgroundColor: 'black',
           height: Dimensions.get('window').height / 10,
         },
+        headerStyle: {
+          backgroundColor: '#021921',
+        },
+        headerTitleStyle: {
+          fontSize: 24,
+        },
+        headerTintColor: '#fff',
+        headerShadowVisible: false,
       }}
       initialRouteName="Center"
     >
@@ -109,11 +193,11 @@ function HomeStackScreen() {
       <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
       <Tab.Screen
         name="Center"
-        component={HomeScreen}
+        component={HomeStackScreen}
         options={middleTabOptions}
       />
-      <Tab.Screen name="Mind & Body" component={MindBodyScreen} options={createtabOptions(mindBodyIcon)} />
-      <Tab.Screen name="How To" component={MindBodyScreen} options={createtabOptions(howToIcon)} />
+      <Tab.Screen name="Mind & Body" component={MindBodyStackScreen} options={createtabOptions(mindBodyIcon)} />
+      <Tab.Screen name="Settings" component={SettingsStackScreen} options={createtabOptions(settingsIcon)} />
     </Tab.Navigator>
   );
 }
@@ -124,7 +208,7 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Log In" component={LogInScreen} options={{ headerShown: false, gestureEnabled: false }} />
-        <Stack.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="Home" component={MainAppScreen} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Forgot Password" component={PasswordResetScreen} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </NavigationContainer>
