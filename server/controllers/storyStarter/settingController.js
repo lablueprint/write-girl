@@ -21,7 +21,7 @@ const getRandomSetting = async () => {
       // Extract the talk string from the random document
     const extractedRandomSetting = randomSetting.length > 0 ? randomSetting[0].setting : null;
     if (extractedRandomSetting === null) {
-      console.log('No valid setting found');
+      console.error('No valid setting found');
       return 'No settings here!';
     }
     return extractedRandomSetting;

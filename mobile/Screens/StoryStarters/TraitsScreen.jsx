@@ -67,7 +67,7 @@ export default function TraitsScreen() {
       setTrait(randomTrait.data);
       setResultShown(true);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return true;
   };

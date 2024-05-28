@@ -14,9 +14,7 @@ passport.use('user-log-in', new LocalStrategy(
   async (email, password, done) => {
     try {
       // Check if a user exists
-      console.log('config file');
       const userExists = await User.findOne({ email });
-      console.log(email);
       if (!userExists) {
         return done(null, false, { message: 'That user does not exist' });
       }

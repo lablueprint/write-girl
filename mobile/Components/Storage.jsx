@@ -8,7 +8,7 @@ export default function Storage({ key, value, saveKey }) {
   async function getValue() {
     const result = await SecureStore.getItemAsync(key);
     if (!result) {
-      console.log('No values stored under that key.');
+      console.error('No values stored under that key.');
       return 'No values stored under this key.';
     }
     return result;

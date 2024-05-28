@@ -21,7 +21,7 @@ const getRandomPlotPoint = async () => {
       // Extract the talk string from the random document
     const extractedRandomPoint = randomPoint.length > 0 ? randomPoint[0].plotPoint : null;
     if (extractedRandomPoint === null) {
-      console.log('No valid plot point found');
+      console.error('No valid plot point found');
       return 'No plot points here!';
     }
     return extractedRandomPoint;

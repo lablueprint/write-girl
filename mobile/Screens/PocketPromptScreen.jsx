@@ -39,7 +39,7 @@ export default function PocketPromptScreen() {
       setPocketPrompt(randomPocketPrompt.data);
       return randomPocketPrompt.data;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return 'True';
   };

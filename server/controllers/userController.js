@@ -20,7 +20,7 @@ const addSavedActivities = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -32,7 +32,7 @@ const addSavedPepTalks = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -44,7 +44,7 @@ const addSavedWritingTips = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -56,7 +56,7 @@ const addSavedTripleFlips = async (req, res) => {
     );
     res.send(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -88,7 +88,7 @@ const addTripleFlipHistory = async (req, res) => {
     }
     res.send(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -97,7 +97,7 @@ const getTripleFlipHistory = async (req, res) => {
     const data = await User.findOne({ _id: req.params.userId }, 'tripleFlipHistory -_id');
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -109,7 +109,7 @@ const addSavedTraits = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -121,7 +121,7 @@ const addSavedPlots = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -133,7 +133,7 @@ const addSavedSettings = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -145,7 +145,7 @@ const addSavedItems = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -166,7 +166,7 @@ const getAllSaved = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      console.log(res.status(404).json({ message: 'User not found' }));
+      console.error(res.status(404).json({ message: 'User not found' }));
     }
 
     const {
@@ -203,7 +203,7 @@ const getStoryStarters = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      console.log(res.status(404).json({ message: 'User not found' }));
+      console.error(res.status(404).json({ message: 'User not found' }));
     }
     const {
       savedTraits,
@@ -244,7 +244,7 @@ const getSavedActivities = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -255,7 +255,7 @@ const getSavedPepTalks = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -266,7 +266,7 @@ const getSavedWritingTips = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -277,7 +277,7 @@ const getSavedTripleFlips = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -288,7 +288,7 @@ const getSavedTraits = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -299,7 +299,7 @@ const getSavedPlots = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -310,7 +310,7 @@ const getSavedSettings = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -321,7 +321,7 @@ const getSavedItems = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -332,7 +332,7 @@ const deleteUser = async (req, res) => {
       msg: data,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -344,7 +344,7 @@ const removeSavedActivities = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -356,7 +356,7 @@ const removeSavedPepTalks = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -368,7 +368,7 @@ const removeSavedWritingTips = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -380,7 +380,7 @@ const removeSavedTripleFlips = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -392,7 +392,7 @@ const removeSavedTraits = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -404,7 +404,7 @@ const removeSavedPlots = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -416,7 +416,7 @@ const removeSavedSettings = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -428,7 +428,7 @@ const removeSavedItems = async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -449,10 +449,8 @@ const userSignUp = async (req, res, next) => {
     await user.save(user);
 
     passport.authenticate('user-log-in', (err, userInfo, info) => {
-      console.log('callback');
       if (err) { return next(err); }
       if (!userInfo) { return res.json({ error: info.message }); }
-      console.log(userInfo.id);
       return req.logIn(userInfo, { session: false }, (e) => {
         if (err) return next(e);
         const token = jwt.sign({ id: userInfo.id }, process.env.JWT_SECRET);
@@ -468,12 +466,9 @@ const userSignUp = async (req, res, next) => {
 };
 
 const userLogIn = async (req, res, next) => {
-  console.log('file');
   passport.authenticate('user-log-in', (err, user, info) => {
-    console.log('callback');
     if (err) { return next(err); }
     if (!user) { return res.json({ error: info.message }); }
-    console.log(user.id);
     return req.logIn(user, { session: false }, (e) => {
       if (err) return next(e);
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);

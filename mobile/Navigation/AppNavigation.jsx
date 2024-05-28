@@ -59,15 +59,14 @@ function StoryStarterStackScreen() {
 
 const SettingsStack = createNativeStackNavigator();
 
-function SettingsStackScreen({ navigation, setUser }) {
-  console.log('blah', typeof setUser);
+function SettingsStackScreen({ setUser }) {
   return (
     <SettingsStack.Navigator initialRouteName="Settings">
       <SettingsStack.Screen
         name="App Settings"
         options={{ headerShown: false, title: 'Story Starters' }}
       >
-        {() => <AppSettingsScreen navigation={navigation} setUser={setUser} />}
+        {() => <AppSettingsScreen setUser={setUser} />}
       </SettingsStack.Screen>
       <SettingsStack.Screen name="Account Information" component={AccountInformationScreen} options={{ headerShown: false }} />
       <SettingsStack.Screen name="Edit First Name" component={EditFirstNameScreen} options={{ headerShown: false }} />
@@ -175,7 +174,6 @@ export default function AppNavigation({ user, setUser }) {
   const [isLoading, setIsLoading] = useState(true);
   const { id, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  console.log('yah', typeof setUser);
 
   const populateRedux = async (userObj) => {
     if (userObj === null) {
@@ -255,8 +253,5 @@ AppNavigation.defaultProps = {
 };
 
 SettingsStackScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }).isRequired,
   setUser: PropTypes.func.isRequired,
 };

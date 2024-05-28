@@ -99,16 +99,6 @@ export default function LogIn({ navigation }) {
     onChangeHiddenPassword(newTextWithDots);
   };
 
-  // const storeToken = async (user) => {
-  //   try {
-  //     console.log('user: ', user);
-  //     console.log('string user: ', JSON.stringify(user));
-  //     await SecureStore.setItemAsync('user', JSON.stringify(user));
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
-
   const handleLogIn = async () => {
     try {
       const userData = {
@@ -116,10 +106,8 @@ export default function LogIn({ navigation }) {
         password,
       };
       const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/user-log-in`, userData);
-      console.log('res: ', res);
       if (res.data.error) {
         console.error(res.data.error);
-        console.log('couldnt find?');
       } else {
         // Create tokens for persistent data
         await dispatch(login(res.data));

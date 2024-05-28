@@ -80,7 +80,7 @@ function Card() {
       setMindBodyDeck(res.data);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return err;
     }
   };

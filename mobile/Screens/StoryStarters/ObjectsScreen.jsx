@@ -68,7 +68,7 @@ export default function ObjectsScreen() {
       setResultShown(true);
       return randomItem.data;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return true;
   };

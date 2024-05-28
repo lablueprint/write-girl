@@ -129,18 +129,12 @@ export default function SignUp({ navigation }) {
       if (res.data.error) {
         console.error(res.data.error);
       } else {
-        console.log('successfully signed up');
-        // const userId = res.data.id;
-        // Storage({ key: 'hello', value: userId, saveKey: true });
-        // navigation.navigate('Log In');
-        console.log('resdata', res.data.id, res.data.token);
         await dispatch(login(res.data));
       }
     } catch (err) {
-      console.log(err.message);
+      console.error(err.message);
     }
     onChangePassword('');
-    // navigation.navigate('Home');
   };
 
   const redirectLogIn = () => {

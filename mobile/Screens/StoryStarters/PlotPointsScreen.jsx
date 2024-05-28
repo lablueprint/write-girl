@@ -67,7 +67,7 @@ export default function PlotPointsScreen() {
       setPlotPoint(randomPlotPoint.data);
       setResultShown(true);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     return true;
   };
