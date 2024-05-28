@@ -5,6 +5,7 @@ import {
 import axios from 'axios';
 import { SelectCountry } from 'react-native-element-dropdown';
 import PropTypes from 'prop-types';
+import PasswordValidate from 'react-native-password-validate-checklist';
 import Storage from '../Components/Storage';
 import emailIcon from '../assets/sign-up/emailIcon.png';
 import nameIcon from '../assets/sign-up/nameIcon.png';
@@ -123,9 +124,9 @@ export default function SignUp({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://restcountries.com/v2/all');
+        const response = await axios.get('https://restcountries.eu/rest/v2/all');
         const formattedData = response.data.map(country => ({
-          value: 1,
+          value: country.alpha2Code,
           label: country.name,
           image: {
             uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
@@ -136,12 +137,12 @@ export default function SignUp({ navigation }) {
         console.error(error);
       }
     };
-
     fetchData();
   }, []);
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
+  const [validated, setValidated] = useState(false);
 
   const validateEmail = (text) => {
     const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
@@ -176,8 +177,6 @@ export default function SignUp({ navigation }) {
       Alert.alert('Please enter a valid email to proceed');
     } else if (password === '') {
       Alert.alert('Please enter a password to proceed');
-    } else if (password.length < 8) {
-      Alert.alert('Password must be at least eight characters');
     } else {
       return true;
     }
@@ -260,6 +259,28 @@ export default function SignUp({ navigation }) {
               placeholderTextColor="white"
             />
           </View>
+
+          <PasswordValidate
+            newPassword={password}
+            confirmPassword={password}
+            validationRules={[
+              {
+                key: 'MIN_LENGTH',
+                ruleValue: 8,
+                label: 'At least 8 characters',
+              },
+              { key: 'LOWERCASE_LETTER',
+                label: 'A lowercase letter',
+              },
+              { key: 'UPPERCASE_LETTER',
+                label: 'A uppercase letter',
+              },
+              { key: 'NUMERIC',
+                label: 'A number or symbol',
+              },
+            ]}
+            onPasswordValidateChange={(validatedBoolean) => setValidated(validatedBoolean)}
+          />
 
           <View style={styles.inputContainerCountry}>
             <Image source={countryIcon} style={styles.icon} />
