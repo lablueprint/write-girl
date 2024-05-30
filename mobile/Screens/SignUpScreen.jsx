@@ -1,11 +1,12 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import {
-  View, TextInput, Alert, StyleSheet, Text, Pressable, Image, ImageBackground, TouchableOpacity,
+  View, TextInput, Alert, StyleSheet, Text, Pressable, Image, ImageBackground, TouchableOpacity, Dimensions
 } from 'react-native';
 import axios from 'axios';
-import { SelectCountry } from 'react-native-element-dropdown';
+import RNPickerSelect from 'react-native-picker-select';
 import PropTypes from 'prop-types';
 import PasswordValidate from 'react-native-password-validate-checklist';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import Storage from '../Components/Storage';
 import emailIcon from '../assets/sign-up/emailIcon.png';
 import nameIcon from '../assets/sign-up/nameIcon.png';
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     marginTop: 60,
     padding: 14,
+    color: '#fff',
   },
   icon: {
     marginRight: 14,
@@ -106,39 +108,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 5,
   },
-  dropdown: {
-    margin: 16,
-    height: 50,
-    borderBottomColor: 'gray',
-    borderBottomWidth: 0.5,
+  passwordValidate: {
+    marginTop: 10,
+    backgroundColor: '#fff',
+    borderRadius: 14,
   },
-  
+  passwordReqText: {
+    paddingTop: 10,
+    paddingLeft: 10,
+  },
+  passwordLabel: {
+    fontFamily: 'Helvetica Neue',
+    fontSize: 13,
+  },
+  arrow: {
+    marginLeft: -20,
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+    paddingRight: Dimensions.get('window').width / 1.7,
+  },
+  inputAndroid: {
+    fontSize: 16,
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+    padding: Dimensions.get('window').width / 1.7,
+  },
 });
 export default function SignUp({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, onChangePassword] = useState('');
-  const [country, setCountry] = useState('1');
-  const [localData, setLocalData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://restcountries.eu/rest/v2/all');
-        const formattedData = response.data.map(country => ({
-          value: country.alpha2Code,
-          label: country.name,
-          image: {
-            uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
-          },
-        }));
-        setLocalData(formattedData);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, []);
+  const [country, setCountry] = useState();
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
@@ -218,6 +225,12 @@ export default function SignUp({ navigation }) {
     navigation.navigate('Home');
   };
 
+  const pickerPlaceholder = {
+    label: 'Country',
+    value: null,
+    color: 'black',
+  };
+
   return (
     <View className="signUp" style={styles.container}>
       <ImageBackground
@@ -257,63 +270,58 @@ export default function SignUp({ navigation }) {
               value={hiddenPassword}
               placeholder="Password"
               placeholderTextColor="white"
+              onFocus={() => setIsPasswordFocused(true)}
+              onBlur={() => setIsPasswordFocused(false)}
             />
           </View>
 
-          <PasswordValidate
-            newPassword={password}
-            confirmPassword={password}
-            validationRules={[
-              {
-                key: 'MIN_LENGTH',
-                ruleValue: 8,
-                label: 'At least 8 characters',
-              },
-              { key: 'LOWERCASE_LETTER',
-                label: 'A lowercase letter',
-              },
-              { key: 'UPPERCASE_LETTER',
-                label: 'A uppercase letter',
-              },
-              { key: 'NUMERIC',
-                label: 'A number or symbol',
-              },
-            ]}
-            onPasswordValidateChange={(validatedBoolean) => setValidated(validatedBoolean)}
-          />
+          {(isPasswordFocused || password) && (
+            <View style={styles.passwordValidate}>
+              <Text style={styles.passwordReqText}>Password Requirements</Text>
+              <PasswordValidate
+                newPassword={password}
+                confirmPassword={password}
+                labelStyle={styles.passwordLabel}
+                validationRules={[
+                  {
+                    key: 'LOWERCASE_LETTER',
+                    label: 'A lowercase letter',
+                  },
+                  {
+                    key: 'UPPERCASE_LETTER',
+                    label: 'A uppercase letter',
+                  },
+                  {
+                    key: 'NUMERIC',
+                    label: 'A number or symbol',
+                  },
+                  {
+                    key: 'MIN_LENGTH',
+                    ruleValue: 8,
+                    label: 'At least 8 characters',
+                  },
+                ]}
+                onPasswordValidateChange={(validated) => setValidated(validated)}
+              />
+            </View>
+          )}
 
           <View style={styles.inputContainerCountry}>
             <Image source={countryIcon} style={styles.icon} />
-            <TextInput
-              style={styles.textfields}
-              secureTextEntry={bool}
-              onChangeText={handleChangePassword}
-              value={hiddenPassword}
-              placeholder="Country"
-              placeholderTextColor="white"
+            <RNPickerSelect
+              style={pickerSelectStyles}
+              onValueChange={(value) => setCountry(value)}
+              items={[
+                { label: 'United States', value: 'United States' },
+                { label: 'Afghanistan', value: 'Afghanistan' },
+                { label: 'Algeria', value: 'Algeria' },
+                { label: 'Albania', value: 'Albania' },
+                { label: 'Andorra', value: 'Andorra' },
+              ]}
+              placeholder={pickerPlaceholder}
             />
+            <AntDesign style={styles.arrow} name="down" size={20} color="white" />
           </View>
-
-          <SelectCountry
-            style={styles.dropdown}
-            selectedTextStyle={styles.selectedTextStyle}
-            placeholderStyle={styles.placeholderStyle}
-            imageStyle={styles.imageStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            search
-            maxHeight={200}
-            value={country}
-            data={localData}
-            valueField="value"
-            labelField="lable"
-            imageField="image"
-            placeholder="Select country"
-            searchPlaceholder="Search..."
-            onChange={e => {
-              setCountry(e.value);
-            }}
-          />
 
           <View style={styles.signButton}>
             <TouchableOpacity onPress={handleSignUp} style={styles.button}>
