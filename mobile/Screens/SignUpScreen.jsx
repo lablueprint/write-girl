@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
   passwordReqText: {
     paddingTop: 10,
     paddingLeft: 10,
+    fontWeight: 'bold',
   },
   passwordLabel: {
     fontFamily: 'Helvetica Neue',

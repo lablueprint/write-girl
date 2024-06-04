@@ -1,12 +1,13 @@
 import { React, useState } from 'react';
 import {
   // eslint-disable-next-line max-len
-  View, TextInput, StyleSheet, Text, Pressable, Image, ImageBackground, Dimensions, TouchableOpacity,
+  View, TextInput, StyleSheet, Text, Pressable, Image, ImageBackground, Dimensions, TouchableOpacity, Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import emailIcon from '../assets/sign-up/emailIcon.png';
 import passwordIcon from '../assets/sign-up/passwordIcon.png';
 import welcomeBackground from '../assets/sign-up/signupbackground.png';
+import warningIcon from '../assets/sign-up/warning.png';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -55,6 +56,9 @@ const styles = StyleSheet.create({
     marginTop: 14,
     padding: 14,
   },
+  inputContainerWarning: {
+    backgroundColor: '#DE5B45', // Change to red for warnings
+  },
   icon: {
     marginRight: 14,
     marginLeft: 10,
@@ -95,6 +99,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 5,
   },
+  warningIcon: {
+    height: 15,
+    width: 15,
+    marginRight: 10,
+  },
+  emailWarningContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: 14,
+    borderRadius: 14,
+  },
+  emailWarningText: {
+    color: 'red',
+    fontSize: 16,
+  },
+  passwordWarningContainer: {
+    marginTop: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: 14,
+    borderRadius: 14,
+  },
+  passwordWarningText: {
+    color: 'red',
+    fontSize: 16,
+  },
 });
 export default function LogIn({ navigation }) {
   const [email, setEmail] = useState('');
@@ -102,6 +134,9 @@ export default function LogIn({ navigation }) {
 
   const [hiddenPassword, onChangeHiddenPassword] = useState('');
   const [bool, setBool] = useState(false);
+
+  const [emailWarning, setEmailWarning] = useState(false);
+  const [passwordWarning, setPasswordWarning] = useState(false);
 
   // Make the display of the password hidden
   const handleChangePassword = (newText) => {
@@ -126,9 +161,20 @@ export default function LogIn({ navigation }) {
   };
 
   const handleLogIn = () => {
-    setEmail('');
-    onChangePassword('');
-    navigation.navigate('Home');
+    if (email !== 'Writegirl@gmail.com') {
+      setEmailWarning(true);
+    } else if (password !== '12345678') {
+      setPasswordWarning(true);
+      if (email === 'Writegirl@gmail.com') {
+        setEmailWarning(false);
+      }
+    } else {
+      setEmailWarning(false);
+      setPasswordWarning(false);
+      setEmail('');
+      onChangePassword('');
+      navigation.navigate('Home');
+    }
   };
 
   const redirectSignUp = () => {
@@ -149,7 +195,13 @@ export default function LogIn({ navigation }) {
           <Text style={styles.heading}>
             Nice to see you again!
           </Text>
-          <View style={styles.inputContainer}>
+          {(emailWarning) && (
+            <View style={styles.emailWarningContainer}>
+              <Image source={warningIcon} style={styles.warningIcon} />
+              <Text style={styles.emailWarningText}>Hmmm... we don't recognize that email</Text>
+            </View>
+          )}
+          <View style={[styles.inputContainer, emailWarning && styles.inputContainerWarning]}>
             <Image source={emailIcon} style={styles.icon} />
             <TextInput
               style={styles.textfields}
@@ -159,7 +211,7 @@ export default function LogIn({ navigation }) {
               placeholderTextColor="white"
             />
           </View>
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, passwordWarning && styles.inputContainerWarning]}>
             <Image source={passwordIcon} style={styles.icon} />
             <TextInput
               style={styles.textfields}
@@ -170,6 +222,12 @@ export default function LogIn({ navigation }) {
               placeholderTextColor="white"
             />
           </View>
+          {(passwordWarning) && (
+            <View style={styles.passwordWarningContainer}>
+              <Image source={warningIcon} style={styles.warningIcon} />
+              <Text style={styles.passwordWarningText}>Ooops! That's the wrong password</Text>
+            </View>
+          )}
 
           <View style={styles.forgotContainer}>
             <Pressable onPress={redirectPasswordReset}>

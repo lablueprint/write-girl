@@ -107,25 +107,38 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica Neue',
     fontWeight: 'bold',
   },
-  resetTextContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 5,
-  },
-  resetText: {
+  resendText: {
     textAlign: 'center',
     fontSize: 16,
     color: 'white',
     fontFamily: 'Helvetica Neue',
   },
-  resetRedirect: {
+  resendButton: {
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
     fontFamily: 'Helvetica Neue',
     textDecorationLine: 'underline',
+  },
+  resendContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 5,
+  },
+  dotContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    marginHorizontal: 2,
   },
 });
 
@@ -212,9 +225,26 @@ export default function PasswordResetScreen({ navigation }) {
           </View>
           <View style={styles.submitButton}>
             <TouchableOpacity onPress={sendPasswordReset} style={styles.button}>
-              <Text style={styles.buttonText}>Submit</Text>
+              <Text style={styles.buttonText}>Send Code</Text>
             </TouchableOpacity>
           </View>
+          <View style={styles.resendContainer}>
+            <Text style={styles.resendText}>
+              Didn't receive the email?
+            </Text>
+            <Pressable onPress={sendPasswordReset}>
+              <Text style={styles.resendButton}> Click to resend</Text>
+            </Pressable>
+          </View>
+          <View style={styles.dotContainer}>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <View
+                key={index}
+                style={[styles.dot, { backgroundColor: index === 0 && step === 'getVerification' ? '#BFD25A' : '#ffffff50' }]}
+              />
+            ))}
+          </View>
+
         </View>,
       ];
     } else if (step === 'verifyCode') {
@@ -225,7 +255,7 @@ export default function PasswordResetScreen({ navigation }) {
           </View>
           <Text style={styles.heading}>Forgot your password? </Text>
           <Text style={styles.subheading}>
-            We've sent a code to 
+            We've sent a code to
             {email}
             . Enter the code you received in your email.
           </Text>
@@ -243,13 +273,21 @@ export default function PasswordResetScreen({ navigation }) {
               <Text style={styles.buttonText}>Enter</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.resetTextContainer}>
-            <Text style={styles.resetText}>
+          <View style={styles.resendContainer}>
+            <Text style={styles.resendText}>
               Didn’t receive the email?
             </Text>
             <Pressable onPress={sendPasswordReset}>
-              <Text style={styles.resetRedirect}> Click to resend</Text>
+              <Text style={styles.resendButton}> Click to resend</Text>
             </Pressable>
+          </View>
+          <View style={styles.dotContainer}>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <View
+                key={index}
+                style={[styles.dot, { backgroundColor: index < 2 && step === 'verifyCode' ? '#BFD25A' : '#ffffff50' }]}
+              />
+            ))}
           </View>
         </View>,
       ];
@@ -288,6 +326,22 @@ export default function PasswordResetScreen({ navigation }) {
             <TouchableOpacity onPress={updatePassword} style={styles.button}>
               <Text style={styles.buttonText}>Enter</Text>
             </TouchableOpacity>
+          </View>
+          <View style={styles.resendContainer}>
+            <Text style={styles.resendText}>
+              Didn’t receive the email?
+            </Text>
+            <Pressable onPress={sendPasswordReset}>
+              <Text style={styles.resendButton}> Click to resend</Text>
+            </Pressable>
+          </View>
+          <View style={styles.dotContainer}>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <View
+                key={index}
+                style={[styles.dot, { backgroundColor: '#BFD25A' }]}
+              />
+            ))}
           </View>
         </View>,
       ];
