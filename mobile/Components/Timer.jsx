@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import {
   Text, View, TouchableOpacity, StyleSheet, Pressable, Dimensions,
 } from 'react-native';
-import { TimerPickerModal } from 'react-native-timer-picker';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { SvgXml } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
+import TimePicker from './TimePicker';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -170,7 +170,7 @@ export default function Timer() {
 
   return (
     <View style={styles.timer}>
-      <TimerPickerModal
+      {/* <TimerPickerModal
         visible={showPicker}
         setIsVisible={setShowPicker}
         onConfirm={(pickedDuration) => {
@@ -190,7 +190,22 @@ export default function Timer() {
         secondLabel=""
         minuteLabel=":"
         padWithNItems={2}
-      />
+      /> */}
+      {
+        showPicker
+          ? (
+            <TimePicker
+              setIsVisible={setShowPicker}
+              onConfirm={(pickedDuration) => {
+                console.log('selected duration', pickedDuration);
+                setAlarmString(formatTime(pickedDuration));
+                console.log('selected formatted time', alarmString);
+                calculateTotalSeconds(pickedDuration);
+                setShowPicker(false);
+              }}
+            />
+          ) : <View />
+      }
       <CountdownCircleTimer
         key={timerKey}
         isPlaying={isPlaying}
