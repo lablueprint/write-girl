@@ -62,12 +62,24 @@ export default function ObjectsScreen() {
   const [resultShown, setResultShown] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  const checkIfSaved = async (value) => {
+    try {
+      const userId = '65bd4fce479f4d7759aa4bc6';
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/checkIfSavedItem/${userId}/${value}`);
+      setSaved(response.data);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return false;
+  };
+
   const getObject = async () => {
     try {
       const randomItem = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/item/get`, { timeout: 20000 });
       setObject(randomItem.data);
       setResultShown(true);
-      setSaved(false);
+      checkIfSaved(randomItem.data._id);
       return randomItem.data;
     } catch (err) {
       console.log(err);
@@ -86,7 +98,7 @@ export default function ObjectsScreen() {
     try {
       if (!saved && userId) {
         const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addItems/${userId}`, objectJSON);
-        setSaved(true);
+        checkIfSaved(object._id);
         return response;
       }
       console.log('User ID is null or already saved.');
@@ -94,6 +106,43 @@ export default function ObjectsScreen() {
       console.log(err);
     }
     return -1;
+  };
+
+  const removeItem = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const objectJSON = {
+      objectID: object._id,
+    };
+
+    try {
+      if (saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeItems/${userId}`, objectJSON);
+        checkIfSaved(object._id);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  }
+
+  const saveButton = () => {
+    let button = <View />;
+    if (resultShown && !saved) {
+      button = (
+        <Pressable style={styles.saveResultButton} onPress={saveItem}>
+          <Text style={styles.saveResultButtonBody}>Save Result</Text>
+        </Pressable>
+      );
+    } else if (resultShown) {
+      button = (
+        <Pressable style={styles.saveResultButton} onPress={removeItem}>
+          <Text style={styles.saveResultButtonBody}>UnSave Result</Text>
+        </Pressable>
+      );
+    }
+    return button;
   };
 
   return (
@@ -114,11 +163,7 @@ export default function ObjectsScreen() {
         <Text style={styles.body}>Randomize</Text>
       </Pressable>
       <View style={styles.container}>
-        {resultShown ? (
-          <Pressable style={styles.saveResultButton} onPress={saveItem}>
-            <Text style={styles.saveResultButtonBody}>Save Result</Text>
-          </Pressable>
-        ) : <View />}
+        {saveButton()}
       </View>
     </View>
   );

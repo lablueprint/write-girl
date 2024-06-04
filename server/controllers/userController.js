@@ -50,7 +50,7 @@ const addSavedWritingTips = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $push: { savedWritingTips: req.body } },
+      { $push: { savedWritingTips: req.body.objectID } },
     );
     res.json(data);
   } catch (err) {
@@ -164,6 +164,78 @@ const addSavedItems = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send('Error processing your request');
+  }
+};
+
+const checkIfSavedItem = async (req, res) => {
+  try {
+    const data = await User.findOne(
+      { _id: req.params.userId, 'savedItems.objectID': req.params.value },
+    );
+    const exists = data !== null;
+    res.json(exists);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const checkIfSavedSetting = async (req, res) => {
+  try {
+    const data = await User.findOne(
+      { _id: req.params.userId, 'savedSettings.settingID': req.params.value },
+    );
+    const exists = data !== null;
+    res.json(exists);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const checkIfSavedPlot = async (req, res) => {
+  try {
+    const data = await User.findOne(
+      { _id: req.params.userId, 'savedPlots.plotID': req.params.value },
+    );
+    const exists = data !== null;
+    res.json(exists);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const checkIfSavedTrait = async (req, res) => {
+  try {
+    const data = await User.findOne(
+      { _id: req.params.userId, 'savedTraits.traitID': req.params.value },
+    );
+    const exists = data !== null;
+    res.json(exists);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const checkIfSavedTripleFlip = async (req, res) => {
+  try {
+    const data = await User.findOne(
+      { _id: req.params.userId, 'savedTripleFlips.flipID': req.params.value },
+    );
+    const exists = data !== null;
+    res.json(exists);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const checkIfSavedActivity = async (req, res) => {
+  try {
+    const data = await User.findOne(
+      { _id: req.params.userId, 'savedActivities.activityID': req.params.value },
+    );
+    const exists = data !== null;
+    res.json(exists);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -358,7 +430,7 @@ const removeSavedActivities = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pullAll: { savedActivities: req.body } },
+      { $pull: { savedActivities: { activityID: req.body.activityID } } },
     );
     res.json(data);
   } catch (err) {
@@ -370,7 +442,7 @@ const removeSavedPepTalks = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pullAll: { savedPepTalks: req.body } },
+      { $pull: { savedPepTalks: { talkID: req.body.talkID } } },
     );
     res.json(data);
   } catch (err) {
@@ -382,7 +454,7 @@ const removeSavedWritingTips = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pullAll: { savedWritingTips: req.body } },
+      { $pull: { savedWritingTips: { tipID: req.body.tipID } } },
     );
     res.json(data);
   } catch (err) {
@@ -394,7 +466,7 @@ const removeSavedTripleFlips = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pull: { savedTripleFlips: req.body } },
+      { $pull: { savedTripleFlips: { flipID: req.body.flipID } } },
     );
     res.json(data);
   } catch (err) {
@@ -406,7 +478,7 @@ const removeSavedTraits = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pullAll: { savedTraits: req.body } },
+      { $pull: { savedTraits: { traitID: req.body.traitID } } },
     );
     res.json(data);
   } catch (err) {
@@ -418,7 +490,7 @@ const removeSavedPlots = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pullAll: { savedPlots: req.body } },
+      { $pull: { savedPlots: { plotID: req.body.plotID } } },
     );
     res.json(data);
   } catch (err) {
@@ -430,7 +502,7 @@ const removeSavedSettings = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pullAll: { savedSettings: req.body } },
+      { $pull: { savedSettings: { settingID: req.body.settingID } } },
     );
     res.json(data);
   } catch (err) {
@@ -442,7 +514,7 @@ const removeSavedItems = async (req, res) => {
   try {
     const data = await User.updateOne(
       { _id: req.params.userId },
-      { $pullAll: { savedItems: req.body } },
+      { $pull: { savedItems: { objectID: req.body.objectID } } },
     );
     res.json(data);
   } catch (err) {
@@ -462,6 +534,12 @@ module.exports = {
   addSavedPlots,
   addSavedSettings,
   addSavedItems,
+  checkIfSavedItem,
+  checkIfSavedSetting,
+  checkIfSavedPlot,
+  checkIfSavedTrait,
+  checkIfSavedTripleFlip,
+  checkIfSavedActivity,
   getUser,
   getAllSaved,
   getStoryStarters,

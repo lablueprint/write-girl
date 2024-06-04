@@ -62,12 +62,24 @@ export default function SettingsScreen() {
   const [resultShown, setResultShown] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  const checkIfSaved = async (value) => {
+    try {
+      const userId = '65bd4fce479f4d7759aa4bc6';
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/checkIfSavedSetting/${userId}/${value}`);
+      setSaved(response.data);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return false;
+  };
+
   const getSetting = async () => {
     try {
       const randomSetting = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/setting/get`, { timeout: 20000 });
       setSetting(randomSetting.data);
       setResultShown(true);
-      setSaved(false);
+      checkIfSaved(randomSetting.data._id);
     } catch (err) {
       console.log(err);
     }
@@ -85,7 +97,7 @@ export default function SettingsScreen() {
     try {
       if (!saved && userId) {
         const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addSettings/${userId}`, settingJSON);
-        setSaved(true);
+        checkIfSaved(setting._id);
         return response;
       }
       console.log('User ID is null or already saved.');
@@ -93,6 +105,43 @@ export default function SettingsScreen() {
       console.log(err);
     }
     return -1;
+  };
+
+  const removeSetting = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const settingJSON = {
+      settingID: setting._id,
+    };
+
+    try {
+      if (saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeSettings/${userId}`, settingJSON);
+        checkIfSaved(setting._id);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
+
+  const saveButton = () => {
+    let button = <View />;
+    if (resultShown && !saved) {
+      button = (
+        <Pressable style={styles.saveResultButton} onPress={saveSetting}>
+          <Text style={styles.saveResultButtonBody}>Save Result</Text>
+        </Pressable>
+      );
+    } else if (resultShown) {
+      button = (
+        <Pressable style={styles.saveResultButton} onPress={removeSetting}>
+          <Text style={styles.saveResultButtonBody}>UnSave Result</Text>
+        </Pressable>
+      );
+    }
+    return button;
   };
 
   return (
@@ -113,11 +162,7 @@ export default function SettingsScreen() {
         <Text style={styles.body}>Randomize</Text>
       </Pressable>
       <View style={styles.container}>
-        {resultShown ? (
-          <Pressable style={styles.saveResultButton} onPress={saveSetting}>
-            <Text style={styles.saveResultButtonBody}>Save Result</Text>
-          </Pressable>
-        ) : <View />}
+        {saveButton()}
       </View>
     </View>
   );

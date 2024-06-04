@@ -147,6 +147,22 @@ export default function TripleFlipScreen({ navigation }) {
   const [endButtonShow, setEndButtonShow] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  const checkIfSaved = async (value) => {
+    try {
+      const userId = '65bd4fce479f4d7759aa4bc6';
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/checkIfSavedTripleFlip/${userId}/${value}`);
+      setSaved(response.data);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return false;
+  };
+
+  const getTripleFlip = async () => {
+    checkIfSaved('123456789');
+  };
+
   useEffect(() => {
     if (step === 0) {
       return;
@@ -180,6 +196,7 @@ export default function TripleFlipScreen({ navigation }) {
     try {
       if (userId) {
         const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlipHistory/${userId}`, tripleFlip);
+        checkIfSaved('123456789');
         return response;
       }
       console.log('User ID is null.');
@@ -232,6 +249,47 @@ export default function TripleFlipScreen({ navigation }) {
     return -1;
   };
 
+  const removeTripleFlip = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const flipJSON = {
+      flipID: '123456789',
+    };
+
+    try {
+      if (saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeTripleFlips/${userId}`, flipJSON);
+        checkIfSaved('123456789');
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
+
+  const saveButton = () => {
+    let button = <View />;
+    if (!saved) {
+      button = (
+        <TouchableOpacity onPress={() => { saveTripleFlip(); }}>
+          <Text style={styles.navbarText}>
+            Bookmark_icon_jpg_here
+          </Text>
+        </TouchableOpacity>
+      );
+    } else {
+      button = (
+        <TouchableOpacity onPress={() => { removeTripleFlip(); }}>
+          <Text style={styles.navbarText}>
+            Filled_Bookmark_icon_jpg_here
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+    return button;
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -271,11 +329,7 @@ export default function TripleFlipScreen({ navigation }) {
                   </TouchableOpacity>
                   { endButtonShow
                     && (
-                      <TouchableOpacity onPress={() => { saveTripleFlip(); }}>
-                        <Text style={styles.navbarText}>
-                          Bookmark_icon_jpg_here
-                        </Text>
-                      </TouchableOpacity>
+                      saveButton()
                     )}
                 </View>
               </View>

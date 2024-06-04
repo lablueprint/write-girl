@@ -294,6 +294,17 @@ export default function ProgressiveWritingScreen() {
   const [step, setStep] = useState(0);
   const [saved, setSaved] = useState(false);
 
+  const checkIfSaved = async (value) => {
+    try {
+      const userId = '65bd4fce479f4d7759aa4bc6';
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/checkIfSavedActivity/${userId}/${value}`);
+      setSaved(response.data);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return false;
+  };
   /*
     getAllActivities
     Queries with GET at the getAllActivities endpoint for all progressive writing activity types.
@@ -335,7 +346,7 @@ export default function ProgressiveWritingScreen() {
     try {
       if (!saved && userId) {
         const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addActivities/${userId}`, activityJSON);
-        setSaved(true);
+        checkIfSaved(genreFilter[selectedActivity]._id);
         return response;
       }
       console.log('User ID is null or already saved.');
@@ -343,6 +354,47 @@ export default function ProgressiveWritingScreen() {
       console.log(err);
     }
     return -1;
+  };
+
+  const selectActivity = (idx) => {
+    setSelectedActivity(idx);
+    checkIfSaved(genreFilter[idx]._id);
+    setStep(2);
+  };
+
+  const removeActivity = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const activityJSON = {
+      activityID: genreFilter[selectedActivity]._id,
+    };
+
+    try {
+      if (saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeActivities/${userId}`, activityJSON);
+        checkIfSaved(activityJSON.activityID);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
+
+  const saveButton = () => {
+    let button = <View />;
+    if (step >= 2 && step === genreFilter[selectedActivity].activity.length) {
+      if (!saved) {
+        button = (
+          <Button title="Save" onPress={() => { saveActivity(); }} />
+        );
+      } else {
+        button = (
+          <Button title="UnSave" onPress={() => { removeActivity(); }} />
+        );
+      }
+    }
+    return button;
   };
 
   // Note: there are ridiculous issues when returning a styled element (i.e. styling disappears :( )
@@ -371,7 +423,7 @@ export default function ProgressiveWritingScreen() {
               <TouchableOpacity
                 key={activity.activity[0]}
                 style={[styles.banner, { backgroundColor: genreInfo[0].color2 }]}
-                onPress={() => [setSelectedActivity(idx), setSaved(false), setStep(2)]}
+                onPress={() => [selectActivity(idx)]}
               >
                 <Text style={styles.doorButtonText}>
                   {activity.activity[0]}
@@ -504,8 +556,7 @@ export default function ProgressiveWritingScreen() {
             >
               <View style={styles.backButton}>
                 <Button title="< Back" onPress={() => { if (step === 0) { setGenreFilter(null); setGenreInfo(null); } else { setStep(0); } }} />
-                {step >= 2 && step === genreFilter[selectedActivity].activity.length
-                && <Button title="Save" onPress={() => { saveActivity(); }} />}
+                {saveButton()}
               </View>
               {/* Filtered Activity Screen */}
               <View style={styles.activityDisplay}>

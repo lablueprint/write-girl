@@ -62,12 +62,24 @@ export default function TraitsScreen() {
   const [resultShown, setResultShown] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  const checkIfSaved = async (value) => {
+    try {
+      const userId = '65bd4fce479f4d7759aa4bc6';
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/checkIfSavedTrait/${userId}/${value}`);
+      setSaved(response.data);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return false;
+  };
+
   const getTrait = async () => {
     try {
       const randomTrait = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/characterTrait/get`, { timeout: 20000 });
       setTrait(randomTrait.data);
       setResultShown(true);
-      setSaved(false);
+      checkIfSaved(randomTrait.data._id);
     } catch (err) {
       console.log(err);
     }
@@ -85,7 +97,7 @@ export default function TraitsScreen() {
     try {
       if (!saved && userId) {
         const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTraits/${userId}`, traitJSON);
-        setSaved(true);
+        checkIfSaved(trait._id);
         return response;
       }
       console.log('User ID is null or already saved.');
@@ -93,6 +105,43 @@ export default function TraitsScreen() {
       console.log(err);
     }
     return -1;
+  };
+
+  const removeTrait = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const traitJSON = {
+      traitID: trait._id,
+    };
+
+    try {
+      if (saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeTraits/${userId}`, traitJSON);
+        checkIfSaved(trait._id);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
+
+  const saveButton = () => {
+    let button = <View />;
+    if (resultShown && !saved) {
+      button = (
+        <Pressable style={styles.saveResultButton} onPress={saveTrait}>
+          <Text style={styles.saveResultButtonBody}>Save Result</Text>
+        </Pressable>
+      );
+    } else if (resultShown) {
+      button = (
+        <Pressable style={styles.saveResultButton} onPress={removeTrait}>
+          <Text style={styles.saveResultButtonBody}>UnSave Result</Text>
+        </Pressable>
+      );
+    }
+    return button;
   };
 
   return (
@@ -113,11 +162,7 @@ export default function TraitsScreen() {
         <Text style={styles.body}>Randomize</Text>
       </Pressable>
       <View style={styles.container}>
-        {resultShown ? (
-          <Pressable style={styles.saveResultButton} onPress={saveTrait}>
-            <Text style={styles.saveResultButtonBody}>Save Result</Text>
-          </Pressable>
-        ) : <View />}
+        {saveButton()}
       </View>
     </View>
   );
