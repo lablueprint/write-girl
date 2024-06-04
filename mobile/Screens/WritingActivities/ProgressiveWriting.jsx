@@ -24,6 +24,13 @@ const month = date.getMonth();
 const monthActivityNum = Math.ceil((month + 1) / 2) - 1;
 
 const styles = StyleSheet.create({
+  homeBackground: {
+    backgroundColor: '#151716',
+  },
+  homeContainer: {
+    marginLeft: 25,
+    marginRight: 25,
+  },
   container: {
     backgroundColor: '#fff',
     display: 'flex',
@@ -139,8 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: 'bold',
     color: 'white',
-    marginLeft: 20,
-    marginRight: 20,
+    fontFamily: 'Helvetica Neue',
     marginBottom: 20,
     marginTop: 60,
   },
@@ -162,17 +168,13 @@ const styles = StyleSheet.create({
   activityBodyText: {
     fontSize: 20,
     marginTop: 20,
-    marginRight: 20,
-    marginLeft: 20,
     color: 'white',
   },
 
   monthDoorText: {
-    fontWeight: 'bold',
     color: 'white',
     fontSize: 20,
-    marginLeft: 20,
-    marginRight: 20,
+    fontFamily: 'Helvetica Neue',
   },
 
   monthDoorImage: {
@@ -424,31 +426,33 @@ export default function ProgressiveWritingScreen() {
         genreFilter === null
           ? (
             <ScrollView>
-              <View style={{
-                backgroundColor: genreLabels[monthActivityNum].color,
-              }}
-              >
-                <Text style={styles.heading}>
-                  Door Activity
-                </Text>
-                <Text style={styles.monthDoorText}>
-                  Door of the month
-                </Text>
-                <Image source={genreLabels[monthActivityNum].image} style={styles.monthDoorImage} />
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity
-                    style={
+              <View style={styles.homeBackground}>
+                <View style={styles.homeContainer}>
+                  <Text style={styles.heading}>
+                    Explore Doors
+                  </Text>
+                  <Text style={styles.monthDoorText}>
+                    Each door represents a different theme. What are you in the mood for?
+                  </Text>
+                  <Image
+                    source={genreLabels[monthActivityNum].image}
+                    style={styles.monthDoorImage}
+                  />
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={
                       [
                         styles.doorButton,
                         { marginBottom: 60, backgroundColor: genreLabels[monthActivityNum].color2 },
                       ]
                     }
-                    onPress={() => { selectActivityGenre(genreLabels[monthActivityNum].label); }}
-                  >
-                    <Text style={styles.doorButtonText}>
-                      {genreLabels[monthActivityNum].label}
-                    </Text>
-                  </TouchableOpacity>
+                      onPress={() => { selectActivityGenre(genreLabels[monthActivityNum].label); }}
+                    >
+                      <Text style={styles.doorButtonText}>
+                        {genreLabels[monthActivityNum].label}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
               <View style={styles.container}>
