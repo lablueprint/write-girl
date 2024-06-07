@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
-    // backgroundColor: 'white',
     alignSelf: 'center',
     borderRadius: 14,
   },
@@ -104,7 +103,7 @@ const imageData = [
 ];
 
 export default function VerticalList({
-  title, play, setTitle, changeMusic, changeBackground,
+  title, setTitle, changeMusic, changeBackground,
 }) {
   return (
     <View>
@@ -115,12 +114,12 @@ export default function VerticalList({
       >
         {title === 'Nature Sounds' ? musicData.map((item) => (
           <View style={styles.allCards}>
-            <Card name={item.name} play={play} setTitle={setTitle} image={item.image} changeMusic={changeMusic} />
+            <Card name={item.name} setTitle={setTitle} image={item.image} changeMusic={changeMusic} />
           </View>
         ))
           : imageData.map((item) => (
             <View style={styles.allCards}>
-              <Card name={item.name} play={play} setTitle={setTitle} image={item.image} changeBackground={changeBackground} />
+              <Card name={item.name} setTitle={setTitle} image={item.image} changeBackground={changeBackground} />
             </View>
           ))}
       </ScrollView>
@@ -130,7 +129,6 @@ export default function VerticalList({
 
 VerticalList.propTypes = {
   title: PropTypes.string.isRequired,
-  play: PropTypes.bool.isRequired,
   setTitle: PropTypes.func.isRequired,
   changeMusic: PropTypes.func,
   changeBackground: PropTypes.func,

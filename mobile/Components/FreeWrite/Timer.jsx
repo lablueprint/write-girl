@@ -32,34 +32,18 @@ const styles = StyleSheet.create({
     top: -windowHeight * 0.4,
     left: 0,
     right: 0,
-
-    // borderColor: 'black',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   buttons: {
     flexDirection: 'row',
-
-    // borderColor: 'red',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   pause: {
     justifyContent: 'space-between',
     alignContents: 'center',
     paddingRight: 100,
-
-    // borderColor: 'blue',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   stop: {
     justifyContent: 'flex-end',
     paddingRight: 100,
-
-    // borderColor: 'orange',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   time: {
     color: 'white',

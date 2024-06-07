@@ -1,22 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-  View, StyleSheet, Pressable, Text, Dimensions, Image, ImageBackground,
+  View, StyleSheet, Pressable, Text, Dimensions, ImageBackground,
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import ModalScreen from '../Components/FreeWrite/ModalScreen';
 import Timer from '../Components/FreeWrite/Timer';
 
 const windowHeight = Dimensions.get('window').height;
-
-const background = `<svg width="430" height="700" viewBox="0 0 430 932" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M259.155 -151.966C377.938 -139.561 444.721 -16.8619 536.445 57.5968C627.342 131.384 760.148 173.614 795.594 283.497C831.021 393.32 744.84 501.211 715.518 612.724C685.859 725.516 703.687 857.351 622.263 942.678C539.469 1029.44 407.566 1051.27 286.41 1062.4C171.386 1072.97 57.2469 1050.88 -47.8734 1004.25C-151.081 958.463 -244.728 892.046 -306.381 799.422C-367.24 707.992 -386.911 598.721 -390.278 489.846C-393.656 380.629 -387.249 266.289 -325.695 174.891C-265.004 84.7749 -153.429 49.2454 -57.4015 -4.42191C46.15 -62.294 140.413 -164.367 259.155 -151.966Z" fill="url(#paint0_radial_4205_4347)"/>
-<defs>
-<radialGradient id="paint0_radial_4205_4347" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(206.5 456) rotate(90) scale(609 597.5)">
-<stop stop-color="#CEFF9E" stop-opacity="0.75"/>
-<stop offset="0.805629" stop-color="#1872B2"/>
-</radialGradient>
-</defs>
-</svg>`;
 
 const imageIcon = `<svg width="145" height="50" viewBox="0 0 145 50" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="145" height="50" rx="14" fill="white" fill-opacity="0.2"/>
@@ -72,17 +62,6 @@ const selectedTimerIcon = `<svg width="50" height="50" viewBox="0 0 50 50" fill=
 </svg>`;
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // position: 'relative',
-    // marginTop: 'auto',
-    // flexDirection: 'row',
-    // justifyContent: 'center',
-
-    // borderColor: 'blue',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
-  },
   icons: {
     // flex: 1,
     position: 'absolute',
@@ -91,30 +70,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     zIndex: 1,
     width: '100%',
-
-    // borderColor: 'pink',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   svg: {
-    // position: 'absolute',
     ...StyleSheet.absoluteFill,
     zIndex: -1,
-    // borderColor: 'black',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   title: {
+    fontFamily: 'Helvetica Neue',
     fontSize: 50,
     fontWeight: 'bold',
     color: 'white',
     padding: 10,
   },
   text: {
+    fontFamily: 'Helvetica Neue',
     color: 'white',
     fontSize: 20,
     fontWeight: 'normal',
-    // padding: 10,
   },
   imageBackground: {
     flex: 1,
@@ -122,16 +94,10 @@ const styles = StyleSheet.create({
 });
 
 export default function FreeWriteScreen() {
-  // const [isOpen, setIsOpen] = useState(false);
   const [isMusicOpen, setIsMusicOpen] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
-  // const songTitle = 'Gentle River Stream';
-  const artist = 'Joji';
-  const photographer = 'Bob';
   const [timerPressed, setTimerPressed] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(require('../assets/free-write-icons/background.jpg'));
-  const [sceneHistory, setSceneHistory] = useState([]);
-  const [i, setI] = useState(0);
   const [sceneSelected, setSceneSelected] = useState(null);
 
   const handlePress = () => {
@@ -139,20 +105,9 @@ export default function FreeWriteScreen() {
   };
 
   const changeScene = (message) => {
-    console.log('change scene: ', message);
     setBackgroundImage(message);
     setSceneSelected(message);
   };
-
-  useEffect(() => {
-    setSceneHistory([...sceneHistory, sceneSelected]);
-    setI(Math.max(sceneHistory.length - 1, 0));
-    console.log('scene index right now: ', i);
-    sceneHistory.map((item) => {
-      console.log('map: ', item);
-      // return null;
-    });
-  }, [sceneSelected]);
 
   return (
     <ImageBackground
@@ -160,7 +115,6 @@ export default function FreeWriteScreen() {
       style={styles.imageBackground}
     >
       <View style={styles.container}>
-        {/* <SvgXml xml={background} style={styles.svg} /> */}
         <Text style={{ ...(timerPressed ? { ...styles.title, fontSize: 20, alignSelf: 'center' } : styles.title) }}>
           FreeWrite
           {'\n'}
@@ -168,7 +122,7 @@ export default function FreeWriteScreen() {
         </Text>
 
         <View style={styles.icons}>
-          <ModalScreen icon={musicIcon} name="Music" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} creator={artist} />
+          <ModalScreen icon={musicIcon} name="Audio" modalIcon={musicModalIcon} isMusicOpen={isMusicOpen} setIsMusicOpen={setIsMusicOpen} />
           {!isImageOpen && !isMusicOpen ? (
             <Pressable onPress={handlePress}>
               {timerPressed ? <SvgXml xml={selectedTimerIcon} /> : <SvgXml xml={timerIcon} />}
@@ -176,7 +130,7 @@ export default function FreeWriteScreen() {
             </Pressable>
           ) : null}
           {!isMusicOpen ? (
-            <ModalScreen icon={imageIcon} name="Scene" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} creator={photographer} changeBackground={changeScene} sceneHistory={sceneHistory} currIndex={i} />
+            <ModalScreen icon={imageIcon} name="Scenery" modalIcon={imageModalIcon} isImageOpen={isImageOpen} setIsImageOpen={setIsImageOpen} changeBackground={changeScene} />
           ) : null}
         </View>
       </View>

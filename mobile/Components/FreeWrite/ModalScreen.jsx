@@ -4,22 +4,19 @@ import React, {
 import {
   View, Text, StyleSheet, Pressable, Dimensions, useWindowDimensions,
 } from 'react-native';
-import BottomSheet, {
+import {
   BottomSheetModal,
   BottomSheetView,
-  BottomSheetScrollView,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
 import {
-  GestureHandlerRootView, NativeViewGestureHandler, ScrollView, FlatList,
+  GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 import PropTypes from 'prop-types';
 import { Audio } from 'expo-av';
-import ScrollList from './ScrollList';
 import VerticalList from './VerticalList';
 
-const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const playIcon = `<svg width="233" height="36" viewBox="0 0 233 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,11 +57,7 @@ const defaultBackground = require('../../assets/free-write-icons/background.jpg'
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     zIndex: '1',
-    // borderColor: 'purple',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   musicModal: {
     display: 'flex',
@@ -73,20 +66,6 @@ const styles = StyleSheet.create({
     left: '50%',
     transform: [{ translateX: -windowWidth * 0.5 }],
     zIndex: 4,
-    // width: '100%',
-
-    // borderColor: 'red',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
-    // position: 'absolute',
-    // width: windowWidth,
-    // top: '50%', // Adjust this to set vertical positioning if needed
-    // left: '-34%',
-    // // transform: [{ translateX: -windowWidth * 0.5 }],
-    // // zIndex: 4,
-    // borderColor: 'red',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   imageModal: {
     display: 'flex',
@@ -95,21 +74,9 @@ const styles = StyleSheet.create({
     left: '90%',
     transform: [{ translateX: -windowWidth * 0.84 }],
     zIndex: 4,
-
-    // borderColor: 'green',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
-
-    // position: 'absolute',
-    // width: windowWidth,
-    // right: '66%',
-    // // transform: [{ translateX: 0.888 }],
-    // // zIndex: 4,
-    // borderColor: 'green',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   title: {
+    fontFamily: 'Helvetica Neue',
     color: 'white',
     margin: 10,
     fontSize: 30,
@@ -122,16 +89,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#2A2A2A',
     alignSelf: 'center',
     borderRadius: 14,
-    // position: 'relative',
-    // flex: 1,
-    // justifyContent: 'center', // Center items vertically
-    flexDirection: 'column', // Ensure children are arranged in a column
-    justifyContent: 'flex-end', // Push children to the bottom
-
-    // borderColor: 'purple',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
-
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
   square: {
     width: '20%',
@@ -144,39 +103,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalIcon: {
-    // height: '90%',
-    // left: '5%',
     alignSelf: 'center',
-  },
-  playIcon: {
-    // position: 'relative',
-    // alignSelf: 'center',
-    // flex: 1,
-    // top: '0',
-    // borderColor: 'purple',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   group: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     padding: 15,
-  },
-  back: {
-    // position: 'relative',
-    // top: '70%',
-    // left: '20%',
-    // borderColor: 'purple',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
-  },
-  forwards: {
-    // position: 'relative',
-    // top: '70%',
-    // right: '20%',
-    // borderColor: 'blue',
-    // borderWidth: 2,
-    // borderStyle: 'dotted',
   },
   scrollable: {
     height: '20%',
@@ -187,19 +119,20 @@ const styles = StyleSheet.create({
     top: '10%',
     color: 'white',
     fontWeight: 'bold',
+    fontFamily: 'Helvetica Neue',
   },
   subtext: {
     position: 'absolute',
     left: '5%',
     top: '20%',
     color: 'rgba(255, 255, 255, 0.5)',
+    fontFamily: 'Helvetica Neue',
   },
 });
 
 export default function ModalScreen({
-  icon, name, modalIcon, isMusicOpen, setIsMusicOpen, isImageOpen, setIsImageOpen, creator, changeBackground, sceneHistory, currIndex,
+  icon, name, modalIcon, isMusicOpen, setIsMusicOpen, isImageOpen, setIsImageOpen, changeBackground,
 }) {
-  // const [isOpen, setIsOpen] = useState(false);
   const modalizeRef = useRef(null);
   const snapPoints = useMemo(() => ['65%', '100%'], []);
   const { height } = useWindowDimensions();
@@ -207,131 +140,129 @@ export default function ModalScreen({
   const imageHeight = isImageOpen ? height : 0;
   const top = -height * 0.55;
   const [playMusic, setPlay] = useState(false);
-  // const [playScene, setPlayScene] = useState(false);
   const [songTitle, setSongTitle] = useState('No Audio');
   const [imageTitle, setImageTitle] = useState('No Scene');
   const [musicDetail, setMusicDetail] = useState('----');
   const [imageDetail, setImageDetail] = useState('----');
   const [sound, setSound] = useState(null);
-  const [musicSelected, setMusicSelected] = useState(null);
-  // const [isPlaying, setIsPlaying] = useState(false);
-  // const [isLoaded, setIsLoaded] = useState(false);
-  // const [prevMusic, setPrevMusic] = useState(null);
+  const [messageValue, setMessageValue] = useState(0);
+  const [goBack, setGoBack] = useState(false);
+  const [goForward, setGoForward] = useState(false);
   const [i, setI] = useState(0);
-  const [j, setJ] = useState(0);
-  const [musicHistory, setMusicHistory] = useState([null]);
-  const [imageTitleHistory, setImageTitleHistory] = useState([]);
-  // const [prevScene, setPrevScene] = useState(null);
-  const [nextMusic, setNextMusic] = useState(null);
-  const [nextScene, setNextScene] = useState(null);
+  const [musicHistory, setMusicHistory] = useState([]);
 
   const handlePresentModalPress = useCallback(() => {
     if (modalizeRef.current) {
       modalizeRef.current.present();
-      if (name === 'Music') {
+      if (name === 'Audio') {
         setIsMusicOpen(true);
       } else {
         setIsImageOpen(true);
       }
-      console.log('Modal pressed');
-    } else {
-      console.log('Modal not opened');
     }
   }, []);
 
   const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-    if (index === -1 && name === 'Music') {
+    if (index === -1 && name === 'Audio') {
       setIsMusicOpen(false);
-    } else if (index === -1 && name === 'Scene') {
+    } else if (index === -1 && name === 'Scenery') {
       setIsImageOpen(false);
     }
   }, []);
 
-  async function updateSound(message) {
-    const { sound: music } = await Audio.Sound.createAsync(message);
-    setSound(music);
-    // if (sound) {
-    //   console.log('Playing sound...');
-    //   await sound.playAsync();
-    // } else {
-    //   console.log('sound is: ', sound);
-    // }
+  async function playSound() {
+    if (playMusic && sound) {
+      await sound.playAsync();
+    }
   }
 
   useEffect(() => {
-    async function playSound() {
-      if (playMusic && sound) { // originally if (sound)
-        console.log('Playing sound...');
-        await sound.playAsync();
-      } else {
-        console.log('sound is: ', sound);
-      }
+    if (sound) {
+      setI(i + 1);
     }
     playSound();
   }, [sound]);
 
   async function unloadSound() {
-    console.log('unloading sound...');
     await sound.unloadAsync();
   }
 
-  const changeMusic = (message) => {
-    // if (musicHistory.length !== 0) {
-    //   setMusicHistory([...musicHistory, { key: songTitle, value: musicSelected }]);
-    // }
-    // setMusicHistory([...musicHistory, { key: songTitle, value: musicSelected }]);
-
-    // setPrevMusic(musicSelected);
-    console.log('change music: ', message);
-    setMusicSelected(message);
-    unloadSound();
-    // if (songTitle !== 'No Music') {
-    //   setMusicHistory([...musicHistory, { key: songTitle, value: message }]);
-    // }
-    // setI(musicHistory.length - 1);
-    // console.log('index right now: ', i);
-    // musicHistory.map((item) => {
-    //   console.log('map: ', item);
-    //   // return null;
-    // });
+  const changeMusic = async (message, direction) => {
+    if (direction === 'backward') {
+      setGoForward(false);
+      const { sound: music } = await Audio.Sound.createAsync(message);
+      setSound(music);
+    } else if (direction === 'forward') {
+      setGoBack(false);
+      const { sound: music } = await Audio.Sound.createAsync(message);
+      setSound(music);
+    } else {
+      setGoBack(false);
+      setGoForward(false);
+      setMessageValue(message);
+      if (sound) {
+        unloadSound();
+      }
+      const { sound: music } = await Audio.Sound.createAsync(message);
+      setSound(music);
+    }
   };
 
   useEffect(() => {
-    setMusicHistory([...musicHistory, { key: songTitle, value: musicSelected }]);
-    setI(musicHistory.length - 1);
-    console.log('index right now: ', i);
-    musicHistory.map((item) => {
-      console.log('map: ', item);
-      // return null;
-    });
-  }, [musicSelected]);
+    if (songTitle !== 'No Audio' && !goBack && !goForward) {
+      setMusicHistory([...musicHistory, { key: songTitle, value: messageValue }]);
+    }
+  }, [songTitle]);
 
   const handlePlay = () => {
-    // if (songTitle === 'No Music') {
-    //   return;
-    // }
     setPlay(!playMusic);
-    // console.log('playMusic: ', playMusic);
-    // if (playMusic) {
-    //   playSound();
-    // } else {
-    //   sound.unloadAsync();
-    // }
   };
 
   useEffect(() => {
-    console.log('useEffect playMusic: ', playMusic);
-    if (songTitle === 'No Music' && !sound) {
+    if (songTitle === 'No Audio' && !sound) {
       return;
     }
     if (playMusic) {
-      console.log('musicSelected: ', musicSelected);
-      updateSound(musicSelected);
-    } else if (!playMusic) {
-      unloadSound();
+      playSound();
+    } else if (!playMusic && sound) {
+      sound.pauseAsync();
     }
   }, [playMusic]);
+
+  const handleTitle = (message) => {
+    if (name === 'Audio') {
+      setSongTitle(message);
+      setMusicDetail(message);
+    } else if (name === 'Scenery') {
+      setImageTitle(message);
+      setImageDetail('Current Scene');
+    }
+  };
+
+  const handleBack = () => {
+    setGoBack(true);
+    if (name === 'Audio') {
+      if (i - 2 < 0) {
+        return;
+      }
+      setI(i - 2);
+      sound.pauseAsync();
+      changeMusic(musicHistory[i - 2].value, 'backward');
+      handleTitle(musicHistory[i - 2].key);
+    }
+  };
+
+  const handleForward = () => {
+    setGoForward(true);
+    if (name === 'Audio') {
+      if (i > musicHistory.length - 1) {
+        return;
+      }
+      sound.pauseAsync();
+      changeMusic(musicHistory[i].value, 'forward');
+      handleTitle(musicHistory[i].key);
+    }
+  };
 
   const handleScenePlay = () => {
     changeBackground(defaultBackground);
@@ -339,84 +270,9 @@ export default function ModalScreen({
     setImageDetail('----');
   };
 
-  const handleBack = () => {
-    console.log('hit back');
-    console.log('currIndex: ', currIndex);
-    setJ(currIndex);
-    if (name === 'Music') {
-      console.log('musicHistory.length: ', musicHistory.length);
-      if (musicHistory.length === 0) {
-        return;
-      }
-      unloadSound();
-      // if (playMusic) {
-      setI((prevI) => prevI - 1);
-      console.log('index: ', i);
-      console.log('backed sound: ', musicHistory[i]);
-      updateSound(musicHistory[i].value);
-      setSongTitle(musicHistory[i].key);
-      setMusicDetail(musicHistory[i].key);
-      // } else if (!playMusic) {
-      // unloadSound();
-      // }
-    }
-    if (name === 'Scene') {
-      if (sceneHistory.length === 0) {
-        return;
-      }
-      setJ(currIndex - 1);
-      // console.log('index j: ', j);
-      // console.log('backed image: ', sceneHistory[j]);
-    }
-  };
-
-  // useEffect(() => {
-  //   if (!sceneHistory) {
-  //     return;
-  //   }
-  //   console.log('index j: ', j);
-  //   console.log('backed image: ', sceneHistory[j]);
-  //   changeBackground(sceneHistory[j]);
-  //   setImageTitle(imageTitleHistory[j]);
-  // }, [currIndex]);
-
-  const handleForward = () => {
-    console.log('hit forward');
-    if (name === 'Music') {
-      if (i > musicHistory.length - 1) {
-        return;
-      }
-      unloadSound();
-      if (playMusic) {
-        setI((prevI) => prevI + 1);
-        console.log('index: ', i);
-        console.log('forward sound: ', musicHistory[i]);
-        updateSound(musicHistory[i].value);
-        setSongTitle(musicHistory[i].key);
-        setMusicDetail(musicHistory[i].key);
-      } else if (!playMusic) {
-        unloadSound();
-      }
-    }
-    if (name === 'Scene') {
-      changeBackground(nextScene);
-    }
-  };
-
-  const handleTitle = (message) => {
-    if (name === 'Music') {
-      setSongTitle(message);
-      setMusicDetail(message);
-    } else if (name === 'Scene') {
-      setImageTitle(message);
-      setImageDetail('Current Scene');
-      setImageTitleHistory([...imageTitleHistory, message]);
-    }
-  };
-
   const content = () => (
     <View style={styles.rectangle}>
-      {name === 'Music' ? (
+      {name === 'Audio' ? (
         <>
           <View style={styles.square}>
             <SvgXml xml={modalIcon} style={styles.modalIcon} />
@@ -441,29 +297,29 @@ export default function ModalScreen({
             </Pressable>
           </View>
         </>
-      )
-        : (
-          <View style={styles.group}>
-            <Pressable onPress={handleBack}>
-              <SvgXml xml={back} style={styles.back} />
-            </Pressable>
+      ) : null }
+      {name === 'Scenery' ? (
+        <View style={styles.group}>
+          <Pressable onPress={handleBack}>
+            <SvgXml xml={back} style={styles.back} />
+          </Pressable>
 
-            {imageTitle === 'No Scene' ? (
-              <Pressable>
-                <SvgXml xml={playIcon} style={styles.playIcon} />
-              </Pressable>
-            ) : (
-              <Pressable onPress={handleScenePlay}>
-                <SvgXml xml={pauseIcon} style={styles.playIcon} />
-              </Pressable>
-            )}
-
-            <Pressable onPress={handleForward}>
-              <SvgXml xml={forwards} style={styles.forwards} />
+          {imageTitle === 'No Scene' ? (
+            <Pressable>
+              <SvgXml xml={playIcon} style={styles.playIcon} />
             </Pressable>
-          </View>
-        ) }
-      {name === 'Music' ? (
+          ) : (
+            <Pressable onPress={handleScenePlay}>
+              <SvgXml xml={pauseIcon} style={styles.playIcon} />
+            </Pressable>
+          )}
+
+          <Pressable onPress={handleForward}>
+            <SvgXml xml={forwards} style={styles.forwards} />
+          </Pressable>
+        </View>
+      ) : null }
+      {name === 'Audio' ? (
         <Text style={{ ...styles.text, left: '30%', top: '20%' }}>
           {songTitle}
         </Text>
@@ -474,28 +330,19 @@ export default function ModalScreen({
           </Text>
         )}
 
-      {name === 'Music' ? <Text style={{ ...styles.subtext, left: '30%', top: '30%' }}>{musicDetail}</Text>
+      {name === 'Audio' ? <Text style={{ ...styles.subtext, left: '30%', top: '30%' }}>{musicDetail}</Text>
         : <Text style={styles.subtext}>{imageDetail}</Text>}
     </View>
   );
 
   const list = () => (
     <View style={styles.scrollable}>
-      <VerticalList title={name === 'Music' ? 'Nature Sounds' : 'All Scenes'} play={playMusic} setTitle={handleTitle} changeMusic={changeMusic} changeBackground={changeBackground} />
+      <VerticalList title={name === 'Audio' ? 'Nature Sounds' : 'All Scenes'} setTitle={handleTitle} changeMusic={changeMusic} changeBackground={changeBackground} />
     </View>
   );
 
-  const renderItem = useCallback(
-    (item) => (
-      <View key={item}>
-        {content()}
-      </View>
-    ),
-    [],
-  );
-
   const displayModal = () => (
-    <GestureHandlerRootView style={{ ...(name === 'Music' ? { ...styles.musicModal, height: musicHeight, top } : { ...styles.imageModal, height: imageHeight, top }) }}>
+    <GestureHandlerRootView style={{ ...(name === 'Audio' ? { ...styles.musicModal, height: musicHeight, top } : { ...styles.imageModal, height: imageHeight, top }) }}>
       <BottomSheetModalProvider>
         <BottomSheetModal
           backgroundStyle={{ backgroundColor: '#151716' }}
@@ -511,15 +358,6 @@ export default function ModalScreen({
           </BottomSheetView>
           {content()}
           {list()}
-          {/* <FlatList
-            data={data}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={() => (
-              // <View>
-              content()
-              // </View>
-            )}
-          /> */}
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
@@ -546,11 +384,6 @@ ModalScreen.propTypes = {
   isImageOpen: PropTypes.bool,
   setIsImageOpen: PropTypes.func,
   changeBackground: PropTypes.func,
-  sceneHistory: PropTypes.array,
-  currIndex: PropTypes.number,
-  // mediaTitle: PropTypes.string,
-  creator: PropTypes.string,
-  // mediaName: PropTypes.string,
 };
 
 ModalScreen.defaultProps = {
@@ -558,10 +391,5 @@ ModalScreen.defaultProps = {
   setIsMusicOpen: null,
   isImageOpen: false,
   setIsImageOpen: null,
-  creator: '',
   changeBackground: null,
-  sceneHistory: null,
-  currIndex: 0,
-  // mediaName: '----',
-  // mediaTitle: '',
 };

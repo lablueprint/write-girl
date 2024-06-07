@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, Pressable, Image,
+  Text, StyleSheet, Pressable, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { Audio } from 'expo-av';
 
 const rain = require('../../assets/rain.wav');
 const forest = require('../../assets/birds.wav');
@@ -22,10 +20,8 @@ const fire = require('../../assets/free-write-icons/fire.jpg');
 
 const styles = StyleSheet.create({
   card: {
-    // backgroundColor: 'dodgerblue',
     flex: 1,
     height: 150,
-    // alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     margin: 5,
@@ -35,9 +31,6 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 14,
-    // borderColor: 'purple',
-    // borderWidth: 2,
-    // width: '100%',
     aspectRatio: 21 / 9,
     height: '100%',
     resizeMode: 'cover',
@@ -52,43 +45,9 @@ const styles = StyleSheet.create({
 });
 
 export default function Card({
-  name, play, setTitle, image, changeMusic, changeBackground,
+  name, setTitle, image, changeMusic, changeBackground,
 }) {
-  const [sound, setSound] = useState();
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  /// ////////////////////////THIS WORKS KINDA
-  // useEffect(() => {
-  //   async function playSound() {
-  //     const { sound } = await Audio.Sound.createAsync(require('../../assets/sample.mp3'));
-  //     setSound(sound);
-  //     await sound.playAsync();
-  //   }
-
-  //   async function stopSound() {
-  //     if (sounds) {
-  //       await sounds.stopAsync();
-  //       await sounds.unloadAsync();
-  //     }
-  //   }
-
-  //   if (play) {
-  //     playSound();
-  //   } else {
-  //     stopSound();
-  //   }
-
-  //   return () => {
-  //     if (sounds) {
-  //       stopSound();
-  //     }
-  //   };
-  // }, [play]);
-  /// /////////////////////////////
-
   const handlePress = () => {
-    console.log('Card: Pressed');
     setTitle(name);
     if (name === 'Icy River') {
       changeBackground(icyRiver);
@@ -118,11 +77,6 @@ export default function Card({
     } else if (name === 'Fire Sounds') {
       changeMusic(campfire);
     }
-    // if (isPlaying) {
-    //   playSound();
-    // } else {
-    //   stopSound();
-    // }
   };
 
   return (
@@ -135,7 +89,6 @@ export default function Card({
 
 Card.propTypes = {
   name: PropTypes.string.isRequired,
-  play: PropTypes.bool.isRequired,
   setTitle: PropTypes.func.isRequired,
   changeMusic: PropTypes.func,
   changeBackground: PropTypes.func,
