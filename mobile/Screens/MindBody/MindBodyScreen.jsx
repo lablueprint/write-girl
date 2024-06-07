@@ -138,7 +138,9 @@ const backgroundSVG = `<svg width="430" height="932" viewBox="0 0 430 932" fill=
 
 `;
 
-export default function MindBodyScreen({ navigation, enableToggle, currentToggle }) {
+export default function MindBodyScreen({
+  navigation, enableToggle, currentToggle, triggerNotification,
+}) {
   const navigateToActivityTypeScreen = () => {
     navigation.navigate('Activity Type');
   };
@@ -168,7 +170,7 @@ export default function MindBodyScreen({ navigation, enableToggle, currentToggle
         </Text>
       </View>
       <View style={{ height: '40%' }}>
-        <Timer />
+        <Timer onTimerComplete={() => { if (currentToggle) { triggerNotification(0); } }} />
       </View>
       <Pressable style={styles.button} onPress={navigateToActivityTypeScreen}>
         <Text style={styles.buttonBody}>start now</Text>
@@ -183,4 +185,5 @@ MindBodyScreen.propTypes = {
   }).isRequired,
   enableToggle: PropTypes.func.isRequired,
   currentToggle: PropTypes.bool.isRequired,
+  triggerNotification: PropTypes.bool.isRequired,
 };

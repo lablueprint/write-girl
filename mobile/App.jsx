@@ -7,12 +7,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     zIndex: 1,
-    backgroundColor: 'red',
-    marginTop: 100,
     position: 'absolute',
-    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: '12.5%',
+    width: '100%',
+    height: '4%',
   },
   main: {
     width: '100%',
@@ -47,15 +47,23 @@ export default function App() {
       {notification
         ? (
           <View style={styles.container}>
-            <Text>
-              Hello
-            </Text>
+            <View style={{
+              width: '90%',
+              backgroundColor: 'rgba(255,255,255,0.6)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+              borderRadius: 10,
+            }}
+            >
+              <Text>
+                Hello
+              </Text>
+            </View>
           </View>
         )
         : (
-          <View>
-            <Text>failed</Text>
-          </View>
+          <View />
         )}
 
       <View style={screenStyles.container}>

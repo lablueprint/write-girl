@@ -79,14 +79,13 @@ const backSVG = `<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xml
   </svg>
   `;
 
-function MindBodyDeckScreen({ setTimer, navigation }) {
+function MindBodyDeckScreen({ navigation }) {
   const [scrollViewWidth, setScrollViewWidth] = React.useState(0);
   const [currentIndex, setIndex] = React.useState(0);
   const boxWidth = scrollViewWidth * 0.8;
   const boxDistance = scrollViewWidth - boxWidth;
   const halfBoxDistance = boxDistance / 2;
   const pan = React.useRef(new Animated.ValueXY()).current;
-  const width = React.useRef(new Animated.Value(10)).current;
   const [mindBodyDeck, setMindBodyDeck] = useState(null);
 
   const route = useRoute();

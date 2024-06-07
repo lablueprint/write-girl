@@ -107,7 +107,7 @@ export default function MindBodyActivityScreen({ navigation, route }) {
                 height: '45%', display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
               >
-                <Timer startSelect onEditTimer={() => { setShowTimePicker(!showTimePicker); }} />
+                <Timer startSelect onEditTimer={() => { setShowTimePicker(!showTimePicker); }} onTimerComplete={() => { navigation.navigate('Finish Screen'); }} />
               </View>
             ) : (
               <View style={{

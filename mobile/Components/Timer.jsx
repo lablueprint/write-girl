@@ -101,6 +101,7 @@ export default function Timer({ onEditTimer, onTimerComplete, startSelect }) {
     setTotalTime(0);
     updateKey();
     setAlarmString(null);
+    setIsPlaying(false);
   };
 
   const handlePause = () => {

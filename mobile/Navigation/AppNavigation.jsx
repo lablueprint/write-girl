@@ -36,6 +36,7 @@ import HistoryScreen from '../Screens/HistoryScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
 import TimedWritingScreen from '../Components/Timer';
 import MindBodyActivityScreen from '../Screens/MindBody/MindBodyActivityScreen';
+import MindBodyFinishScreen from '../Screens/MindBody/MindBodyFinishScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -107,6 +108,7 @@ function MindBodyStackScreen({ setTimer }) {
             navigation={navigation}
             currentToggle={allowNotif}
             enableToggle={setNotifPermission}
+            triggerNotification={setTimer}
           />
         )}
       </MindBodyStack.Screen>
@@ -117,13 +119,13 @@ function MindBodyStackScreen({ setTimer }) {
         // eslint-disable-next-line react/no-children-prop
         children={({ navigation }) => (
           <MindBodyDeckScreen
-            setTimer={setTimer}
             navigation={navigation}
           />
         )}
         options={{ headerBackTitleVisible: false, headerShown: false }}
       />
       <MindBodyStack.Screen name="Activity Screen" component={MindBodyActivityScreen} options={{ headerBackTitleVisible: false, headerShown: false }} />
+      <MindBodyStack.Screen name="Finish Screen" component={MindBodyFinishScreen} options={{ headerBackTitleVisible: false, headerShown: false }} />
     </MindBodyStack.Navigator>
   );
 }
