@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, Image,
+  StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, ScrollView, Image, ImageBackground,
 } from 'react-native';
 import axios from 'axios';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as Progress from 'react-native-progress';
+import DoorListViewCard from '../../Components/DoorListViewCard';
 import colorsImage from '../../assets/doors/colors.png';
 import soundsImage from '../../assets/doors/sounds.png';
 import texturesImage from '../../assets/doors/textures.png';
@@ -13,6 +14,7 @@ import natureImage from '../../assets/doors/nature.png';
 import relationshipsImage from '../../assets/doors/relationships.png';
 import stepGraphic from '../../assets/doors/step-graphic.png';
 import completeGraphic from '../../assets/doors/complete-graphic.png';
+import listViewBackground from '../../assets/doors/door-list-view.png';
 
 const window = Dimensions.get('window');
 const activityDim = window.width * 0.5;
@@ -40,7 +42,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 0,
   },
-
+  imageBackground: {
+    width: '100%',
+    height: '120%',
+  },
+  listViewTitle: {
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+    fontSize: 24,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    paddingTop: 50,
+    paddingBottom: 50,
+  },
+  listCard: {
+    paddingRight: 30,
+    paddingLeft: 30,
+    height: '100%',
+  },
   buttonContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -455,26 +474,23 @@ export default function ProgressiveWritingScreen() {
                   </View>
                 </View>
               </View>
-              <View style={styles.container}>
-                {
-              genreLabels.map((category) => (
-                // 10 Doors Screen
-                <TouchableOpacity
-                  key={category.label}
-                  style={[styles.activity, {
-                    backgroundColor: category.color,
-                  }]}
-                  onPress={() => { selectActivityGenre(category.label); }}
+              <View style={styles.homeBackground}>
+                <ImageBackground
+                  source={listViewBackground}
+                  style={styles.imageBackground}
                 >
-                  <Image source={category.image} style={styles.gridDoorImage} />
-                  <Text
-                    style={styles.doorText}
-                  >
-                    {category.label}
+                  <Text style={styles.listViewTitle}>
+                    List View
                   </Text>
-                </TouchableOpacity>
-              ))
-            }
+                  <View style={styles.listCard}>
+                    <DoorListViewCard title="Objects" description="Lorem ipsum is the placeholder text." image={colorsImage} handlePlayButton={() => selectActivityGenre('Colors')} />
+                    <DoorListViewCard title="Relationships" description="Lorem ipsum is the placeholder text." image={relationshipsImage} handlePlayButton={() => selectActivityGenre('Relationships')} />
+                    <DoorListViewCard title="Sounds" description="Lorem ipsum is the placeholder text." image={soundsImage} handlePlayButton={() => selectActivityGenre('Sounds')} />
+                    <DoorListViewCard title="Texture" description="Lorem ipsum is the placeholder text." image={texturesImage} handlePlayButton={() => selectActivityGenre('Textures')} />
+                    <DoorListViewCard title="Nature" description="Lorem ipsum is the placeholder text." image={natureImage} handlePlayButton={() => selectActivityGenre('Nature')} />
+                    <DoorListViewCard title="Weather" description="Lorem ipsum is the placeholder text." image={colorsImage} handlePlayButton={() => selectActivityGenre('Weather')} />
+                  </View>
+                </ImageBackground>
               </View>
             </ScrollView>
           )
