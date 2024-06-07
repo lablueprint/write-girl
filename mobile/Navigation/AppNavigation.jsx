@@ -15,6 +15,7 @@ import ObjectsScreen from '../Screens/StoryStarters/ObjectsScreen';
 import SettingsScreen from '../Screens/StoryStarters/SettingsScreen';
 import TraitsScreen from '../Screens/StoryStarters/TraitsScreen';
 import PlotPointsScreen from '../Screens/StoryStarters/PlotPointsScreen';
+import FreeWriteScreen from '../Screens/FreeWriteScreen';
 import homeIcon from '../assets/home-icon.png';
 import writingActivitiesIcon from '../assets/writing-activities-icon.png';
 import storyStarterIcon from '../assets/story-starters-icon.png';
@@ -190,7 +191,7 @@ function MainAppScreen() {
         component={ActivityHomeScreen}
         options={createtabOptions(writingActivitiesIcon)}
       />
-      <Tab.Screen name="Story Starters" component={StoryStarterStackScreen} options={createtabOptions(storyStarterIcon)} />
+      <Tab.Screen name="Free Write" component={FreeWriteScreen} options={{ headerShown: false }} />
       <Tab.Screen
         name="Center"
         component={HomeStackScreen}

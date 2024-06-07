@@ -3,8 +3,8 @@ import {
   StyleSheet, Text, View, Button, Dimensions, ScrollView,
 } from 'react-native';
 import axios from 'axios';
-import Storage from '../Components/Storage';
 import PropTypes from 'prop-types';
+import Storage from '../Components/Storage';
 import HomeScreenCard from '../Components/HomeScreenCard';
 import TabBar from '../Components/HomeScreenTab';
 
@@ -111,7 +111,7 @@ export default function HomeScreen({ navigation }) {
   const directToTripleFlip = () => {
     navigation.navigate('Triple Flip');
   };
-  
+
   const navigatePocketPrompt = () => {
     navigation.navigate('Pocket Prompt Home');
   };
