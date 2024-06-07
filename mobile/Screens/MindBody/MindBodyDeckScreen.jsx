@@ -152,7 +152,6 @@ function MindBodyDeckScreen({ setTimer, navigation }) {
         <Pressable onPress={() => { navigation.goBack(); }}>
           <SvgXml
             xml={backSVG}
-            style={styles.design}
             height={15}
             width={15}
           />
@@ -209,7 +208,10 @@ function MindBodyDeckScreen({ setTimer, navigation }) {
           />
         ))}
       </View>
-      <Pressable style={styles.button} onPress={() => { setTimer(5); }}>
+      <Pressable
+        style={styles.button}
+        onPress={() => { console.log('test'); navigation.navigate('Activity Screen', { prompt: mindBodyDeck[currentIndex] }); }}
+      >
         <Text style={styles.body}>Confirm</Text>
       </Pressable>
     </View>

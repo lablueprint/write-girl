@@ -23,11 +23,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#151716',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 32,
   },
   heading: {
     color: '#fff',
-    marginLeft: 32,
-    marginRight: 32,
     fontSize: 50,
     textAlign: 'left',
     fontFamily: 'Helvetica Neue',
@@ -38,8 +37,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     textAlign: 'left',
-    marginLeft: 32,
-    marginRight: 32,
     fontFamily: 'Helvetica Neue',
   },
   buttonBody: {
@@ -170,7 +167,9 @@ export default function MindBodyScreen({ navigation, enableToggle, currentToggle
           in app notifications
         </Text>
       </View>
-      <Timer />
+      <View style={{ height: '40%' }}>
+        <Timer />
+      </View>
       <Pressable style={styles.button} onPress={navigateToActivityTypeScreen}>
         <Text style={styles.buttonBody}>start now</Text>
       </Pressable>

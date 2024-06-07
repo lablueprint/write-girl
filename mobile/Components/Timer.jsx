@@ -5,6 +5,7 @@ import {
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { SvgXml } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
+import PropTypes from 'prop-types';
 import TimePicker from './TimePicker';
 
 const screenHeight = Dimensions.get('window').height;
@@ -30,6 +31,10 @@ const startTimer = `<svg width="18" height="21" viewBox="0 0 18 21" fill="none" 
 const styles = StyleSheet.create({
   timer: {
     display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 'auto',
   },
   buttons: {
     display: 'flex',
@@ -68,66 +73,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const customModalStyle = StyleSheet.create({
-  button: {
-  },
-  buttonContainer: {
-  },
-  confirmButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // fontFamily: 'Helvetica',
-    fontWeight: '700',
-    paddingHorizontal: screenWidth * 0.15,
-    top: -45,
-  },
-  cancelButton: {
-    display: 'none',
-  },
-  container: {
-  },
-  contentContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 0.8 * screenWidth,
-  },
-  modalTitle: {
-    display: 'none',
-  },
-  theme: 'dark',
-  pickerContainer: {
-    borderWidth: 2,
-    borderRadius: 20,
-    borderColor: 'white',
-    display: 'flex',
-    marginLeft: screenWidth * 0.05,
-    backgroundColor: 'black',
-  },
-  pickerGradientOverlay: {
-  },
-  pickerItem: {
-  },
-  pickerItemContainer: {
-  },
-  pickerLabel: {
-    right: -20,
-    fontWeight: '700',
-  },
-  pickerLabelContainer: {
-  },
-  text: {
-    // fontFamily: 'Helvetica',
-    fontWeight: '700',
-  },
-
-});
-
-export default function Timer() {
-  const [showPicker, setShowPicker] = useState(false);
+export default function Timer({ onEditTimer, onTimerComplete, startSelect }) {
+  const [showPicker, setShowPicker] = useState(startSelect);
   const [alarmString, setAlarmString] = useState(null);
   const [totalTime, setTotalTime] = useState(0);
   const [timerKey, setTimerKey] = useState(0);
@@ -168,29 +115,12 @@ export default function Timer() {
     updateKey();
   }, [alarmString]);
 
+  useEffect(() => {
+    onEditTimer();
+  }, [showPicker]);
+
   return (
     <View style={styles.timer}>
-      {/* <TimerPickerModal
-        visible={showPicker}
-        setIsVisible={setShowPicker}
-        onConfirm={(pickedDuration) => {
-          console.log('selected duration', pickedDuration);
-          setAlarmString(formatTime(pickedDuration));
-          calculateTotalSeconds(pickedDuration);
-          setShowPicker(false);
-        }}
-        modalTitle="Set Timer"
-        onCancel={() => setShowPicker(false)}
-        closeOnOverlayPress
-        styles={customModalStyle}
-        modalProps={{
-          overlayOpacity: 0.2,
-        }}
-        hourLabel=":"
-        secondLabel=""
-        minuteLabel=":"
-        padWithNItems={2}
-      /> */}
       {
         showPicker
           ? (
@@ -204,28 +134,27 @@ export default function Timer() {
                 setShowPicker(false);
               }}
             />
-          ) : <View />
-      }
-      <CountdownCircleTimer
-        key={timerKey}
-        isPlaying={isPlaying}
-        duration={totalTime}
-        colors={['#BFD25A', '#5BB2CF']}
-        colorsTime={[totalTime, totalTime / 2]}
-        onComplete={() => {
-          restartTimer();
-          // insert logic for adding notifications!
-        }}
-        size={screenWidth * 0.7}
-        strokeWidth={screenWidth * 0.05}
-        trailColor="#212121"
-        isGrowing
-        rotation="counter-clockwise"
-        strokeLinecap="round"
-      >
-        {({ remainingTime }) => (
-          <View style={styles.innerTime}>
-            {
+          ) : (
+            <CountdownCircleTimer
+              key={timerKey}
+              isPlaying={isPlaying}
+              duration={totalTime}
+              colors={['#BFD25A', '#5BB2CF']}
+              colorsTime={[totalTime, totalTime / 2]}
+              onComplete={() => {
+                restartTimer();
+                onTimerComplete();
+              }}
+              size={screenWidth * 0.7}
+              strokeWidth={screenWidth * 0.05}
+              trailColor="#212121"
+              isGrowing
+              rotation="counter-clockwise"
+              strokeLinecap="round"
+            >
+              {({ remainingTime }) => (
+                <View style={styles.innerTime}>
+                  {
               !isPlaying ? (
                 <TouchableOpacity
                   activeOpacity={0.7}
@@ -241,10 +170,10 @@ export default function Timer() {
                 </TouchableOpacity>
               ) : <View />
             }
-            <Text style={styles.time}>
-              {`${Math.floor(remainingTime / 3600) > 0 ? `${String(Math.floor(remainingTime / 3600)).padStart(2, '0')}:` : ''}${Math.floor((remainingTime % 3600) / 60) > 0 || Math.floor(remainingTime / 3600) > 0 ? `${String(Math.floor((remainingTime % 3600) / 60)).padStart(2, '0')}:` : '00:'}${String(remainingTime % 60).padStart(2, '0')}`}
-            </Text>
-            {
+                  <Text style={styles.time}>
+                    {`${Math.floor(remainingTime / 3600) > 0 ? `${String(Math.floor(remainingTime / 3600)).padStart(2, '0')}:` : ''}${Math.floor((remainingTime % 3600) / 60) > 0 || Math.floor(remainingTime / 3600) > 0 ? `${String(Math.floor((remainingTime % 3600) / 60)).padStart(2, '0')}:` : '00:'}${String(remainingTime % 60).padStart(2, '0')}`}
+                  </Text>
+                  {
                 isPlaying ? (
                   <View style={styles.buttons}>
                     <Pressable onPress={handlePause} style={styles.pressable}>
@@ -277,9 +206,21 @@ export default function Timer() {
                   </View>
                 )
               }
-          </View>
-        )}
-      </CountdownCircleTimer>
+                </View>
+              )}
+            </CountdownCircleTimer>
+          )
+      }
     </View>
   );
 }
+
+Timer.propTypes = {
+  onEditTimer: PropTypes.func,
+  onTimerComplete: PropTypes.func,
+};
+
+Timer.defaultProps = {
+  onEditTimer: () => {},
+  onTimerComplete: () => {},
+};

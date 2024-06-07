@@ -35,6 +35,7 @@ import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 import HistoryScreen from '../Screens/HistoryScreen';
 import PepTalkScreen from '../Screens/PepTalkScreen';
 import TimedWritingScreen from '../Components/Timer';
+import MindBodyActivityScreen from '../Screens/MindBody/MindBodyActivityScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -122,6 +123,7 @@ function MindBodyStackScreen({ setTimer }) {
         )}
         options={{ headerBackTitleVisible: false, headerShown: false }}
       />
+      <MindBodyStack.Screen name="Activity Screen" component={MindBodyActivityScreen} options={{ headerBackTitleVisible: false, headerShown: false }} />
     </MindBodyStack.Navigator>
   );
 }

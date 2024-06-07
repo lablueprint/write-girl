@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: 'white',
     paddingVertical: 20,
+    width: '80%',
   },
   button: {
     borderRadius: 12,
