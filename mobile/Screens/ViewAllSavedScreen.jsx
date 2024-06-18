@@ -116,7 +116,7 @@ export default function ViewAllSavedScreen({ navigation }) {
   const getPlotPointByID = async (id) => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/plotPoint/getByID/${id}`, { timeout: 20000 });
-      return res.data;
+      return res.data.plotPoint;
     } catch (err) {
       console.log(err);
       return err;
@@ -126,7 +126,7 @@ export default function ViewAllSavedScreen({ navigation }) {
   const getTraitByID = async (id) => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/characterTrait/getByID/${id}`, { timeout: 20000 });
-      return res.data;
+      return res.data.trait;
     } catch (err) {
       console.log(err);
       return err;
@@ -136,7 +136,7 @@ export default function ViewAllSavedScreen({ navigation }) {
   const getItemByID = async (id) => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/item/getByID/${id}`, { timeout: 20000 });
-      return res.data;
+      return res.data.item;
     } catch (err) {
       console.log(err);
       return err;
@@ -146,7 +146,7 @@ export default function ViewAllSavedScreen({ navigation }) {
   const getSettingByID = async (id) => {
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/setting/getByID/${id}`, { timeout: 20000 });
-      return res.data;
+      return res.data.setting;
     } catch (err) {
       console.log(err);
       return err;
@@ -160,7 +160,7 @@ export default function ViewAllSavedScreen({ navigation }) {
       setSavedData(
         await Promise.all(
           saved.data.savedPlots.reverse().map(
-            async (starter) => getPlotPointByID(starter.plotID),
+            async (starter) => [await getPlotPointByID(starter.plotID), starter.date],
           ),
         ),
       );
@@ -178,7 +178,7 @@ export default function ViewAllSavedScreen({ navigation }) {
       setSavedData(
         await Promise.all(
           saved.data.savedTraits.reverse().map(
-            async (starter) => getTraitByID(starter.traitID),
+            async (starter) => [await getTraitByID(starter.traitID), starter.date],
           ),
         ),
       );
@@ -196,11 +196,10 @@ export default function ViewAllSavedScreen({ navigation }) {
       setSavedData(
         await Promise.all(
           saved.data.savedItems.reverse().map(
-            async (starter) => getItemByID(starter.objectID),
+            async (starter) => [await getItemByID(starter.objectID), starter.date],
           ),
         ),
       );
-      console.log(savedData);
       return saved.data;
     } catch (err) {
       console.log(err);
@@ -215,7 +214,7 @@ export default function ViewAllSavedScreen({ navigation }) {
       setSavedData(
         await Promise.all(
           saved.data.savedSettings.reverse().map(
-            async (starter) => getSettingByID(starter.settingID),
+            async (starter) => [await getSettingByID(starter.settingID), starter.date],
           ),
         ),
       );
@@ -316,36 +315,15 @@ export default function ViewAllSavedScreen({ navigation }) {
   }, []);
 
   let display = null;
-  if (subject === 'Traits') {
-    display = savedData.map((data) => (
-      <View style={styles.innerCard} key={data._id}>
-        <Text style={[styles.topicText, { color: textColors[subject] }]}>
-          {data.trait}
-        </Text>
-      </View>
-    ));
-  } else if (subject === 'Plot Points') {
-    display = savedData.map((data) => (
-      <View style={styles.innerCard} key={data._id}>
-        <Text style={[styles.topicText, { color: textColors[subject] }]}>
-          {data.plotPoint}
-        </Text>
-      </View>
-    ));
-  } else if (subject === 'Settings') {
-    display = savedData.map((data) => (
-      <View style={styles.innerCard} key={data._id}>
-        <Text style={[styles.topicText, { color: textColors[subject] }]}>
-          {data.setting}
-        </Text>
-      </View>
-    ));
-  } else if (subject === 'Objects') {
-    display = savedData.map((data) => (
-      <View style={styles.innerCard} key={data._id}>
-        <Text style={[styles.topicText, { color: textColors[subject] }]}>
-          {data.item}
-        </Text>
+  if (subject === 'Traits' || subject === 'Plot Points' || subject === 'Settings' || subject === 'Objects') {
+    display = savedData.map((data, index, array) => (
+      <View style={{ width: '100%' }}>
+        {index === 0 || array[index - 1][1] !== data[1] ? <Text style={[styles.normalText, { marginTop: 12 }]}>{data[1]}</Text> : null}
+        <View style={styles.innerCard} key={data[0]}>
+          <Text style={[styles.topicText, { color: textColors[subject] }]}>
+            {data[0]}
+          </Text>
+        </View>
       </View>
     ));
   } else if (subject === 'Triple Flips') {
