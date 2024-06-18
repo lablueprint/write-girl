@@ -9,14 +9,15 @@ const collectionDim = window.width * 0.5 - 30;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#000',
+    backgroundColor: '#151716',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
     gap: 0,
-    padding: 20,
-    paddingTop: 60,
+    padding: '5%',
+    paddingTop: '15%',
+    paddingBottom: '15%',
   },
   heading: {
     fontSize: 40,

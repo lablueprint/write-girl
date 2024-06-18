@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
 import StoryStarterCard from '../Components/StoryStarterCard';
 import subtitle from '../assets/saved-screen-heading.png';
+import backButton from '../assets/back.png';
 
 // List of genre mappings in order
 const genreColors = {
@@ -26,9 +27,8 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: '#151716',
-    alignItems: 'left',
     padding: '5%',
-    paddingTop: '10%',
+    paddingTop: '15%',
     paddingBottom: '15%',
   },
   title: {
@@ -54,13 +54,15 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
   },
+  smallButton: {
+    height: 24,
+    resizeMode: 'contain',
+  },
   headingContainer: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start', // if you want to fill rows left to right
-    marginTop: 16,
-    marginBottom: 8,
   },
   storyStarterCard: {
     backgroundColor: '#19333D',
@@ -354,8 +356,18 @@ export default function SavedScreen({ navigation }) {
   return (
     <View style={styles.scrollViewContainer}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Button title="Back" onPress={() => navigation.goBack()} />
-        <Text style={styles.screenTitle}>All Saved</Text>
+        <View style={styles.headingContainer}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={backButton} style={styles.smallButton} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '50%', alignItems: 'center' }}>
+            <Text style={styles.screenTitle}>All Saved</Text>
+          </View>
+          <View style={styles.buttonContainer} />
+        </View>
+
         <Image source={subtitle} style={styles.subtitle} />
         <View style={styles.headingContainer}>
           <View style={styles.titleContainer}>

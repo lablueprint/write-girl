@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet, View, TouchableOpacity, Text,
+  StyleSheet, View, TouchableOpacity, Text, Image,
   ScrollView, Button,
 } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
+import backButton from '../assets/back.png';
+import editButton from '../assets/edit.png';
 
 async function getId() {
   // const userId = await Storage({ key: 'userId', value: '', saveKey: false });
@@ -44,9 +46,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#151716',
   },
   container: {
-    alignItems: 'left',
     padding: '5%',
-    paddingTop: '10%',
+    paddingTop: '15%',
     paddingBottom: '15%',
   },
   title: {
@@ -56,8 +57,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 8,
   },
-  buttonContainer: {
-    width: '25%',
+  smallButton: {
+    height: 24,
+    resizeMode: 'contain',
   },
   storyStarterCard: {
     backgroundColor: '#19333D',
@@ -95,6 +97,22 @@ const styles = StyleSheet.create({
   topicText: {
     fontSize: 20,
     fontWeight: 600,
+  },
+  headingContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+  },
+  buttonContainer: {
+    width: '25%',
+  },
+  screenTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+    width: '100%',
   },
 });
 
@@ -356,10 +374,21 @@ export default function ViewAllSavedScreen({ navigation }) {
   return (
     <View style={styles.scrollViewContainer}>
       <ScrollView contentContainerStyle={styles.container}>
-
-        <Button title="Back" onPress={() => navigation.goBack()} />
-        <Text style={styles.title}>{subject}</Text>
-        <Text style={styles.normalText}>Most recent</Text>
+        <View style={styles.headingContainer}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={backButton} style={styles.smallButton} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '50%', alignItems: 'center' }}>
+            <Text style={styles.screenTitle}>{subject}</Text>
+          </View>
+          <View style={[styles.buttonContainer, { alignItems: 'flex-end' }]}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={editButton} style={styles.smallButton} />
+            </TouchableOpacity>
+          </View>
+        </View>
         { display }
       </ScrollView>
     </View>
