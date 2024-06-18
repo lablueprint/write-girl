@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     marginLeft: '-15%',
   },
   arrow: {
-    backgroundColor: '#BFD25A',
     height: expandBoxWidth * 0.5,
     width: '12.5%',
     borderRadius: 20,
@@ -67,7 +66,6 @@ const styles = StyleSheet.create({
     marginTop: -0.08 * cardHeight,
   },
   diagonalArrow: {
-    backgroundColor: '#BFD25A',
     height: expandBoxWidth * 0.6,
     width: '12.5%',
     borderRadius: 20,
@@ -145,17 +143,19 @@ export default function StoryStarterCard({ category, storyStarters }) {
             <Animated.View
               layout={CustomLayoutTransition}
               style={
-                [styles.arrow, { transform: [{ rotate: '90deg' }], top: expanded ? '40%' : '-8%', right: '-45%' }]
+                [styles.arrow, {
+                  transform: [{ rotate: '90deg' }], top: expanded ? '40%' : '-8%', right: '-45%', backgroundColor: textColors[category],
+                }]
               }
             />
             <Animated.View
               layout={CustomLayoutTransition}
               style={
-                [styles.arrow, { top: '-40%', right: expanded ? '-20%' : '-75%' }]
+                [styles.arrow, { top: '-40%', right: expanded ? '-20%' : '-75%', backgroundColor: textColors[category] }]
               }
             />
             <Animated.View
-              style={styles.diagonalArrow}
+              style={[styles.diagonalArrow, { backgroundColor: textColors[category] }]}
             />
           </TouchableOpacity>
         </View>

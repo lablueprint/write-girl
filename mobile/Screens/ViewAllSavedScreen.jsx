@@ -31,6 +31,13 @@ const genreColors = {
   Relationships: '#b87496',
 };
 
+const textColors = {
+  'Plot Points': '#5BB2CF',
+  Settings: '#BFD25A',
+  Objects: '#7BAC8A',
+  Traits: '#C97621',
+};
+
 const styles = StyleSheet.create({
   scrollViewContainer: {
     flex: 1,
@@ -75,6 +82,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     color: 'white',
+  },
+  innerCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    width: '100%',
+    paddingHorizontal: '5%',
+    paddingVertical: '5%',
+    borderRadius: 20,
+    alignItems: 'left',
+    marginTop: 12,
+  },
+  topicText: {
+    fontSize: 20,
+    fontWeight: 600,
   },
 });
 
@@ -180,7 +200,7 @@ export default function ViewAllSavedScreen({ navigation }) {
           ),
         ),
       );
-      console.log (savedData);
+      console.log(savedData);
       return saved.data;
     } catch (err) {
       console.log(err);
@@ -243,7 +263,7 @@ export default function ViewAllSavedScreen({ navigation }) {
   };
 
   const printEveryID = async () => {
-    console.log("Printing All IDs:");
+    console.log('Printing All IDs:');
     // for (let i = 0; i < plotPoints.length; i++) {
     //   console.log(plotPoints[i]._id);
     // }
@@ -268,7 +288,7 @@ export default function ViewAllSavedScreen({ navigation }) {
     //   console.log(activities[i]._id);
     // }
 
-    console.log("Done");
+    console.log('Done');
   };
 
   useEffect(() => {
@@ -298,32 +318,32 @@ export default function ViewAllSavedScreen({ navigation }) {
   let display = null;
   if (subject === 'Traits') {
     display = savedData.map((data) => (
-      <View style={styles.storyStarterCard} key={data._id}>
-        <Text style={styles.normalText}>
+      <View style={styles.innerCard} key={data._id}>
+        <Text style={[styles.topicText, { color: textColors[subject] }]}>
           {data.trait}
         </Text>
       </View>
     ));
   } else if (subject === 'Plot Points') {
     display = savedData.map((data) => (
-      <View style={styles.storyStarterCard} key={data._id}>
-        <Text style={styles.normalText}>
+      <View style={styles.innerCard} key={data._id}>
+        <Text style={[styles.topicText, { color: textColors[subject] }]}>
           {data.plotPoint}
         </Text>
       </View>
     ));
   } else if (subject === 'Settings') {
     display = savedData.map((data) => (
-      <View style={styles.storyStarterCard} key={data._id}>
-        <Text style={styles.normalText}>
+      <View style={styles.innerCard} key={data._id}>
+        <Text style={[styles.topicText, { color: textColors[subject] }]}>
           {data.setting}
         </Text>
       </View>
     ));
   } else if (subject === 'Objects') {
     display = savedData.map((data) => (
-      <View style={styles.storyStarterCard} key={data._id}>
-        <Text style={styles.normalText}>
+      <View style={styles.innerCard} key={data._id}>
+        <Text style={[styles.topicText, { color: textColors[subject] }]}>
           {data.item}
         </Text>
       </View>
