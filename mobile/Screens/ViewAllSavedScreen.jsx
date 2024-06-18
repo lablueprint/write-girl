@@ -317,8 +317,10 @@ export default function ViewAllSavedScreen({ navigation }) {
   let display = null;
   if (subject === 'Traits' || subject === 'Plot Points' || subject === 'Settings' || subject === 'Objects') {
     display = savedData.map((data, index, array) => (
-      <View style={{ width: '100%' }}>
-        {index === 0 || array[index - 1][1] !== data[1] ? <Text style={[styles.normalText, { marginTop: 12 }]}>{data[1]}</Text> : null}
+      <View style={{ width: '100%' }} key={data[0]}>
+        {index === 0 || array[index - 1][1] !== data[1]
+          ? <Text style={[styles.normalText, { marginTop: 12 }]}>{data[1]}</Text>
+          : null}
         <View style={styles.innerCard} key={data[0]}>
           <Text style={[styles.topicText, { color: textColors[subject] }]}>
             {data[0]}
@@ -351,7 +353,6 @@ export default function ViewAllSavedScreen({ navigation }) {
       </TouchableOpacity>
     ));
   }
-
   return (
     <View style={styles.scrollViewContainer}>
       <ScrollView contentContainerStyle={styles.container}>

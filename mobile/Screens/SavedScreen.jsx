@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, View, TouchableOpacity, Text,
+  StyleSheet, View, TouchableOpacity, Text, Image,
   ScrollView, Pressable, Button,
 } from 'react-native';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
 import StoryStarterCard from '../Components/StoryStarterCard';
+import subtitle from '../assets/saved-screen-heading.png';
 
 // List of genre mappings in order
 const genreColors = {
@@ -84,6 +85,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     color: 'white',
+  },
+  subtitle: {
+    width: '100%',
+    resizeMode: 'contain',
+  },
+  screenTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+    width: '100%',
   },
 });
 
@@ -343,6 +355,8 @@ export default function SavedScreen({ navigation }) {
     <View style={styles.scrollViewContainer}>
       <ScrollView contentContainerStyle={styles.container}>
         <Button title="Back" onPress={() => navigation.goBack()} />
+        <Text style={styles.screenTitle}>All Saved</Text>
+        <Image source={subtitle} style={styles.subtitle} />
         <View style={styles.headingContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Plot Points</Text>
