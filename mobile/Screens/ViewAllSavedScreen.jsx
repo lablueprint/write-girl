@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
+    marginBottom: 20,
   },
   buttonContainer: {
     width: '25%',

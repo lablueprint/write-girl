@@ -63,6 +63,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start', // if you want to fill rows left to right
+    marginTop: 16,
+    marginBottom: 8,
   },
   storyStarterCard: {
     backgroundColor: '#19333D',
@@ -356,7 +358,7 @@ export default function SavedScreen({ navigation }) {
   return (
     <View style={styles.scrollViewContainer}>
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.headingContainer}>
+        <View style={[styles.headingContainer, { marginTop: 0 }]}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image source={backButton} style={styles.smallButton} />
