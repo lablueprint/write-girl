@@ -366,6 +366,40 @@ export default function ViewAllSavedScreen({ navigation }) {
     return -1;
   };
 
+  const removeTripleFlip = async (data) => {
+    const userId = await getId();
+    const flipJSON = {
+      flipID: data[0],
+    };
+    try {
+      if (userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeTripleFlips/${userId}`, flipJSON);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
+
+  const removeActivity = async (data) => {
+    const userId = await getId();
+    const activityJSON = {
+      activityID: data._id,
+    };
+    try {
+      if (userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeActivities/${userId}`, activityJSON);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
+
   const changeSelected = (select, data) => {
     const newSelected = [...selected];
     if (select === true) {
@@ -404,8 +438,16 @@ export default function ViewAllSavedScreen({ navigation }) {
         });
         break;
       case 'Triple Flips':
+        selected.forEach((data) => {
+          removeTripleFlip(data);
+          newSavedData.splice(newSavedData.indexOf(data), 1);
+        });
         break;
       case 'Door Activities':
+        selected.forEach((data) => {
+          removeActivity(data);
+          newSavedData.splice(newSavedData.indexOf(data), 1);
+        });
         break;
       default:
     }
@@ -447,7 +489,7 @@ export default function ViewAllSavedScreen({ navigation }) {
           : null}
         {editMode === true
           ? (
-            <View style={[styles.horizontalContainer, { marginTop: 12 }]}>
+            <View style={[styles.horizontalContainer, { marginTop: 12 }]} key={data[2]}>
               <View style={styles.buttonContainer}>
                 <BouncyCheckbox
                   size={20}
@@ -456,7 +498,7 @@ export default function ViewAllSavedScreen({ navigation }) {
                   onPress={(isChecked) => changeSelected(isChecked, data)}
                 />
               </View>
-              <View style={[styles.innerCard, { width: '90%' }]} key={data[0]}>
+              <View style={[styles.innerCard, { width: '90%' }]}>
                 <Text style={[styles.topicText, { color: textColors[subject] }]}>
                   {data[0]}
                 </Text>
@@ -464,7 +506,7 @@ export default function ViewAllSavedScreen({ navigation }) {
             </View>
           )
           : (
-            <View style={[styles.innerCard, { marginTop: 12 }]} key={data[0]}>
+            <View style={[styles.innerCard, { marginTop: 12 }]} key={data[2]}>
               <Text style={[styles.topicText, { color: textColors[subject] }]}>
                 {data[0]}
               </Text>
@@ -474,33 +516,83 @@ export default function ViewAllSavedScreen({ navigation }) {
     ));
   } else if (subject === 'Triple Flips') {
     display = savedData.map((data, index) => (
-      <TripleFlipHistoryCard
-        key={index}
-        flipId={data[0]}
-        date={data[1]}
-      />
+      editMode === true
+        ? (
+          <View key={index} style={[styles.horizontalContainer]}>
+            <View style={styles.buttonContainer}>
+              <BouncyCheckbox
+                size={20}
+                fillColor="#aaa"
+                innerIconStyle={{ borderWidth: 2 }}
+                onPress={(isChecked) => changeSelected(isChecked, data)}
+              />
+            </View>
+            <View style={{ width: '90%' }}>
+              <TripleFlipHistoryCard
+                flipId={data[0]}
+                date={data[1]}
+              />
+            </View>
+          </View>
+        )
+        : (
+          <TripleFlipHistoryCard
+            key={index}
+            flipId={data[0]}
+            date={data[1]}
+          />
+        )
     ));
   } else if (subject === 'Door Activities') {
     display = savedData.map((data) => (
-      <TouchableOpacity
-        key={data._id}
-        style={[styles.banner, { backgroundColor: genreColors[data.genre] }]}
-      >
-        <Text style={styles.doorButtonText}>
-          {data.activity[0]}
-        </Text>
-        <Text style={{ color: 'white', marginTop: 20 }}>
-          {data.activity.length - 2}
-          {' '}
-          {data.activity.length - 2 === 1 ? 'step' : 'steps'}
-        </Text>
-      </TouchableOpacity>
+      editMode === true
+        ? (
+          <View style={styles.horizontalContainer} key={data._id}>
+            <View style={styles.buttonContainer}>
+              <BouncyCheckbox
+                size={20}
+                fillColor="#aaa"
+                innerIconStyle={{ borderWidth: 2 }}
+                onPress={(isChecked) => changeSelected(isChecked, data)}
+              />
+            </View>
+            <View style={{ width: '90%' }} key={data[0]}>
+              <TouchableOpacity
+                style={[styles.banner, { backgroundColor: genreColors[data.genre] }]}
+              >
+                <Text style={styles.doorButtonText}>
+                  {data.activity[0]}
+                </Text>
+                <Text style={{ color: 'white', marginTop: 20 }}>
+                  {data.activity.length - 2}
+                  {' '}
+                  {data.activity.length - 2 === 1 ? 'step' : 'steps'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )
+        : (
+          <TouchableOpacity
+            key={data._id}
+            style={[styles.banner, { backgroundColor: genreColors[data.genre] }]}
+          >
+            <Text style={styles.doorButtonText}>
+              {data.activity[0]}
+            </Text>
+            <Text style={{ color: 'white', marginTop: 20 }}>
+              {data.activity.length - 2}
+              {' '}
+              {data.activity.length - 2 === 1 ? 'step' : 'steps'}
+            </Text>
+          </TouchableOpacity>
+        )
     ));
   }
   return (
     <View style={styles.scrollViewContainer}>
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={[styles.horizontalContainer, { marginBottom: 20 }]}>
+        <View style={[styles.horizontalContainer, { marginBottom: 12 }]}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image source={backButton} style={styles.smallButton} />
@@ -517,7 +609,7 @@ export default function ViewAllSavedScreen({ navigation }) {
         </View>
         {editMode === true
           ? (
-            <View style={[styles.horizontalContainer]}>
+            <View style={[styles.horizontalContainer, { marginTop: 12 }]}>
               <View style={{ width: '50%', alignItems: 'flex-start' }}>
                 <Text style={styles.selectText}>
                   {selected.length}
