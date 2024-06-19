@@ -121,7 +121,6 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
   }).split(', ');
   // Query for the flip id here!
   const tripleFlip = ['hello', 'world', 'card'];
-  console.log(current.toLocaleDateString('en-US', { weekday: 'long' }));
   return (
     <Animated.View
       layout={CustomLayoutTransition}

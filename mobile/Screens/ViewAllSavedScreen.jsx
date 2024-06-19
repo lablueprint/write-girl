@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
     height: 150,
     alignItems: 'left',
     padding: 20,
-    marginTop: 20,
     borderRadius: 10,
   },
   doorButtonText: {
@@ -518,7 +517,7 @@ export default function ViewAllSavedScreen({ navigation }) {
     display = savedData.map((data, index) => (
       editMode === true
         ? (
-          <View key={index} style={[styles.horizontalContainer]}>
+          <View key={index} style={styles.horizontalContainer}>
             <View style={styles.buttonContainer}>
               <BouncyCheckbox
                 size={20}
@@ -547,7 +546,7 @@ export default function ViewAllSavedScreen({ navigation }) {
     display = savedData.map((data) => (
       editMode === true
         ? (
-          <View style={styles.horizontalContainer} key={data._id}>
+          <View style={[styles.horizontalContainer, { marginTop: 20 }]} key={data._id}>
             <View style={styles.buttonContainer}>
               <BouncyCheckbox
                 size={20}
@@ -575,7 +574,7 @@ export default function ViewAllSavedScreen({ navigation }) {
         : (
           <TouchableOpacity
             key={data._id}
-            style={[styles.banner, { backgroundColor: genreColors[data.genre] }]}
+            style={[styles.banner, { backgroundColor: genreColors[data.genre], marginTop: 20 }]}
           >
             <Text style={styles.doorButtonText}>
               {data.activity[0]}
@@ -602,9 +601,13 @@ export default function ViewAllSavedScreen({ navigation }) {
             <Text style={styles.screenTitle}>{subject}</Text>
           </View>
           <View style={[styles.buttonContainer, { alignItems: 'flex-end' }]}>
-            <TouchableOpacity onPress={() => setEditMode(true)}>
-              <Image source={editButton} style={styles.smallButton} />
-            </TouchableOpacity>
+            {editMode === false
+              ? (
+                <TouchableOpacity onPress={() => setEditMode(true)}>
+                  <Image source={editButton} style={styles.smallButton} />
+                </TouchableOpacity>
+              )
+              : null}
           </View>
         </View>
         {editMode === true
