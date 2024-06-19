@@ -282,7 +282,7 @@ export default function TripleFlipScreen({ navigation }) {
       button = (
         <TouchableOpacity onPress={() => { removeTripleFlip(); }}>
           <Text style={styles.navbarText}>
-            Filled_Bookmark_icon_jpg_here
+            Filled_bookmark_icon_jpg_here
           </Text>
         </TouchableOpacity>
       );

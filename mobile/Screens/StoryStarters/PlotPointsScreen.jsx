@@ -124,7 +124,7 @@ export default function PlotPointsScreen() {
       console.log(err);
     }
     return -1;
-  }
+  };
 
   const saveButton = () => {
     let button = <View />;
@@ -137,7 +137,7 @@ export default function PlotPointsScreen() {
     } else if (resultShown) {
       button = (
         <Pressable style={styles.saveResultButton} onPress={removePlot}>
-          <Text style={styles.saveResultButtonBody}>UnSave Result</Text>
+          <Text style={styles.saveResultButtonBody}>Unsave Result</Text>
         </Pressable>
       );
     }

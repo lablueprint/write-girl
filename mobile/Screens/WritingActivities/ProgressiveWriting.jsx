@@ -390,7 +390,7 @@ export default function ProgressiveWritingScreen() {
         );
       } else {
         button = (
-          <Button title="UnSave" onPress={() => { removeActivity(); }} />
+          <Button title="Unsave" onPress={() => { removeActivity(); }} />
         );
       }
     }

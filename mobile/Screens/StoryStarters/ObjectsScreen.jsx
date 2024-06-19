@@ -125,7 +125,7 @@ export default function ObjectsScreen() {
       console.log(err);
     }
     return -1;
-  }
+  };
 
   const saveButton = () => {
     let button = <View />;
@@ -138,7 +138,7 @@ export default function ObjectsScreen() {
     } else if (resultShown) {
       button = (
         <Pressable style={styles.saveResultButton} onPress={removeItem}>
-          <Text style={styles.saveResultButtonBody}>UnSave Result</Text>
+          <Text style={styles.saveResultButtonBody}>Unsave Result</Text>
         </Pressable>
       );
     }

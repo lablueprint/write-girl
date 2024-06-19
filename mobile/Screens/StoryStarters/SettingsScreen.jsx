@@ -137,7 +137,7 @@ export default function SettingsScreen() {
     } else if (resultShown) {
       button = (
         <Pressable style={styles.saveResultButton} onPress={removeSetting}>
-          <Text style={styles.saveResultButtonBody}>UnSave Result</Text>
+          <Text style={styles.saveResultButtonBody}>Unsave Result</Text>
         </Pressable>
       );
     }

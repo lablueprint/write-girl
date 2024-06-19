@@ -137,7 +137,7 @@ export default function TraitsScreen() {
     } else if (resultShown) {
       button = (
         <Pressable style={styles.saveResultButton} onPress={removeTrait}>
-          <Text style={styles.saveResultButtonBody}>UnSave Result</Text>
+          <Text style={styles.saveResultButtonBody}>Unsave Result</Text>
         </Pressable>
       );
     }

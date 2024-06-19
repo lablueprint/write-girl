@@ -50,7 +50,6 @@ export default function BookmarksScreen({ navigation }) {
       </Text>
       <TouchableOpacity onPress={goToAllSaved} style={styles.collection}>
         <Image source={require('../assets/all-saved.png')} style={styles.collectionImage} />
-
         <Text style={styles.collectionText}>
           All Saved
         </Text>

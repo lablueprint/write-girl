@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   StyleSheet, View, TouchableOpacity, Text, Image,
-  ScrollView, Button,
+  ScrollView,
 } from 'react-native';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import TripleFlipHistoryCard from '../Components/TripleFlipHistoryCard';
@@ -88,25 +89,26 @@ const styles = StyleSheet.create({
   innerCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     width: '100%',
-    paddingHorizontal: '5%',
-    paddingVertical: '5%',
     borderRadius: 20,
     alignItems: 'left',
-    marginTop: 12,
+    paddingHorizontal: '5%',
+    paddingVertical: '5%',
   },
   topicText: {
     fontSize: 20,
     fontWeight: 600,
   },
-  headingContainer: {
+  horizontalContainer: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    marginBottom: 20,
+
   },
   buttonContainer: {
-    width: '25%',
+    width: '10%',
+    height: '100%',
+    justifyContent: 'center',
   },
   screenTitle: {
     fontWeight: 'bold',
@@ -115,12 +117,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '100%',
   },
+  selectText: {
+    color: '#aaa',
+  },
+  deleteText: {
+    color: '#DE5B45',
+  },
 });
 
 export default function ViewAllSavedScreen({ navigation }) {
   const route = useRoute();
   const subject = route.params?.subject;
   const [savedData, setSavedData] = useState([]);
+  const [editMode, setEditMode] = useState(false);
+  const [selected, setSelected] = useState([]);
 
   const getActivityByID = async (id) => {
     try {
@@ -179,7 +189,9 @@ export default function ViewAllSavedScreen({ navigation }) {
       setSavedData(
         await Promise.all(
           saved.data.savedPlots.reverse().map(
-            async (starter) => [await getPlotPointByID(starter.plotID), starter.date],
+            async (starter) => [
+              await getPlotPointByID(starter.plotID), starter.date, starter.plotID,
+            ],
           ),
         ),
       );
@@ -197,7 +209,9 @@ export default function ViewAllSavedScreen({ navigation }) {
       setSavedData(
         await Promise.all(
           saved.data.savedTraits.reverse().map(
-            async (starter) => [await getTraitByID(starter.traitID), starter.date],
+            async (starter) => [
+              await getTraitByID(starter.traitID), starter.date, starter.traitID,
+            ],
           ),
         ),
       );
@@ -215,7 +229,9 @@ export default function ViewAllSavedScreen({ navigation }) {
       setSavedData(
         await Promise.all(
           saved.data.savedItems.reverse().map(
-            async (starter) => [await getItemByID(starter.objectID), starter.date],
+            async (starter) => [
+              await getItemByID(starter.objectID), starter.date, starter.objectID,
+            ],
           ),
         ),
       );
@@ -233,7 +249,9 @@ export default function ViewAllSavedScreen({ navigation }) {
       setSavedData(
         await Promise.all(
           saved.data.savedSettings.reverse().map(
-            async (starter) => [await getSettingByID(starter.settingID), starter.date],
+            async (starter) => [
+              await getSettingByID(starter.settingID), starter.date, starter.settingID,
+            ],
           ),
         ),
       );
@@ -280,33 +298,120 @@ export default function ViewAllSavedScreen({ navigation }) {
     return 'True';
   };
 
-  const printEveryID = async () => {
-    console.log('Printing All IDs:');
-    // for (let i = 0; i < plotPoints.length; i++) {
-    //   console.log(plotPoints[i]._id);
-    // }
+  const removePlot = async (data) => {
+    const userId = await getId();
+    const plotJSON = {
+      plotID: data[2],
+    };
+    try {
+      if (userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removePlots/${userId}`, plotJSON);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
 
-    // for (let i = 0; i < traits.length; i++) {
-    //   console.log(traits[i]._id);
-    // }
+  const removeItem = async (data) => {
+    const userId = await getId();
+    const objectJSON = {
+      objectID: data[2],
+    };
+    try {
+      if (userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeItems/${userId}`, objectJSON);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
 
-    // for (let i = 0; i < items.length; i++) {
-    //   console.log(items[i]._id);
-    // }
+  const removeTrait = async (data) => {
+    const userId = await getId();
+    const traitJSON = {
+      traitID: data[2],
+    };
+    try {
+      if (userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeTraits/${userId}`, traitJSON);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
 
-    // for (let i = 0; i < settings.length; i++) {
-    //   console.log(settings[i]._id);
-    // }
+  const removeSetting = async (data) => {
+    const userId = await getId();
+    const settingJSON = {
+      settingID: data[2],
+    };
+    try {
+      if (userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeSettings/${userId}`, settingJSON);
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
 
-    // for (let i = 0; i < tripleFlips.length; i++) {
-    //   console.log(tripleFlips[i][2]);
-    // }
+  const changeSelected = (select, data) => {
+    const newSelected = [...selected];
+    if (select === true) {
+      newSelected.push(data);
+    } else {
+      newSelected.splice(newSelected.indexOf(data), 1);
+    }
+    setSelected(newSelected);
+  };
 
-    // for (let i = 0; i < activities.length; i++) {
-    //   console.log(activities[i]._id);
-    // }
-
-    console.log('Done');
+  const removeSelected = () => {
+    const newSavedData = [...savedData];
+    switch (subject) {
+      case 'Plot Points':
+        selected.forEach((data) => {
+          removePlot(data);
+          newSavedData.splice(newSavedData.indexOf(data), 1);
+        });
+        break;
+      case 'Traits':
+        selected.forEach((data) => {
+          removeTrait(data);
+          newSavedData.splice(newSavedData.indexOf(data), 1);
+        });
+        break;
+      case 'Objects':
+        selected.forEach((data) => {
+          removeItem(data);
+          newSavedData.splice(newSavedData.indexOf(data), 1);
+        });
+        break;
+      case 'Settings':
+        selected.forEach((data) => {
+          removeSetting(data);
+          newSavedData.splice(newSavedData.indexOf(data), 1);
+        });
+        break;
+      case 'Triple Flips':
+        break;
+      case 'Door Activities':
+        break;
+      default:
+    }
+    setSavedData(newSavedData);
+    setSelected([]);
+    setEditMode(false);
   };
 
   useEffect(() => {
@@ -336,15 +441,35 @@ export default function ViewAllSavedScreen({ navigation }) {
   let display = null;
   if (subject === 'Traits' || subject === 'Plot Points' || subject === 'Settings' || subject === 'Objects') {
     display = savedData.map((data, index, array) => (
-      <View style={{ width: '100%' }} key={data[0]}>
+      <View style={{ width: '100%' }} key={data[2]}>
         {index === 0 || array[index - 1][1] !== data[1]
           ? <Text style={[styles.normalText, { marginTop: 12 }]}>{data[1]}</Text>
           : null}
-        <View style={styles.innerCard} key={data[0]}>
-          <Text style={[styles.topicText, { color: textColors[subject] }]}>
-            {data[0]}
-          </Text>
-        </View>
+        {editMode === true
+          ? (
+            <View style={[styles.horizontalContainer, { marginTop: 12 }]}>
+              <View style={styles.buttonContainer}>
+                <BouncyCheckbox
+                  size={20}
+                  fillColor="#aaa"
+                  innerIconStyle={{ borderWidth: 2 }}
+                  onPress={(isChecked) => changeSelected(isChecked, data)}
+                />
+              </View>
+              <View style={[styles.innerCard, { width: '90%' }]} key={data[0]}>
+                <Text style={[styles.topicText, { color: textColors[subject] }]}>
+                  {data[0]}
+                </Text>
+              </View>
+            </View>
+          )
+          : (
+            <View style={[styles.innerCard, { marginTop: 12 }]} key={data[0]}>
+              <Text style={[styles.topicText, { color: textColors[subject] }]}>
+                {data[0]}
+              </Text>
+            </View>
+          )}
       </View>
     ));
   } else if (subject === 'Triple Flips') {
@@ -375,21 +500,51 @@ export default function ViewAllSavedScreen({ navigation }) {
   return (
     <View style={styles.scrollViewContainer}>
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.headingContainer}>
+        <View style={[styles.horizontalContainer, { marginBottom: 20 }]}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image source={backButton} style={styles.smallButton} />
             </TouchableOpacity>
           </View>
-          <View style={{ width: '50%', alignItems: 'center' }}>
+          <View style={{ width: '80%', alignItems: 'center' }}>
             <Text style={styles.screenTitle}>{subject}</Text>
           </View>
           <View style={[styles.buttonContainer, { alignItems: 'flex-end' }]}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => setEditMode(true)}>
               <Image source={editButton} style={styles.smallButton} />
             </TouchableOpacity>
           </View>
         </View>
+        {editMode === true
+          ? (
+            <View style={[styles.horizontalContainer]}>
+              <View style={{ width: '50%', alignItems: 'flex-start' }}>
+                <Text style={styles.selectText}>
+                  {selected.length}
+                  {' '}
+                  selected
+                </Text>
+              </View>
+              <View style={{ width: '50%', alignItems: 'flex-end' }}>
+                {selected.length === 0
+                  ? (
+                    <TouchableOpacity onPress={() => setEditMode(false)}>
+                      <Text style={styles.deleteText}>Cancel</Text>
+                    </TouchableOpacity>
+                  )
+                  : (
+                    <TouchableOpacity onPress={() => removeSelected()}>
+                      <Text style={styles.deleteText}>
+                        Delete all (
+                        {selected.length}
+                        )
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+              </View>
+            </View>
+          )
+          : null}
         { display }
       </ScrollView>
     </View>
