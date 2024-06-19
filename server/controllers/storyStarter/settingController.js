@@ -19,7 +19,7 @@ const getRandomSetting = async () => {
       { $sample: { size: 1 } }, // $sample stage to get a random document
     ]);
       // Extract the talk string from the random document
-    const extractedRandomSetting = randomSetting.length > 0 ? randomSetting[0].setting : null;
+    const extractedRandomSetting = randomSetting.length > 0 ? randomSetting[0] : null;
     if (extractedRandomSetting === null) {
       console.log('No valid setting found');
       return 'No settings here!';
@@ -32,7 +32,17 @@ const getRandomSetting = async () => {
   }
 };
 
+const getSettingByID = async (req, res) => {
+  try {
+    const data = await Setting.findOne({ _id: req.params.id });
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   createSetting,
   getRandomSetting,
+  getSettingByID,
 };

@@ -16,4 +16,6 @@ settingRouter.get('/get', async (req, res) => {
   }
 });
 
+settingRouter.get('/getByID/:id', settingController.getSettingByID);
+
 module.exports = settingRouter;

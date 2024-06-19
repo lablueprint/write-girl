@@ -16,4 +16,6 @@ plotPointRouter.get('/get', async (req, res) => {
   }
 });
 
+plotPointRouter.get('/getByID/:id', plotpointController.getPlotPointByID);
+
 module.exports = plotPointRouter;

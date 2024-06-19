@@ -15,6 +15,13 @@ const cardWidth = screenWidth * 0.9;
 const expandBoxHeight = 0.35 * cardHeight;
 const expandBoxWidth = 0.15 * cardWidth;
 
+const textColors = {
+  'Plot Points': '#5BB2CF',
+  Settings: '#BFD25A',
+  Objects: '#7BAC8A',
+  Traits: '#C97621',
+};
+
 const styles = StyleSheet.create({
   card: {
     borderRadius: '20',
@@ -44,13 +51,12 @@ const styles = StyleSheet.create({
     marginLeft: '-15%',
   },
   arrow: {
-    backgroundColor: '#BFD25A',
     height: expandBoxWidth * 0.5,
     width: '12.5%',
     borderRadius: 20,
   },
   topicText: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 600,
   },
   topPart: {
@@ -60,7 +66,6 @@ const styles = StyleSheet.create({
     marginTop: -0.08 * cardHeight,
   },
   diagonalArrow: {
-    backgroundColor: '#BFD25A',
     height: expandBoxWidth * 0.6,
     width: '12.5%',
     borderRadius: 20,
@@ -81,12 +86,12 @@ const styles = StyleSheet.create({
     paddingBottom: '2.5%',
   },
   innerCard: {
-    backgroundColor: '#D9D9D9BF',
+    backgroundColor: '#151716',
     width: '95%',
     paddingHorizontal: '5%',
     paddingVertical: '5%',
     borderRadius: 20,
-    alignItems: 'center',
+    alignItems: 'left',
   },
 });
 
@@ -110,17 +115,8 @@ function CustomLayoutTransition(values) {
 }
 
 // Pulls the associated Triple Flip from AWS with the respective flipID :D
-export default function TripleFlipHistoryCard({ flipId, date }) {
+export default function StoryStarterCard({ category, storyStarters }) {
   const [expanded, setExpanded] = useState(false);
-  const current = new Date(date);
-  const dateInfo = current.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: '2-digit', // 2-digit month (01 - 12)
-    day: '2-digit', // 2-digit day (01 - 31)
-    year: 'numeric', // 4-digit year
-  }).split(', ');
-  // Query for the flip id here!
-  const tripleFlip = ['hello', 'world', 'card'];
   return (
     <Animated.View
       layout={CustomLayoutTransition}
@@ -129,11 +125,9 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
       <View style={{ display: 'flex', flexDirection: 'row' }}>
         <View>
           <View style={styles.header}>
-            <Text style={[styles.headerText, { color: '#BFD25A' }]}>
-              {dateInfo[0]}
-              ,
+            <Text style={[styles.headerText, { color: textColors[category] }]}>
+              {category}
             </Text>
-            <Text style={[styles.headerText, { color: '#FFF' }]}>{dateInfo[1]}</Text>
           </View>
 
           <View style={styles.topPart} />
@@ -149,17 +143,19 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
             <Animated.View
               layout={CustomLayoutTransition}
               style={
-                [styles.arrow, { transform: [{ rotate: '90deg' }], top: expanded ? '40%' : '-8%', right: '-45%' }]
+                [styles.arrow, {
+                  transform: [{ rotate: '90deg' }], top: expanded ? '40%' : '-8%', right: '-45%', backgroundColor: textColors[category],
+                }]
               }
             />
             <Animated.View
               layout={CustomLayoutTransition}
               style={
-                [styles.arrow, { top: '-40%', right: expanded ? '-20%' : '-75%' }]
+                [styles.arrow, { top: '-40%', right: expanded ? '-20%' : '-75%', backgroundColor: textColors[category] }]
               }
             />
             <Animated.View
-              style={styles.diagonalArrow}
+              style={[styles.diagonalArrow, { backgroundColor: textColors[category] }]}
             />
           </TouchableOpacity>
         </View>
@@ -169,7 +165,7 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
         style={styles.outerCard}
       >
         {
-          tripleFlip.map((flipTopic, index) => (
+          storyStarters.map((starter, index) => (
             <Animated.View
               key={index}
               layout={CustomLayoutTransition}
@@ -177,8 +173,8 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
                 height: expanded ? 2 * expandBoxHeight : expandBoxHeight,
               }, styles.innerCard]}
             >
-              <Text style={styles.topicText}>
-                { flipTopic }
+              <Text style={[styles.topicText, { color: textColors[category] }]}>
+                { starter }
               </Text>
             </Animated.View>
           ))
@@ -188,12 +184,7 @@ export default function TripleFlipHistoryCard({ flipId, date }) {
     </Animated.View>
   );
 }
-TripleFlipHistoryCard.propTypes = {
-  flipId: PropTypes.string,
-  date: PropTypes.string,
-};
-
-TripleFlipHistoryCard.defaultProps = {
-  date: 'today',
-  flipId: 'null',
+StoryStarterCard.propTypes = {
+  category: PropTypes.string.isRequired,
+  storyStarters: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

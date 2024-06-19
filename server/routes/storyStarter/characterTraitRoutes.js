@@ -16,4 +16,6 @@ traitRouter.get('/get', async (req, res) => {
   }
 });
 
+traitRouter.get('/getByID/:id', traitController.getCharacterTraitByID);
+
 module.exports = traitRouter;

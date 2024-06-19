@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   },
   savedActivities: {
     required: false,
-    type: [String],
+    type: [Object],
   },
   savedPepTalks: {
     required: false,
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   },
   savedTraits: {
     required: false,
-    type: [String],
+    type: [Object],
   },
   savedTripleFlips: {
     required: false,
@@ -32,15 +32,15 @@ const userSchema = new mongoose.Schema({
   },
   savedPlots: {
     required: false,
-    type: [String],
+    type: [Object],
   },
   savedSettings: {
     required: false,
-    type: [String],
+    type: [Object],
   },
   savedItems: {
     required: false,
-    type: [String],
+    type: [Object],
   },
   tripleFlipHistory: {
     required: false,

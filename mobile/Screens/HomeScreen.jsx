@@ -71,6 +71,99 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
+  async function getId() {
+    const userId = await Storage({ key: 'hello', value: '', saveKey: false });
+
+    try {
+      if (!userId) {
+        console.log('User ID is null.');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    return userId;
+  }
+
+  const getAllSaved = async () => {
+    const userId = await getId();
+    try {
+      if (userId) {
+        const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getAllSaved/${userId}`, { timeout: 20000 });
+        setAllSaved(saved.data);
+        return saved.data;
+      }
+      console.log('User ID is null.');
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getActivities = async () => {
+    const userId = await getId();
+
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getActivities/${userId}`, { timeout: 20000 });
+      setActivities(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getStoryStarters = async () => {
+    const userId = await getId();
+
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getStoryStarters/${userId}`, { timeout: 20000 });
+      setStoryStarters(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getPepTalks = async () => {
+    const userId = await getId();
+
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getPepTalks/${userId}`, { timeout: 20000 });
+      setPepTalks(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getWritingTips = async () => {
+    const userId = await getId();
+
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getWritingTips/${userId}`, { timeout: 20000 });
+      setWritingTips(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
+  const getTripleFlips = async () => {
+    const userId = await getId();
+
+    try {
+      const saved = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/getTripleFlips/${userId}`, { timeout: 20000 });
+      setTripleFlips(saved.data);
+      return saved.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return 'True';
+  };
+
   useEffect(() => {
     getCardText('/pepTalk/get');
   }, []);
@@ -112,6 +205,10 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate('Triple Flip');
   };
   
+  const directToBookmarks = () => {
+    navigation.navigate('Bookmarks');
+  };
+
   const navigatePocketPrompt = () => {
     navigation.navigate('Pocket Prompt Home');
   };
@@ -136,6 +233,7 @@ export default function HomeScreen({ navigation }) {
       </View>
       <Button title="Triple Flips" onPress={directToTripleFlip} />
       <Button title="Pocket Prompts" onPress={navigatePocketPrompt}>Pocket Prompts</Button>
+      <Button title="Bookmarks" onPress={directToBookmarks} />
     </ScrollView>
   );
 }

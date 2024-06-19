@@ -30,10 +30,12 @@ import LogInScreen from '../Screens/LogInScreen';
 import PocketPromptHomeScreen from '../Screens/PocketPromptHomeScreen';
 import PocketPromptScreen from '../Screens/PocketPromptScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
-// import SavedScreen from '../Screens/SavedScreen';
+import BookmarksScreen from '../Screens/BookmarksScreen';
+import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 import ProgressiveWritingScreen from '../Screens/WritingActivities/ProgressiveWriting';
 import HistoryScreen from '../Screens/HistoryScreen';
+import ViewAllSavedScreen from '../Screens/ViewAllSavedScreen';
 
 const StoryStarterStack = createNativeStackNavigator();
 
@@ -82,6 +84,9 @@ function HomeStackScreen() {
       />
       <HomeStack.Screen name="Door Activity" component={ProgressiveWritingScreen} />
       <HomeStack.Screen name="Triple Flip" component={TripleFlipScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Bookmarks" component={BookmarksScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="View All Saved" component={ViewAllSavedScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="All Saved" component={SavedScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
       <HomeStack.Screen name="Pocket Prompt Home" component={PocketPromptHomeScreen} options={{ headerShown: false }} />
       <HomeStack.Screen

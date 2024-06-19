@@ -16,4 +16,6 @@ itemRouter.get('/get', async (req, res) => {
   }
 });
 
+itemRouter.get('/getByID/:id', itemController.getItemByID);
+
 module.exports = itemRouter;

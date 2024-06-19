@@ -19,7 +19,7 @@ const getRandomCharacterTrait = async () => {
       { $sample: { size: 1 } }, // $sample stage to get a random document
     ]);
       // Extract the talk string from the random document
-    const extractedRandomTrait = randomTrait.length > 0 ? randomTrait[0].trait : null;
+    const extractedRandomTrait = randomTrait.length > 0 ? randomTrait[0] : null;
     if (extractedRandomTrait === null) {
       console.log('No valid trait found');
       return 'No traits here!';
@@ -32,7 +32,17 @@ const getRandomCharacterTrait = async () => {
   }
 };
 
+const getCharacterTraitByID = async (req, res) => {
+  try {
+    const data = await Trait.findOne({ _id: req.params.id });
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   createCharacterTrait,
   getRandomCharacterTrait,
+  getCharacterTraitByID,
 };

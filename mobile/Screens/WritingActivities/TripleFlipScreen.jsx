@@ -152,6 +152,23 @@ export default function TripleFlipScreen({ navigation }) {
   const [flipButtonShow, setFlipButtonShow] = useState(false);
   const [cardShowBack, setCardShowBack] = useState(0);
   const [endButtonShow, setEndButtonShow] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const checkIfSaved = async (value) => {
+    try {
+      const userId = '65bd4fce479f4d7759aa4bc6';
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/checkIfSavedTripleFlip/${userId}/${value}`);
+      setSaved(response.data);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+    return false;
+  };
+
+  const getTripleFlip = async () => {
+    checkIfSaved('123456789');
+  };
 
   useEffect(() => {
     if (step === 0) {
@@ -171,11 +188,12 @@ export default function TripleFlipScreen({ navigation }) {
     setEndButtonShow(false);
     setCardShowBack(0);
     setStep(1);
+    setSaved(false);
     setDisplay(false);
   };
 
   const addTripleFlipToHistory = async () => {
-    const userId = '65bc75ca64a9510aeb9c5cc0';
+    const userId = '65bd4fce479f4d7759aa4bc6';
     const date = new Date();
     const tripleFlip = {
       date: date.toDateString(),
@@ -184,7 +202,8 @@ export default function TripleFlipScreen({ navigation }) {
 
     try {
       if (userId) {
-        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlipHistory/65bc75ca64a9510aeb9c5cc0`, tripleFlip);
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlipHistory/${userId}`, tripleFlip);
+        checkIfSaved('123456789');
         return response;
       }
       console.log('User ID is null.');
@@ -217,7 +236,7 @@ export default function TripleFlipScreen({ navigation }) {
   }
 
   const saveTripleFlip = async () => {
-    const userId = '65bc75ca64a9510aeb9c5cc0';
+    const userId = '65bd4fce479f4d7759aa4bc6';
     const date = new Date();
     const tripleFlip = {
       date: date.toDateString(),
@@ -225,15 +244,57 @@ export default function TripleFlipScreen({ navigation }) {
     };
 
     try {
-      if (userId) {
+      if (!saved && userId) {
         const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/addTripleFlips/${userId}`, tripleFlip);
+        setSaved(true);
         return response;
       }
-      console.log('User ID is null.');
+      console.log('User ID is null or already saved.');
     } catch (err) {
       console.log(err);
     }
     return -1;
+  };
+
+  const removeTripleFlip = async () => {
+    const userId = '65bd4fce479f4d7759aa4bc6';
+    const flipJSON = {
+      flipID: '123456789',
+    };
+
+    try {
+      if (saved && userId) {
+        const response = await axios.patch(`${process.env.EXPO_PUBLIC_SERVER_URL}/user/removeTripleFlips/${userId}`, flipJSON);
+        checkIfSaved('123456789');
+        return response;
+      }
+      console.log('User ID is null or it is not already saved.');
+    } catch (err) {
+      console.log(err);
+    }
+    return -1;
+  };
+
+  const saveButton = () => {
+    let button = <View />;
+    if (!saved) {
+      button = (
+        <TouchableOpacity onPress={() => { saveTripleFlip(); }}>
+          <Text style={styles.navbarText}>
+            Bookmark_icon_jpg_here
+          </Text>
+        </TouchableOpacity>
+      );
+    } else {
+      button = (
+        <TouchableOpacity onPress={() => { removeTripleFlip(); }}>
+          <Text style={styles.navbarText}>
+            Filled_bookmark_icon_jpg_here
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+    return button;
   };
 
   return (
@@ -275,11 +336,7 @@ export default function TripleFlipScreen({ navigation }) {
                   </TouchableOpacity>
                   { endButtonShow
                     && (
-                      <TouchableOpacity onPress={() => { saveTripleFlip(); }}>
-                        <Text style={styles.navbarText}>
-                          Bookmark_icon_jpg_here
-                        </Text>
-                      </TouchableOpacity>
+                      saveButton()
                     )}
                 </View>
               </View>
