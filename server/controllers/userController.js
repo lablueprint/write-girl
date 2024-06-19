@@ -65,7 +65,7 @@ const addSavedTripleFlips = async (req, res) => {
       { _id: req.params.userId, 'savedTripleFlips.flipID': { $ne: req.body.flipID } },
       { $push: { savedTripleFlips: req.body } },
     );
-    res.json(data);
+    res.send(data);
   } catch (err) {
     console.log(err);
   }

@@ -1,5 +1,5 @@
 import {
-  View, StyleSheet, Text, Image,
+  StyleSheet, Text, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Animated, {

@@ -204,9 +204,13 @@ export default function HomeScreen({ navigation }) {
   const directToTripleFlip = () => {
     navigation.navigate('Triple Flip');
   };
-
+  
   const directToBookmarks = () => {
     navigation.navigate('Bookmarks');
+  };
+
+  const navigatePocketPrompt = () => {
+    navigation.navigate('Pocket Prompt Home');
   };
 
   return (
@@ -228,6 +232,7 @@ export default function HomeScreen({ navigation }) {
         <Text>Home Screen</Text>
       </View>
       <Button title="Triple Flips" onPress={directToTripleFlip} />
+      <Button title="Pocket Prompts" onPress={navigatePocketPrompt}>Pocket Prompts</Button>
       <Button title="Bookmarks" onPress={directToBookmarks} />
     </ScrollView>
   );
