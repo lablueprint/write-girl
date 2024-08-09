@@ -11,7 +11,8 @@ import StoryStartersImage from '../assets/storystarters.png';
 import DoorActivityImage from '../assets/dooractivity.png';
 import TripleFlipsImage from '../assets/tripleflips.png';
 import HomeBackground from '../assets/home-screen.png';
-
+import PostItModal from '../Components/PostItModal';
+import PostIt1 from '../assets/expanded.png';
 import PostItsImage from '../assets/post_it.png';
 import FreeWriteImage from '../assets/free-write-card.png';
 import MindAndBodyImage from '../assets/mind-and-body-card.png';
@@ -67,37 +68,34 @@ const styles = StyleSheet.create({
   },
   card: {
     marginVertical: 10,
-    marginHorizontal: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-    borderRadius: 20,
-    height: Dimensions.get('window').height / 4.5, // Adjust based on your image height
-    width: Dimensions.get('window').width,
+    // marginHorizontal: 20,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,
+    // elevation: 5,
+    height: Dimensions.get('window').height / 4.2, // Adjust based on your image height
+    width: Dimensions.get('window').width / 1.1,
   },
   cardText: {
-    fontSize: 18,
-    color: 'black',
+    fontSize: '32px',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+    paddingBottom: 15,
   },
   postItContainer: {
     flex: 1,
     height: Dimensions.get('window').height,
-    borderWidth: 2,
-    borderColor: 'red',
   },
   PostItBackground: {
     height: Dimensions.get('window').height / 2.9, // Adjust based on your image height
     width: '100%',
-    borderWidth: 2,
-    borderColor: 'red',
   },
   invisibleButton: {
     position: 'absolute',
     backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: 'red',
     width: 175,
     height: 100,
   },
@@ -143,14 +141,19 @@ const activityData = [
 ];
 
 const exploreMoreData = [
-  { id: 1, text: 'Explore Card 1', background: FreeWriteImage },
-  { id: 2, text: 'Explore Card 2', background: MindAndBodyImage },
+  {
+    // TODO: Change route to Free Write activity
+    id: 1, text: 'Free Write', text2: 'This is your zone, tap to let your ', text3: 'run free.', textbold: 'creativity', background: FreeWriteImage, route: 'Writing Activities',
+  },
+  {
+    id: 2, text: 'Mind & Body', text2: 'Give your mind a ', text3: 'Start your timer here. ', textbold: 'break.', background: MindAndBodyImage, route: 'Mind & Body',
+  },
 ];
 
 export default function HomeScreen({ navigation }) {
-  const [pepTalks, setPepTalks] = useState('');
-  const [writingTips, setWritingTips] = useState('');
-  const [page, setPage] = React.useState('pep_talk');
+  const [showPostIt1Modal, setShowPostIt1Modal] = useState(false);
+  const [showPostIt2Modal, setShowPostIt2Modal] = useState(false);
+  const [showPostIt3Modal, setShowPostIt3Modal] = useState(false);
   const [cardData, setCardData] = React.useState('default_text');
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -166,7 +169,7 @@ export default function HomeScreen({ navigation }) {
       return err;
     }
   };
-  const handlePress = (screen) => {
+  const handleNavigate = (screen) => {
     navigation.navigate(screen);
   };
 
@@ -175,7 +178,7 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   const renderExploreMoreCards = () => exploreMoreData.map((item, index) => {
-    const inputRange = [-1, 0, (index) * 100, (index + 1) * 100];
+    const inputRange = [-1, 0, (index) * 100, (index + 1) * 220];
     const scale = scrollY.interpolate({
       inputRange,
       outputRange: [0, 0, 1, 1],
@@ -203,9 +206,21 @@ export default function HomeScreen({ navigation }) {
           },
         ]}
       >
-        <ImageBackground source={item.background} style={styles.card}>
-          <Text style={styles.cardText}>{item.text}</Text>
-        </ImageBackground>
+        <TouchableOpacity style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row' }} onPress={() => handleNavigate(item.route)}>
+          <ImageBackground source={item.background} style={styles.card} imageStyle={{ borderRadius: 14 }}>
+            <View style={{ marginHorizontal: 20, marginTop: '20%' }}>
+              <Text style={styles.cardText}>{item.text}</Text>
+              <Text style={{ fontFamily: 'Helvetica Neue', fontSize: 18, color: 'white' }}>
+                {item.text2}
+                <Text style={{ fontWeight: 'bold' }}>
+                  {item.textbold}
+                </Text>
+                {' '}
+                {item.text3}
+              </Text>
+            </View>
+          </ImageBackground>
+        </TouchableOpacity>
       </Animated.View>
     );
   });
@@ -261,23 +276,46 @@ export default function HomeScreen({ navigation }) {
         of these sticky notes
       </Text>
       <Text style={styles.needInspoText2}>to get a tip </Text>
-      <ImageBackground
-        source={PostItsImage}
-        style={styles.PostItBackground}
-      >
-        <TouchableOpacity
-          style={[styles.invisibleButton, styles.postIt1]}
-          onPress={() => handlePress('Writing Activities')}
-        />
-        <TouchableOpacity
-          style={[styles.invisibleButton, styles.postIt2]}
-          onPress={() => handlePress('Story Starter Stack')}
-        />
-        <TouchableOpacity
-          style={[styles.invisibleButton, styles.postIt3]}
-          onPress={() => handlePress('')}
-        />
-      </ImageBackground>
+      <View>
+        <ImageBackground
+          source={PostItsImage}
+          style={styles.PostItBackground}
+        >
+          <TouchableOpacity
+            style={[styles.invisibleButton, styles.postIt1]}
+            onPress={() => setShowPostIt1Modal(true)}
+          />
+          <TouchableOpacity
+            style={[styles.invisibleButton, styles.postIt2]}
+            onPress={() => setShowPostIt2Modal(true)}
+          />
+          <TouchableOpacity
+            style={[styles.invisibleButton, styles.postIt3]}
+            onPress={() => setShowPostIt3Modal(true)}
+          />
+        </ImageBackground>
+      </View>
+      <PostItModal
+        visible={showPostIt1Modal}
+        onClose={() => setShowPostIt1Modal(false)}
+        postItImage={PostIt1}
+        postItRoute="/pepTalk/get"
+
+      />
+
+      <PostItModal
+        visible={showPostIt2Modal}
+        onClose={() => setShowPostIt2Modal(false)}
+        postItImage={PostIt1}
+        postItRoute="/pepTalk/get"
+      />
+
+      <PostItModal
+        visible={showPostIt3Modal}
+        onClose={() => setShowPostIt3Modal(false)}
+        postItImage={PostIt1}
+        postItRoute="/pepTalk/get"
+      />
     </Animated.ScrollView>
   );
 }
