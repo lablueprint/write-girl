@@ -7,14 +7,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../Screens/HomeScreen';
 import ActivityHomeScreen from '../Screens/WritingActivities/ActivityHomeScreen';
 import StoryStarterScreen from '../Screens/StoryStarterScreen';
+import StoryStarterComponent from '../Screens/StoryStarters/StoryStarterPage';
 import MindBodyScreen from '../Screens/MindBody/MindBodyScreen';
 import ActivityTypeScreen from '../Screens/MindBody/ActivityTypeScreen';
 import ActivityDurationScreen from '../Screens/MindBody/ActivityDurationScreen';
 import MindBodyDeckScreen from '../Screens/MindBody/MindBodyDeckScreen';
-import ObjectsScreen from '../Screens/StoryStarters/ObjectsScreen';
-import SettingsScreen from '../Screens/StoryStarters/SettingsScreen';
-import TraitsScreen from '../Screens/StoryStarters/TraitsScreen';
-import PlotPointsScreen from '../Screens/StoryStarters/PlotPointsScreen';
 import homeIcon from '../assets/home-icon.png';
 import writingActivitiesIcon from '../assets/writing-activities-icon.png';
 import storyStarterIcon from '../assets/story-starters-icon.png';
@@ -30,7 +27,6 @@ import LogInScreen from '../Screens/LogInScreen';
 import PocketPromptHomeScreen from '../Screens/PocketPromptHomeScreen';
 import PocketPromptScreen from '../Screens/PocketPromptScreen';
 import PasswordResetScreen from '../Screens/PasswordResetScreen';
-// import SavedScreen from '../Screens/SavedScreen';
 import TripleFlipScreen from '../Screens/WritingActivities/TripleFlipScreen';
 import ProgressiveWritingScreen from '../Screens/WritingActivities/ProgressiveWriting';
 import HistoryScreen from '../Screens/HistoryScreen';
@@ -39,16 +35,35 @@ const StoryStarterStack = createNativeStackNavigator();
 
 function StoryStarterStackScreen() {
   return (
-    <StoryStarterStack.Navigator initialRouteName="Story Starters">
+    <StoryStarterStack.Navigator
+      initialRouteName="Story Starters"
+      screenOptions={{ headerTransparent: true, headerTitle: '' }}
+      // Currently back button appears blue instead of white
+      // Can configure back button and header, more info: https://reactnavigation.org/docs/headers/
+    >
       <StoryStarterStack.Screen
         name="Story Starter Stack"
         component={StoryStarterScreen}
-        options={{ headerShown: false, title: 'Story Starters' }}
+        options={{ headerShown: false }}
       />
-      <StoryStarterStack.Screen name="Objects" component={ObjectsScreen} />
-      <StoryStarterStack.Screen name="Settings" component={SettingsScreen} />
-      <StoryStarterStack.Screen name="Character Traits" component={TraitsScreen} />
-      <StoryStarterStack.Screen name="Plot Points" component={PlotPointsScreen} />
+      <StoryStarterStack.Screen name="Objects">
+        {() => (<StoryStarterComponent title="OBJECT" route="item" textColor="#7BAC8A" />)}
+      </StoryStarterStack.Screen>
+      <StoryStarterStack.Screen
+        name="Settings"
+      >
+        {() => (<StoryStarterComponent title="SETTING" route="setting" textColor="#BFD25A" />)}
+      </StoryStarterStack.Screen>
+      <StoryStarterStack.Screen
+        name="Character Traits"
+      >
+        {() => (<StoryStarterComponent title="CHARACTER TRAIT" route="characterTrait" textColor="#DC5F41" />)}
+      </StoryStarterStack.Screen>
+      <StoryStarterStack.Screen
+        name="Plot Points"
+      >
+        {() => (<StoryStarterComponent title="PLOT POINT" route="plotPoint" textColor="#5BB2CF" />)}
+      </StoryStarterStack.Screen>
     </StoryStarterStack.Navigator>
   );
 }
@@ -120,12 +135,12 @@ function MindBodyStackScreen() {
 }
 
 const createtabOptions = (icon) => ({
+  headerShown: false,
   tabBarIcon: () => (
     <Image
       source={icon}
     />
   ),
-  headerShown: icon !== settingsIcon,
 });
 
 const middleTabOptions = {
